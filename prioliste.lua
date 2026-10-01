@@ -1,6 +1,6 @@
--- Automatisch erzeugt aus der LC-Prioliste.ods — NICHT von Hand editieren.
--- Quelle: /home/jgerke/LC - Prioliste.ods   (Spalte 1 = Name, Spalte 2 = Prioritaet 1-5)
--- Neu erzeugen: python3 tools/prioliste.py "<Pfad zur .ods>" > prioliste.lua
+-- Automatisch erzeugt — NICHT von Hand editieren.
+-- Quelle: Weboberflaeche (Loot-Council-Prioritaeten)
+-- Stand: 02.10.2026 01:08
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -13,7 +13,7 @@ ns.PRIO = {
     ["blitzfaust"] = 3,   -- Blitzfaust
     ["cep"] = 1,   -- Cep
     ["cheliia"] = 2,   -- Cheliia
-    ["dranash"] = 3,   -- Dranash
+    ["dranash"] = 3,   -- Dránash
     ["enshirogue"] = 5,   -- Enshirogue
     ["exorzist"] = 2,   -- Exorzist
     ["exudes"] = 3,   -- Exudes
@@ -23,11 +23,11 @@ ns.PRIO = {
     ["indydrakes"] = 2,   -- Indydrakes
     ["jekyl"] = 5,   -- Jekyl
     ["merlon"] = 2,   -- Merlón
-    ["moriko"] = 5,   -- Moriko
+    ["moriko"] = 5,   -- Moríko
     ["neyzxd"] = 5,   -- Neyzxd
     ["notam"] = 1,   -- Notam
     ["ophrys"] = 3,   -- Ophrys
-    ["palacetamol"] = 5,   -- palacetamol
+    ["palacetamol"] = 5,   -- Palacetamol
     ["schmeckies"] = 5,   -- Schmeckies
     ["setup"] = 3,   -- Setup
     ["sikkz"] = 1,   -- Sikkz
@@ -39,3 +39,5 @@ ns.PRIO = {
 }
 
 ns.PRIO_ANZAHL = 28
+
+ns.PRIO_STAND = "02.10.2026 01:08"
