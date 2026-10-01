@@ -206,7 +206,8 @@ local function gewichte()
         print(("  %-8s %s  %s"):format(role, zustand, grau(w.reason)))
     end
     print(gelb("Prioritaetsliste"))
-    print(("  %d Spieler geladen (aus LC - Prioliste.ods)"):format(ns.PRIO_ANZAHL or 0))
+    print(("  %d Spieler geladen%s"):format(ns.PRIO_ANZAHL or 0,
+        ns.PRIO_STAND and (" — Stand " .. ns.PRIO_STAND) or ""))
     print(grau("  1 = kein Abzug, 2 = -10 %, 3 = -20 %, 4 = -30 %, 5 = -40 %"))
     local eigen = UnitName("player")
     local prio = ns.PrioVon(eigen)
