@@ -158,6 +158,8 @@ local function diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kont
     end
     ns.diagnose[kandidat] = {
         itemId = itemId, ilvlLink = itemIlvl, kontext = kontext, zielDif = zielDif,
+        nameNormalisiert = select(2, ns.PrioVon(kandidat)),
+        prio = ns.PrioVon(kandidat),
         gewaehlt = gewaehlt and {
             simKey = gewaehlt.simKey, ilvl = gewaehlt.e.ilvl, difficultyId = gewaehlt.e.difficultyId,
             gain = gewaehlt.e.gain, gainPercent = gewaehlt.e.gainPercent, art = gewaehlt.art,
@@ -225,8 +227,9 @@ local function berechne(kandidat)
         kontext = kontext,
         art = gewaehlt.art,
     }
-    local gewichtet, faktor, grund = ns.Gewichten(basis, gewaehlt.role)
-    details.faktor, details.grund, details.gewichtet = faktor, grund, gewichtet
+    local gewichtet, info = ns.Gewichten(basis, gewaehlt.role, kandidat)
+    details.faktor, details.grund, details.gewichtet = info.faktor, info.grund, gewichtet
+    details.roleFaktor, details.prioFaktor, details.prio = info.roleFaktor, info.prioFaktor, info.prio
     diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, gewaehlt)
     return gewichtet, details
 end
@@ -245,11 +248,21 @@ local function tooltipZeigen(frame, kandidat)
         local einheit = d.prozent and "%" or ""
         GameTooltip:AddLine(("Roh:        %s"):format(ns.Zahl(d.basis, einheit)), 0.8, 0.8, 0.8)
         if d.faktor ~= 1.0 then
-            GameTooltip:AddLine(("Gewichtet:  %s  (%s %s)")
-                :format(ns.Zahl(d.gewichtet, einheit), d.role, ns.Faktor(d.faktor)), 1, 0.85, 0.2)
-            GameTooltip:AddLine(d.grund or "", 0.7, 0.7, 0.7, true)
+            local teile = {}
+            if d.roleFaktor and d.roleFaktor ~= 1.0 then
+                teile[#teile + 1] = ("%s %s"):format(d.role, ns.Faktor(d.roleFaktor))
+            end
+            if d.prio then
+                teile[#teile + 1] = ("Prio %d %s"):format(d.prio, ns.Faktor(d.prioFaktor))
+            end
+            GameTooltip:AddLine(("Gewichtet:  %s  (%s)")
+                :format(ns.Zahl(d.gewichtet, einheit), table.concat(teile, " + ")), 1, 0.85, 0.2)
+            if d.grund then
+                GameTooltip:AddLine(d.grund, 0.7, 0.7, 0.7, true)
+            end
         else
-            GameTooltip:AddLine(grau("Keine Gewichtung (Rolle " .. tostring(d.role) .. ")"), 0.8, 0.8, 0.8)
+            GameTooltip:AddLine(grau("Keine Gewichtung (Rolle " .. tostring(d.role)
+                .. (d.prio and (", Prio " .. d.prio) or "") .. ")"), 0.8, 0.8, 0.8)
         end
         if d.ilvl then
             GameTooltip:AddLine(grau(("Sim: %s | Schwierigkeit %s | Item-Stufe %s | Treffer: %s")
