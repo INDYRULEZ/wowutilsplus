@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberflaeche (Loot-Council-Prioritaeten)
--- Stand: 02.10.2026 01:19
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten)
+-- Stand: 02.10.2026 01:41
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -20,9 +20,11 @@ ns.PRIO = {
     ["debbigosa"] = 3,   -- debbigosa (Nebenchar von Thunderdebbo)
     ["deepressed"] = 1,   -- deepressed (Nebenchar von Tobii)
     ["dranash"] = 3,   -- Dránash
-    ["enshirogue"] = 5,   -- Enshirogue
+    ["enshirou"] = 5,   -- Enshirou
     ["exorzist"] = 2,   -- Exorzist
     ["exudes"] = 3,   -- Exudes
+    ["furball"] = 5,   -- furball (Nebenchar von Palaball)
+    ["furdruid"] = 5,   -- furdruid (Nebenchar von Palaball)
     ["garshu"] = 2,   -- Garshû
     ["gweni"] = 4,   -- Gwêni
     ["hyperhardw"] = 3,   -- Hyperhardw
@@ -33,6 +35,7 @@ ns.PRIO = {
     ["kala"] = 5,   -- kala (Nebenchar von Moríko)
     ["kaliistda"] = 3,   -- kaliistda (Nebenchar von Blitzfaust)
     ["kearney"] = 5,   -- kearney (Nebenchar von Moríko)
+    ["keitabha"] = 5,   -- keitabha (Nebenchar von Enshirou)
     ["kuhohnemilch"] = 3,   -- kuhohnemilch (Nebenchar von Blitzfaust)
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
     ["magirmx"] = 2,   -- magirmx (Nebenchar von Merlón)
@@ -48,6 +51,7 @@ ns.PRIO = {
     ["notamused"] = 1,   -- notamused (Nebenchar von Notam)
     ["notrone"] = 5,   -- notrone (Nebenchar von Jekyl)
     ["ophrys"] = 3,   -- Ophrys
+    ["palaball"] = 5,   -- Palaball
     ["palacetamol"] = 5,   -- Palacetamol
     ["paldros"] = 2,   -- paldros (Nebenchar von Balren)
     ["papertrail"] = 3,   -- papertrail (Nebenchar von Setupx)
@@ -65,6 +69,7 @@ ns.PRIO = {
     ["sillan"] = 2,   -- sillan (Nebenchar von Silanhunt)
     ["sollas"] = 2,   -- sollas (Nebenchar von Garshû)
     ["stumpstomp"] = 5,   -- stumpstomp (Nebenchar von Jekyl)
+    ["taovitotem"] = 5,   -- taovitotem (Nebenchar von Palaball)
     ["thunderdebbo"] = 3,   -- Thunderdebbo
     ["tobii"] = 1,   -- Tobii
     ["trybuss"] = 3,   -- trybuss (Nebenchar von Blitzfaust)
@@ -73,6 +78,6 @@ ns.PRIO = {
     ["vilarie"] = 2,   -- Vilarie
 }
 
-ns.PRIO_ANZAHL = 63
+ns.PRIO_ANZAHL = 68
 
-ns.PRIO_STAND = "02.10.2026 01:19"
+ns.PRIO_STAND = "02.10.2026 01:41"
