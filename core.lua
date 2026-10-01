@@ -118,6 +118,7 @@ local function hilfe()
     print("  " .. blau("/wup") .. "            Datenlage pruefen (wie viele Charaktere haben Daten)")
     print("  " .. blau("/wup gewichte") .. "    aktive Gewichtungen anzeigen")
     print("  " .. blau("/wup test") .. "        eigene Wunschliste mit gewichteten Gewinnen zeigen")
+    print("  " .. blau("/wup rcl") .. "         Diagnose: was das Addon zum aktuellen Item sieht")
 end
 
 local function datenlage()
@@ -217,6 +218,7 @@ SlashCmdList["WOWUTILSPLUS"] = function(eingabe)
     if befehl == "" or befehl == "help" then hilfe()
     elseif befehl == "test" then test()
     elseif befehl == "gewichte" then gewichte()
+    elseif befehl == "rcl" and ns.DebugRCL then ns.DebugRCL()
     else datenlage() end
 end
 

@@ -59,6 +59,42 @@ end
 
 --- Sucht den besten Sim-Eintrag fuer das Item und gewichtet ihn nach Rolle.
 --- @param kandidat string Charaktername wie RCL ihn fuehrt (name-realm)
+--- Sammelt je Sim den passenden Eintrag fuer das Item — wie das Original:
+--- bevorzugt den Eintrag mit exakt passender Item-Stufe, sonst den besten Wert.
+--- @return table[] Liste von { e = Eintrag, role, simKey, simType, baseline }
+local function sammleEintraege(daten, itemId, itemIlvl)
+    local liste = {}
+    for specId, sims in pairs(daten.specs) do
+        local role = ns.RolleVonSpec(tonumber(specId))
+        for simKey, sim in pairs(sims) do
+            local ergebnisse = sim.items and sim.items[itemId]
+            if ergebnisse then
+                local treffer
+                for _, e in ipairs(ergebnisse) do        -- 1. exakt passende Stufe
+                    if itemIlvl and e.ilvl == itemIlvl then
+                        treffer = e
+                        break
+                    end
+                end
+                if not treffer then                      -- 2. sonst bester Wert
+                    for _, e in ipairs(ergebnisse) do
+                        local wert = e.gain or e.gainPercent
+                        local bester = treffer and (treffer.gain or treffer.gainPercent)
+                        if wert and (not treffer or wert > bester) then treffer = e end
+                    end
+                end
+                if treffer and (treffer.gain or treffer.gainPercent) then
+                    liste[#liste + 1] = {
+                        e = treffer, role = role, simKey = tostring(simKey),
+                        simType = sim.simType, baseline = sim.baseline,
+                    }
+                end
+            end
+        end
+    end
+    return liste
+end
+
 --- @return number? gewichtet, table? details
 local function berechne(kandidat)
     if not WowUtilsAPI or not kandidat then return nil end
@@ -68,40 +104,43 @@ local function berechne(kandidat)
     local daten = WowUtilsAPI.GetDroptimizers(kandidat)
     if not (daten and daten.specs) then return nil end
 
-    local best, bestIlvlDiff
-    for specId, sims in pairs(daten.specs) do
-        local role = ns.RolleVonSpec(tonumber(specId))
-        for _, sim in pairs(sims) do
-            local ergebnisse = sim.items and sim.items[itemId]
-            if ergebnisse then
-                for _, e in ipairs(ergebnisse) do
-                    local basis = e.gain or e.gainPercent
-                    if basis then
-                        -- Passung zur Item-Stufe: exakt bevorzugt, sonst naechstliegende
-                        local diff = (itemIlvl and e.ilvl) and math.abs(e.ilvl - itemIlvl) or 0
-                        if not best or diff < bestIlvlDiff
-                           or (diff == bestIlvlDiff and basis > best.basis) then
-                            best = {
-                                basis = basis,
-                                prozent = e.gain == nil,   -- QE Live liefert nur Prozent
-                                ilvl = e.ilvl,
-                                role = role,
-                                simmedAt = sim.simmedAt,
-                            }
-                            bestIlvlDiff = diff
-                        end
-                    end
-                end
+    local liste = sammleEintraege(daten, itemId, itemIlvl)
+    if #liste == 0 then return nil end
+
+    -- Wie das Original: den Patchwerk-1-Ziel-Sim bevorzugen (raidbots "…patchwerk-1",
+    -- QE Live "…0-1"). Nur falls keiner dabei ist, den besten Wert nehmen.
+    local gewaehlt
+    for _, k in ipairs(liste) do
+        local s = k.simKey:lower()
+        if s:match("patchwerk%-1$") or s:match("0%-1$") then
+            gewaehlt = k
+            break
+        end
+    end
+    if not gewaehlt then
+        for _, k in ipairs(liste) do
+            local w = k.e.gain or k.e.gainPercent
+            if not gewaehlt or w > (gewaehlt.e.gain or gewaehlt.e.gainPercent) then
+                gewaehlt = k
             end
         end
     end
-    if not best then return nil end
 
-    local gewichtet, faktor, grund = ns.Gewichten(best.basis, best.role)
-    best.faktor = faktor
-    best.grund = grund
-    best.gewichtet = gewichtet
-    return gewichtet, best
+    local e = gewaehlt.e
+    local basis = e.gain or e.gainPercent
+    local details = {
+        basis = basis,
+        prozent = e.gain == nil,       -- QE Live liefert nur Prozent
+        ilvl = e.ilvl,
+        role = gewaehlt.role,
+        simKey = gewaehlt.simKey,
+        simType = gewaehlt.simType,
+        baseline = gewaehlt.baseline,
+        anzahl = #liste,
+    }
+    local gewichtet, faktor, grund = ns.Gewichten(basis, gewaehlt.role)
+    details.faktor, details.grund, details.gewichtet = faktor, grund, gewichtet
+    return gewichtet, details
 end
 
 -- ---------------------------------------------------------------------------
@@ -230,3 +269,70 @@ local function sessionHook()
     end
 end
 C_Timer.After(2, sessionHook)
+-- ---------------------------------------------------------------------------
+-- Diagnose: /wup rcl  — zeigt, was das Addon zum aktuellen Item sieht
+-- ---------------------------------------------------------------------------
+
+local function kandidatenAusFenster()
+    local liste = {}
+    local ok = pcall(function()
+        local v = RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
+        local daten = v and v.frame and v.frame.data
+        if type(daten) == "table" then
+            for _, zeile in ipairs(daten) do
+                if zeile and zeile.name then liste[#liste + 1] = zeile.name end
+            end
+        end
+    end)
+    return ok and liste or {}
+end
+
+function ns.DebugRCL()
+    print("|cffffd700WoWUtils Plus — RCL-Diagnose|r")
+    local item = lootTable and lootTable[session]
+    if not item then
+        print("  Kein Item im Abstimmungsfenster (Fenster offen?).")
+        return
+    end
+    print("  Link:        " .. tostring(item.link))
+    print("  itemID:      " .. tostring(item.itemID))
+    local itemId = item.itemID
+    local ilvl
+    if item.link then
+        ilvl = select(4, C_Item.GetItemInfo(item.link))
+        local _, ctx = C_Item.GetItemCreationContext(item.link)
+        print("  Stufe:       " .. tostring(ilvl))
+        print("  Kontext:     " .. tostring(ctx))
+        if not itemId then itemId = C_Item.GetItemInfoInstant(item.link) end
+        print("  Stufe (nur ID, ohne Bonus): " .. tostring(itemId and select(4, C_Item.GetItemInfo(itemId))))
+        local bonus = {}
+        for _, teil in ipairs({ strsplit(":", item.link) }) do
+            if tonumber(teil) and tonumber(teil) > 1000 then bonus[#bonus + 1] = teil end
+        end
+        print("  Bonus-IDs:   " .. (#bonus > 0 and table.concat(bonus, ", ") or "-"))
+    end
+
+    local namen = kandidatenAusFenster()
+    print("  Kandidaten im Fenster: " .. (#namen > 0 and table.concat(namen, ", ") or "(keine erkannt)"))
+    print("  Eintraege fuer Item " .. tostring(itemId) .. ":")
+    for _, name in ipairs(namen) do
+        local daten = WowUtilsAPI and WowUtilsAPI.GetDroptimizers(name)
+        if daten and daten.specs then
+            for specId, sims in pairs(daten.specs) do
+                local role = ns.RolleVonSpec(tonumber(specId))
+                for simKey, sim in pairs(sims) do
+                    local ergebnisse = sim.items and sim.items[itemId]
+                    if ergebnisse then
+                        for _, e in ipairs(ergebnisse) do
+                            print(("    %s | spec=%s (%s) | sim=%s | simType=%s | ilvl=%s | diff=%s | gain=%s | pct=%s")
+                                :format(name, tostring(specId), tostring(role), tostring(simKey),
+                                        tostring(sim.simType), tostring(e.ilvl), tostring(e.difficultyId),
+                                        tostring(e.gain), tostring(e.gainPercent)))
+                        end
+                    end
+                end
+            end
+        end
+    end
+    print("|cff969696  (Item im Fenster auswaehlen, dann /wup rcl)|r")
+end
