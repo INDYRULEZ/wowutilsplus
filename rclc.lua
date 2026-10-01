@@ -46,24 +46,25 @@ local KONTEXT_ZU_DIF = {
     ["dungeon-mythic-plus"] = 8,   -- DungeonKeystone
 }
 
---- Schluessel des Erzeugungs-Kontexts, z. B. "raid-mythic"
+--- Schluessel des Erzeugungs-Kontexts, z. B. "raid-mythic".
+--- @return string? schluessel, string? quelle
 local function kontextSchluessel(link)
-    if not link then return nil end
+    if not link then return nil, nil end
     local ctx, ctxString = C_Item.GetItemCreationContext(link)
-    if type(ctxString) == "string" then return ctxString:lower() end
+    if type(ctxString) == "string" then return ctxString:lower(), "string" end
     local e = Enum and Enum.ItemCreationContext
-    if e then
+    if e and ctx then
         for name, wert in pairs(e) do
             if wert == ctx then
                 local s = name:gsub("(%u)", "-%1"):lower()
-                return (s:gsub("^%-", ""))
+                return (s:gsub("^%-", "")), "enum"
             end
         end
     end
-    return nil
+    return nil, nil
 end
 
---- @return number? itemId, number? ilvl, number? zielDif, string? kontext
+--- @return number? itemId, number? ilvl, number? zielDif, string? kontext, string? quelle
 local function aktuellesItem()
     if not (lootTable and lootTable[session]) then return nil, nil, nil, nil end
     local item = lootTable[session]
@@ -71,13 +72,13 @@ local function aktuellesItem()
     if not itemId and item.link then
         itemId = C_Item.GetItemInfoInstant(item.link)
     end
-    local ilvl, kontext, zielDif
+    local ilvl, kontext, zielDif, quelle
     if item.link then
         ilvl = select(4, C_Item.GetItemInfo(item.link))   -- Stufe laut Link (mit Bonus-IDs)
-        kontext = kontextSchluessel(item.link)
+        kontext, quelle = kontextSchluessel(item.link)
         zielDif = kontext and KONTEXT_ZU_DIF[kontext]
     end
-    return itemId, ilvl, zielDif, kontext
+    return itemId, ilvl, zielDif, kontext, quelle
 end
 
 -- ---------------------------------------------------------------------------
@@ -86,51 +87,33 @@ end
 
 --- Sucht den besten Sim-Eintrag fuer das Item und gewichtet ihn nach Rolle.
 --- @param kandidat string Charaktername wie RCL ihn fuehrt (name-realm)
---- Sammelt je Sim den passenden Eintrag — wie das Original:
---- 1. Eintraege mit passender Schwierigkeit (aus dem Item-Kontext), davon den besten Wert
---- 2. sonst Eintrag mit passender Item-Stufe
---- 3. sonst der beste Wert
+--- Sammelt je Sim den passenden Eintrag — wie das Original: **nur** Eintraege mit der
+--- Schwierigkeit des gedroppten Items, davon den besten Wert.
+--- Ohne bekannte Schwierigkeit wird bewusst NICHTS geliefert statt geraten (das Original
+--- zeigt dann ebenfalls `---`); der Zell-Renderer versucht es danach erneut.
 --- @return table[] Liste von { e, role, simKey, simType, baseline, art }
-local function sammleEintraege(daten, itemId, zielDif, itemIlvl)
+local function sammleEintraege(daten, itemId, zielDif)
     local liste = {}
+    if not zielDif then return liste end
     for specId, sims in pairs(daten.specs) do
         local role = ns.RolleVonSpec(tonumber(specId))
         for simKey, sim in pairs(sims) do
             local ergebnisse = sim.items and sim.items[itemId]
             if ergebnisse then
-                local treffer, art
-                if zielDif then                       -- 1. passende Schwierigkeit
-                    for _, e in ipairs(ergebnisse) do
-                        if e.difficultyId == zielDif then
-                            local wert = e.gain or e.gainPercent
-                            local bester = treffer and (treffer.gain or treffer.gainPercent)
-                            if wert and (not treffer or wert > bester) then
-                                treffer, art = e, "dif"
-                            end
-                        end
-                    end
-                end
-                if not treffer and itemIlvl then      -- 2. passende Item-Stufe
-                    for _, e in ipairs(ergebnisse) do
-                        if e.ilvl == itemIlvl then
-                            treffer, art = e, "ilvl"
-                            break
-                        end
-                    end
-                end
-                if not treffer then                   -- 3. bester Wert
-                    for _, e in ipairs(ergebnisse) do
+                local treffer
+                for _, e in ipairs(ergebnisse) do
+                    if e.difficultyId == zielDif then
                         local wert = e.gain or e.gainPercent
                         local bester = treffer and (treffer.gain or treffer.gainPercent)
                         if wert and (not treffer or wert > bester) then
-                            treffer, art = e, "bester"
+                            treffer = e
                         end
                     end
                 end
                 if treffer and (treffer.gain or treffer.gainPercent) then
                     liste[#liste + 1] = {
                         e = treffer, role = role, simKey = tostring(simKey),
-                        simType = sim.simType, baseline = sim.baseline, art = art,
+                        simType = sim.simType, baseline = sim.baseline, art = "dif",
                     }
                 end
             end
@@ -141,7 +124,7 @@ end
 
 --- Diagnose: alle Sims + Eintraege zum aktuellen Item mitschreiben (fuer /wup rcl
 --- und zum Auslesen aus der SavedVariables-Datei).
-local function diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, gewaehlt)
+local function diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, gewaehlt, quelle)
     ns.diagnose = ns.diagnose or {}
     local eintraege = {}
     for specId, sims in pairs(daten.specs or {}) do
@@ -158,6 +141,7 @@ local function diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kont
     end
     ns.diagnose[kandidat] = {
         itemId = itemId, ilvlLink = itemIlvl, kontext = kontext, zielDif = zielDif,
+        kontextQuelle = quelle,
         nameNormalisiert = select(2, ns.PrioVon(kandidat)),
         prio = ns.PrioVon(kandidat),
         gewaehlt = gewaehlt and {
@@ -177,20 +161,43 @@ local function diagnoseSichern()
     WowUtilsPlusDB.diagnoseZeit = date("%Y-%m-%d %H:%M:%S")
 end
 
+--- Fenster erneut zeichnen lassen. Direkt nach einem /reload ist die Item-Info oft noch
+--- nicht im Cache, dann ist der Kontext unbekannt — ein Wimpernschlag spaeter aber schon.
+--- Max. 8 Versuche je Item, damit das keine Schleife wird.
+function ns.NeuZeichnenPlanen()
+    local item = lootTable and lootTable[session]
+    local link = item and item.link
+    if not link then return end
+    if ns.warteAufLink ~= link then
+        ns.warteAufLink, ns.warteZaehler = link, 0
+    end
+    if (ns.warteZaehler or 0) >= 8 then return end
+    ns.warteZaehler = (ns.warteZaehler or 0) + 1
+    C_Timer.After(0.5, function()
+        local v = RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
+        if v and v.Update then v:Update() end
+    end)
+end
+
 --- @return number? gewichtet, table? details
 local function berechne(kandidat)
     if not WowUtilsAPI or not kandidat then return nil end
-    local itemId, itemIlvl, zielDif, kontext = aktuellesItem()
+    local itemId, itemIlvl, zielDif, kontext, quelle = aktuellesItem()
     if not itemId then return nil end
+    if not zielDif then
+        ns.letzteUrsache = "kein-kontext"   -- Item-Info noch nicht geladen -> spaeter erneut
+    end
 
     local daten = WowUtilsAPI.GetDroptimizers(kandidat)
     if not (daten and daten.specs) then return nil end
 
-    local liste = sammleEintraege(daten, itemId, zielDif, itemIlvl)
+    local liste = sammleEintraege(daten, itemId, zielDif)
     if #liste == 0 then
-        diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, nil)
+        if zielDif then ns.letzteUrsache = "kein-eintrag" end
+        diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, nil, quelle)
         return nil
     end
+    ns.letzteUrsache = nil
 
     -- Wie das Original: den Patchwerk-1-Ziel-Sim bevorzugen (raidbots "…patchwerk-1",
     -- QE Live "…0-1"). Nur falls keiner dabei ist, den besten Wert nehmen.
@@ -225,6 +232,7 @@ local function berechne(kandidat)
         anzahl = #liste,
         zielDif = zielDif,
         kontext = kontext,
+        kontextQuelle = quelle,
         art = gewaehlt.art,
     }
     local gewichtet, info = ns.Gewichten(basis, gewaehlt.role, kandidat)
@@ -242,8 +250,14 @@ local function tooltipZeigen(frame, kandidat)
     local d = ns.rohcache[kandidat]
     GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
     GameTooltip:AddLine(kandidat, 1, 1, 1)
-    if not d then
-        GameTooltip:AddLine(grau("Keine Sim-Daten fuer dieses Item."))
+    if not d or d.fehlt then
+        if d and d.fehlt == "kein-kontext" then
+            GameTooltip:AddLine(rot("Item-Info noch nicht geladen — wird gleich erneut versucht"), 1, 0.4, 0.4)
+        elseif d and d.fehlt == "kein-eintrag" then
+            GameTooltip:AddLine(grau("Kein Sim-Eintrag fuer diese Schwierigkeit."))
+        else
+            GameTooltip:AddLine(grau("Keine Sim-Daten fuer dieses Item."))
+        end
     else
         local einheit = d.prozent and "%" or ""
         GameTooltip:AddLine(("Roh:        %s"):format(ns.Zahl(d.basis, einheit)), 0.8, 0.8, 0.8)
@@ -269,8 +283,10 @@ local function tooltipZeigen(frame, kandidat)
                 :format(tostring(d.simKey), tostring(d.difficultyId), tostring(d.ilvl), tostring(d.art))))
         end
         if d.kontext then
-            GameTooltip:AddLine(grau(("Item-Kontext: %s (Ziel-Schwierigkeit %s)")
-                :format(tostring(d.kontext), tostring(d.zielDif))))
+            GameTooltip:AddLine(grau(("Item-Kontext: %s (Ziel-Schwierigkeit %s, gelesen via %s)")
+                :format(tostring(d.kontext), tostring(d.zielDif), tostring(d.kontextQuelle))))
+        else
+            GameTooltip:AddLine(rot("Item-Kontext noch nicht lesbar — wird gleich erneut versucht"), 1, 0.4, 0.4)
         end
     end
     GameTooltip:Show()
@@ -285,10 +301,13 @@ function ns.UpdateZelle(rowFrame, frame, data, cols, row, realrow, column, fShow
 
     local gewichtet, details = berechne(kandidat)
     ns.cache[kandidat] = gewichtet
-    ns.rohcache[kandidat] = details
+    ns.rohcache[kandidat] = details or { fehlt = ns.letzteUrsache }
     ns.gerenderteNamen = ns.gerenderteNamen or {}
     ns.gerenderteNamen[kandidat] = true
     diagnoseSichern()
+    if ns.letzteUrsache == "kein-kontext" then
+        ns.NeuZeichnenPlanen()
+    end
 
     frame.text:SetWordWrap(false)
     frame.text:SetNonSpaceWrap(false)
@@ -397,6 +416,9 @@ local function kandidatenAusFenster()
 end
 
 function ns.DebugRCL()
+    -- Chat-Logging einschalten: die Ausgabe landet dann in Logs/WoWChatLog.txt auf dem PC.
+    -- Chat-Text laesst sich im Spiel nicht kopieren, die Datei kann ich aber auslesen.
+    pcall(SetCVar, "LogChat", 1)
     print("|cffffd700WoWUtils Plus — RCL-Diagnose|r")
     local item = lootTable and lootTable[session]
     if not item then
