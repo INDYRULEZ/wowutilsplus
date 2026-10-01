@@ -20,7 +20,7 @@ if ! ping -c1 -W2 192.168.7.2 >/dev/null 2>&1; then
 fi
 
 echo "Kopiere $NAME nach $PC ..."
-tar -czf - -C "$ELTERN" --exclude='README.md' --exclude='deploy.sh' "$NAME" \
+tar -czf - -C "$ELTERN" --exclude='README.md' --exclude='deploy.sh' --exclude='.git' "$NAME" \
   | "${SSH[@]}" "rm -rf \"\$HOME/$REMOTE_ADDONS/$NAME\" && tar -xzf - -C \"\$HOME/$REMOTE_ADDONS\""
 
 echo "--- Kontrolle auf dem PC ---"

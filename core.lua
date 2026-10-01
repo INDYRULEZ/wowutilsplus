@@ -20,7 +20,7 @@ ns.VERSION = "0.1.0"
 -- ---------------------------------------------------------------------------
 ns.WEIGHTS = {
     HEALER  = { factor = 0.5,  reason = "Heilung bringt weniger direkten Kill-Beitrag als Schaden" },
-    TANK    = { factor = 1.0,  reason = "noch nicht aktiv (Testphase: nur ein Faktor)" },
+    TANK    = { factor = 0.25, reason = "Tank-Schaden skaliert nicht mit dem Raid-Fortschritt" },
     DAMAGER = { factor = 1.0,  reason = "unveraendert" },
 }
 
