@@ -115,13 +115,11 @@ local function tooltipZeigen(frame, kandidat)
     if not d then
         GameTooltip:AddLine(grau("Keine Sim-Daten fuer dieses Item."))
     else
-        local einheit = d.prozent and " %" or ""
-        GameTooltip:AddLine(("Roh:        %s%d%s")
-            :format(d.basis >= 0 and "+" or "", math.floor(d.basis + 0.5), einheit), 0.8, 0.8, 0.8)
+        local einheit = d.prozent and "%" or ""
+        GameTooltip:AddLine(("Roh:        %s"):format(ns.Zahl(d.basis, einheit)), 0.8, 0.8, 0.8)
         if d.faktor ~= 1.0 then
-            GameTooltip:AddLine(("Gewichtet:  %s%d%s  (%s x%.2f)")
-                :format(d.gewichtet >= 0 and "+" or "", math.floor(d.gewichtet + 0.5), einheit,
-                        d.role, d.faktor), 1, 0.85, 0.2)
+            GameTooltip:AddLine(("Gewichtet:  %s  (%s %s)")
+                :format(ns.Zahl(d.gewichtet, einheit), d.role, ns.Faktor(d.faktor)), 1, 0.85, 0.2)
             GameTooltip:AddLine(d.grund or "", 0.7, 0.7, 0.7, true)
         else
             GameTooltip:AddLine(grau("Keine Gewichtung (Rolle " .. tostring(d.role) .. ")"), 0.8, 0.8, 0.8)
@@ -152,7 +150,7 @@ function ns.UpdateZelle(rowFrame, frame, data, cols, row, realrow, column, fShow
         frame.text:SetTextColor(0.6, 0.6, 0.6)
     else
         local einheit = details.prozent and "%" or ""
-        local text = ("%s%d%s"):format(gewichtet >= 0 and "+" or "", math.floor(gewichtet + 0.5), einheit)
+        local text = ns.Zahl(gewichtet, einheit)
         frame.text:SetText(text)
         frame.text:SetTextColor(gewichtet >= 0 and 0.31 or 1.0, gewichtet >= 0 and 0.86 or 0.35, 0.39)
     end

@@ -28,6 +28,23 @@ ns.WEIGHTS = {
 -- Hilfsfunktionen
 -- ---------------------------------------------------------------------------
 
+--- Zahl mit zwei Nachkommastellen, deutschem Komma und Vorzeichen.
+--- "+492,50" / "-10,00" / "+2,50%" — Sortierung nutzt weiterhin den exakten Wert.
+--- @param wert number
+--- @param einheit string? z. B. "%"
+function ns.Zahl(wert, einheit)
+    local s = ("%.2f"):format(wert)
+    s = s:gsub("%.", ",")
+    if wert >= 0 then s = "+" .. s end
+    return s .. (einheit or "")
+end
+
+--- Faktor ohne Vorzeichen, deutsches Komma: "x0,25"
+function ns.Faktor(f)
+    local s = ("x%.2f"):format(f)
+    return (s:gsub("%.", ","))
+end
+
 local function farbe(text, r, g, b)
     return ("|cff%02x%02x%02x%s|r"):format(r, g, b, text)
 end
@@ -173,8 +190,8 @@ local function test()
         local z = zeilen[i]
         local v = z.v
         local einheit = v.istProzent and "%" or ""
-        local roh = ("%s%d%s"):format(v.basis > 0 and "+" or "", math.floor(v.basis + 0.5), einheit)
-        local gew = ("%s%d%s"):format(v.gewichtet > 0 and "+" or "", math.floor(v.gewichtet + 0.5), einheit)
+        local roh = ns.Zahl(v.basis, einheit)
+        local gew = ns.Zahl(v.gewichtet, einheit)
         local itemName
         if C_Item and C_Item.GetItemInfo then
             itemName = C_Item.GetItemInfo(z.itemId)
@@ -184,7 +201,7 @@ local function test()
         local text = ("  %-26s %s"):format(bezeichnung:sub(1, 26), farbe_roh)
         if v.faktor ~= 1.0 then
             text = text .. "  " .. grau("→") .. " " .. gelb(gew) ..
-                   "  " .. grau(("(%s x%.2f)"):format(v.role, v.faktor))
+                   "  " .. grau(("(%s %s)"):format(v.role, ns.Faktor(v.faktor)))
         end
         print(text)
         if v.grund and i <= 3 then
