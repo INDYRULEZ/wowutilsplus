@@ -2,7 +2,7 @@
 ## Title: WoWUtils Plus
 ## Notes: Zusatz-Auswertung fuer WowUtils — gewichtete Gewinn-Spalte im Loot-Council
 ## Author: Jonas
-## Version: 0.6.2.3
+## Version: 0.6.2.4
 ## OptionalDeps: wowutils, wowutils_data, RCLootCouncil
 ## Category: wowutils
 ## SavedVariables: WowUtilsPlusDB
