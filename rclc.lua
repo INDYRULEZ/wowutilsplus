@@ -281,9 +281,11 @@ end
 local function tooltipZeigen(frame, kandidat)
     local d = ns.rohcache[kandidat]
     GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
-    -- Die erste Zeile eines Tooltips zeichnet WoW gross und eingerueckt (Titelplatz).
-    -- Deshalb hier eine leere Zeile als Platzhalter — der Name steht schon in der Zeile.
-    GameTooltip:AddLine(" ")
+    -- Erste Zeile = das Ergebnis (WoW zeichnet sie als Titelzeile gross und eingerueckt).
+    if d and not d.fehlt then
+        GameTooltip:AddDoubleLine("Gewichtet", ns.Zahl(d.gewichtet, d.prozent and "%" or ""),
+            1, 1, 1, 1, 0.85, 0.2)
+    end
     if not d or d.fehlt then
         if d and d.fehlt == "kein-kontext" then
             GameTooltip:AddLine(rot("Item-Info noch nicht geladen — wird gleich erneut versucht"), 1, 0.4, 0.4)
@@ -293,7 +295,6 @@ local function tooltipZeigen(frame, kandidat)
             GameTooltip:AddLine(grau("Keine Sim-Daten fuer dieses Item."))
         end
     else
-        local einheit = d.prozent and "%" or ""
         -- Tabellenform: links Bezeichnung + absoluter Wert, rechts der Faktor.
         -- Der Grundwert steht in der Spalte daneben (WowUtils), deshalb hier nicht nochmal.
         local function zeile(bezeichnung, wert, faktor)
@@ -343,9 +344,6 @@ local function tooltipZeigen(frame, kandidat)
             zeile("Movement", "", ns.Faktor(lw.movement))
         end
 
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddDoubleLine("  Gewichtet", ns.Zahl(d.gewichtet, einheit),
-            1, 1, 1, 1, 0.85, 0.2)
         if d.grund then
             GameTooltip:AddLine(d.grund, 0.7, 0.7, 0.7, true)
         end
