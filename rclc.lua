@@ -281,7 +281,7 @@ local function tooltipZeigen(frame, kandidat)
         if d.faktor ~= 1.0 then
             local teile = {}
             if d.roleFaktor and d.roleFaktor ~= 1.0 then
-                teile[#teile + 1] = ("%s %s"):format(d.role, ns.Faktor(d.roleFaktor))
+                teile[#teile + 1] = ("%s %s"):format(ns.RollenName(d.role), ns.Faktor(d.roleFaktor))
             end
             if d.prio then
                 teile[#teile + 1] = ("Prio %d %s"):format(d.prio, ns.Faktor(d.prioFaktor))
@@ -292,7 +292,7 @@ local function tooltipZeigen(frame, kandidat)
                 GameTooltip:AddLine(d.grund, 0.7, 0.7, 0.7, true)
             end
         else
-            GameTooltip:AddLine(grau("Keine Gewichtung (Rolle " .. tostring(d.role)
+            GameTooltip:AddLine(grau("Keine Gewichtung (Rolle " .. ns.RollenName(d.role)
                 .. (d.prio and (", Prio " .. d.prio) or "") .. ")"), 0.8, 0.8, 0.8)
         end
         if d.ilvl then

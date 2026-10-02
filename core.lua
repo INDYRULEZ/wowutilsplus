@@ -40,6 +40,15 @@ function ns.Zahl(wert, einheit)
     return s .. (einheit or "")
 end
 
+--- Anzeigenamen der Rollen — ueberall dieselben Worte wie auf der Weboberflaeche.
+ns.ROLLENNAME = { DAMAGER = "DPS", HEALER = "Healer", TANK = "Tank" }
+
+--- @param role string
+--- @return string
+function ns.RollenName(role)
+    return ns.ROLLENNAME[role] or tostring(role)
+end
+
 --- Faktor ohne Vorzeichen, deutsches Komma: "x0,25"
 function ns.Faktor(f)
     local s = ("x%.2f"):format(f)
@@ -201,7 +210,7 @@ local function gewichte()
     print(gelb("Aktive Gewichtungen"))
     for role, w in pairs(ns.WEIGHTS) do
         local zustand = w.factor == 1.0 and grau("aus") or gruen(("x%.2f"):format(w.factor))
-        print(("  %-8s %s  %s"):format(role, zustand, grau(w.reason or "")))
+        print(("  %-8s %s  %s"):format(ns.RollenName(role), zustand, grau(w.reason or "")))
     end
     print(gelb("Prioritaetsliste"))
     print(("  %d Charaktere zugeordnet%s"):format(ns.PRIO_ANZAHL or 0,
@@ -275,7 +284,7 @@ local function test()
         if v.faktor ~= 1.0 then
             local teile = {}
             if v.roleFaktor and v.roleFaktor ~= 1.0 then
-                teile[#teile + 1] = ("%s %s"):format(v.role, ns.Faktor(v.roleFaktor))
+                teile[#teile + 1] = ("%s %s"):format(ns.RollenName(v.role), ns.Faktor(v.roleFaktor))
             end
             if v.prio then
                 teile[#teile + 1] = ("Prio %d %s"):format(v.prio, ns.Faktor(v.prioFaktor))
