@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 02.10.2026 10:30
+-- Stand: 02.10.2026 10:42
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -10,7 +10,7 @@ local _, ns = ...
 ns.PRIO = {
     ["ashylie"] = 4,   -- ashylie (Nebenchar von Blitzfaust)
     ["balren"] = 2,   -- Balren
-    ["beaybewhy"] = 4,   -- Beaybewhy
+    ["beaybewhy"] = 5,   -- Beaybewhy
     ["bigboysushi"] = 1,   -- bigboysushi (Nebenchar von Twosocks)
     ["blitzfaust"] = 4,   -- Blitzfaust
     ["bloodyiron"] = 4,   -- bloodyiron (Nebenchar von Blitzfaust)
@@ -32,15 +32,12 @@ ns.PRIO = {
     ["indypalas"] = 2,   -- indypalas (Nebenchar von Indydrakes)
     ["jekyl"] = 5,   -- Jekyl
     ["juxea"] = 3,   -- juxea (Nebenchar von Ophrys)
-    ["kala"] = 5,   -- kala (Nebenchar von Moríko)
     ["kaliistda"] = 4,   -- kaliistda (Nebenchar von Blitzfaust)
-    ["kearney"] = 5,   -- kearney (Nebenchar von Moríko)
     ["keitabha"] = 5,   -- keitabha (Nebenchar von Enshirou)
     ["kuhohnemilch"] = 4,   -- kuhohnemilch (Nebenchar von Blitzfaust)
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
     ["magirmx"] = 2,   -- magirmx (Nebenchar von Merlón)
     ["merlon"] = 2,   -- Merlón
-    ["moriko"] = 5,   -- Moríko
     ["neyzdk"] = 5,   -- neyzdk (Nebenchar von Neyzxd)
     ["neyzxd"] = 5,   -- Neyzxd
     ["nitroboost"] = 3,   -- nitroboost (Nebenchar von Setupx)
@@ -78,6 +75,6 @@ ns.PRIO = {
     ["vilarie"] = 2,   -- Vilarie
 }
 
-ns.PRIO_ANZAHL = 68
+ns.PRIO_ANZAHL = 65
 
-ns.PRIO_STAND = "02.10.2026 10:30"
+ns.PRIO_STAND = "02.10.2026 10:42"

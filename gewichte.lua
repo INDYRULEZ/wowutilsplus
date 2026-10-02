@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 10:30
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 10:42
 
 local _, ns = ...
 
@@ -31,7 +31,7 @@ ns.LEISTUNG = {
 -- firstkill: Rangfolge in den mythischen Erst-Kills, Platz 1 ohne Abzug, letzter Platz -15 %.
 -- movement:  von Hand auf der Seite gepflegt.
 ns.LEISTUNG_AVG_ABZUG = 0.100
-ns.LEISTUNG_KADERSCHNITT = 34.0
+ns.LEISTUNG_KADERSCHNITT = 31.0
 ns.LEISTUNG_SPIELER = {
     ["balren"] = { average = 0.93, avgMedian = 31.0, avgKills = 11, firstkill = 0.95, fkPlatz = 9, fkVon = 27, fkAnteil = 89.1, fkKaempfe = 4, fkMenge = 203887 },   -- Balren · Average 31,0 % (11 Kills) · Erst-Kill Platz 9/27
     ["beaybewhy"] = { average = 0.90, avgMedian = 0.0, avgKills = 1 },   -- Beaybewhy · Average 0,0 % (1 Kills)
@@ -51,7 +51,7 @@ ns.LEISTUNG_SPIELER = {
     ["keito"] = { firstkill = 0.93, fkPlatz = 13, fkVon = 27, fkAnteil = 83.5, fkKaempfe = 1, fkMenge = 217568 },   -- Keito · Erst-Kill Platz 13/27
     ["kiesel"] = { firstkill = 0.91, fkPlatz = 16, fkVon = 27, fkAnteil = 78.5, fkKaempfe = 1, fkMenge = 204428 },   -- Kîesel · Erst-Kill Platz 16/27
     ["merlon"] = { average = 0.95, avgMedian = 52.0, avgKills = 11, firstkill = 0.97, fkPlatz = 7, fkVon = 27, fkAnteil = 90.2, fkKaempfe = 4, fkMenge = 209515 },   -- Merlón · Average 52,0 % (11 Kills) · Erst-Kill Platz 7/27
-    ["moriko"] = { average = 0.95, avgMedian = 46.0, avgKills = 9, firstkill = 0.94, fkPlatz = 12, fkVon = 27, fkAnteil = 84.2, fkKaempfe = 3, fkMenge = 193055 },   -- Moríko · Average 46,0 % (9 Kills) · Erst-Kill Platz 12/27
+    ["moriko"] = { firstkill = 0.94, fkPlatz = 12, fkVon = 27, fkAnteil = 84.2, fkKaempfe = 3, fkMenge = 193055 },   -- Moríko · Erst-Kill Platz 12/27
     ["neyzxd"] = { average = 0.97, avgMedian = 67.0, avgKills = 1 },   -- Neyzxd · Average 67,0 % (1 Kills)
     ["notam"] = { average = 0.92, avgMedian = 21.0, avgKills = 11, firstkill = 0.90, fkPlatz = 18, fkVon = 27, fkAnteil = 76.7, fkKaempfe = 4, fkMenge = 164437 },   -- Notam · Average 21,0 % (11 Kills) · Erst-Kill Platz 18/27
     ["ophrys"] = { average = 0.94, avgMedian = 45.0, avgKills = 11, firstkill = 0.86, fkPlatz = 25, fkVon = 27, fkAnteil = 63.7, fkKaempfe = 4, fkMenge = 271314 },   -- Ophrys · Average 45,0 % (11 Kills) · Erst-Kill Platz 25/27
