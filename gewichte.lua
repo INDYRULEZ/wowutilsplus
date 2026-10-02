@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 09:12
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 09:41
 
 local _, ns = ...
 
@@ -31,7 +31,7 @@ ns.LEISTUNG = {
 -- firstkill: Rangfolge in den Erst-Kills, Platz 1 ohne Abzug, letzter Platz -15 %.
 -- movement:  von Hand auf der Seite gepflegt.
 ns.LEISTUNG_AVG_ABZUG = 0.100
-ns.LEISTUNG_KADERSCHNITT = 36.5
+ns.LEISTUNG_KADERSCHNITT = 36.8
 ns.LEISTUNG_SPIELER = {
     ["auakaka"] = { firstkill = 0.91 },   -- Auakaka · Erst-Kill Platz 12/20
     ["balren"] = { average = 0.94, firstkill = 0.88 },   -- Balren · Erst-Kill Platz 16/20
@@ -48,7 +48,7 @@ ns.LEISTUNG_SPIELER = {
     ["garshu"] = { average = 0.93, firstkill = 0.91 },   -- Garshû · Erst-Kill Platz 13/20
     ["gweni"] = { average = 0.93, firstkill = 0.92 },   -- Gwêni · Erst-Kill Platz 11/20
     ["hyperhardw"] = { average = 0.96, firstkill = 0.86 },   -- Hyperhardw · Erst-Kill Platz 19/20
-    ["indydrakes"] = { average = 0.93, firstkill = 0.98 },   -- Indydrakes · Erst-Kill Platz 4/20
+    ["indydrakes"] = { average = 0.94, firstkill = 0.98 },   -- Indydrakes · Erst-Kill Platz 4/20
     ["jekyl"] = { average = 0.90, firstkill = 0.90 },   -- Jekyl · Erst-Kill Platz 14/20
     ["kiesel"] = { firstkill = 0.99 },   -- Kîesel · Erst-Kill Platz 2/20
     ["merlon"] = { average = 0.95, firstkill = 0.97 },   -- Merlón · Erst-Kill Platz 5/20
