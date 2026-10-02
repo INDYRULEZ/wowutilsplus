@@ -98,7 +98,7 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 | Sikkz | DPS | 61,0 % (11 Kills) → 0,96 | Platz 5/24 → 0,97 | – | 0,93 → −7,0 % |
 | Silanhunt (Silan) | DPS | 6,0 % (10 Kills) → 0,91 | Platz 12/24 → 0,93 | – | 0,84 → −16,0 % |
 | Thunderdebbo | Heiler | 17,5 % (10 Kills) → 0,92 | Platz 14/24 → 0,92 | – | 0,83 → −17,0 % |
-| Tobii (Luc) | Heiler | 99,0 % (9 Kills) → 1,00 | Platz 2/24 → 0,99 | – | 0,99 → −1,0 % |
+| Tobii (Luc) | Heiler | 99,0 % (9 Kills) → 1,00 | Platz 1/24 → 1,00 | – | 0,99 → −1,0 % |
 | Twosocks (Sushi) | DPS | 23,0 % (3 Kills) → 0,92 | Platz 4/24 → 0,98 | – | 0,90 → −10,0 % |
 | Vilarie | DPS | 28,0 % (3 Kills) → 0,93 | Platz 19/24 → 0,88 | – | 0,81 → −19,0 % |
 
