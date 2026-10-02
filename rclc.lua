@@ -64,10 +64,27 @@ local function kontextSchluessel(link)
     return nil, nil
 end
 
+--- Das Abstimmungsfenster-Modul von RCL.
+local function votingFrame()
+    return RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
+end
+
+--- Der Eintrag des Items, das gerade im Fenster steht (frisch gelesen).
+--- @return table?
+function ns.ItemImFenster()
+    local v = votingFrame()
+    local lt = (v and v.GetLootTable and v:GetLootTable())
+        or (RCL.GetLootTable and RCL:GetLootTable())
+        or lootTable
+    local s = (v and v.GetCurrentSession and v:GetCurrentSession()) or session
+    if lt and s and lt[s] then return lt[s] end
+    return nil
+end
+
 --- @return number? itemId, number? ilvl, number? zielDif, string? kontext, string? quelle
 local function aktuellesItem()
-    if not (lootTable and lootTable[session]) then return nil, nil, nil, nil end
-    local item = lootTable[session]
+    local item = ns.ItemImFenster()
+    if not item then return nil, nil, nil, nil end
     local itemId = item.itemID
     if not itemId and item.link then
         itemId = C_Item.GetItemInfoInstant(item.link)
@@ -165,7 +182,7 @@ end
 --- nicht im Cache, dann ist der Kontext unbekannt — ein Wimpernschlag spaeter aber schon.
 --- Max. 8 Versuche je Item, damit das keine Schleife wird.
 function ns.NeuZeichnenPlanen()
-    local item = lootTable and lootTable[session]
+    local item = ns.ItemImFenster()
     local link = item and item.link
     if not link then return end
     if ns.warteAufLink ~= link then
@@ -420,7 +437,7 @@ function ns.DebugRCL()
     -- Chat-Text laesst sich im Spiel nicht kopieren, die Datei kann ich aber auslesen.
     pcall(SetCVar, "LogChat", 1)
     print("|cffffd700WoWUtils Plus — RCL-Diagnose|r")
-    local item = lootTable and lootTable[session]
+    local item = ns.ItemImFenster()
     if not item then
         print("  Kein Item im Abstimmungsfenster (Fenster offen?).")
         return
