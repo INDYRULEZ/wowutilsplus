@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 10:23
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 10:24
 
 local _, ns = ...
 
@@ -26,7 +26,7 @@ ns.LEISTUNG = {
 }
 
 -- Leistungswerte je Spieler, automatisch aus Warcraft Logs.
--- average:   Median der Parse-Prozente, nur Kills der eigenen Gilde,
+-- average:   Median der Parse-Prozente, nur mythischen Kills der eigenen Gilde,
 --            Zeitfenster 4 Wochen. 100er Log = 1.00, 0er Log = 0.90 (linear).
 -- firstkill: Rangfolge in den mythischen Erst-Kills, Platz 1 ohne Abzug, letzter Platz -15 %.
 -- movement:  von Hand auf der Seite gepflegt.
