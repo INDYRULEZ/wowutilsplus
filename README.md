@@ -12,7 +12,7 @@ Original-Addon unangetastet.
   abgestimmt wird** — mit derselben Auswahl wie das Original: Schwierigkeit des
   gedroppten Items, bevorzugt der 1-Ziel-Patchwerk-Sim
 - Darauf werden eigene Faktoren angewendet:
-  - **Rolle:** Heiler ×0,5 · Tank ×0,25 · Schaden unverändert
+  - **Rolle:** Heiler ×0,52 · Tank ×1,15 · Schaden unverändert
   - **Prioritätsliste:** 1 = kein Abzug · 2 = −10 % · 3 = −20 % · 4 = −30 % · 5 = −40 %
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)

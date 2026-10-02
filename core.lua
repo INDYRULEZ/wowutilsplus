@@ -14,13 +14,12 @@ ns.VERSION = "0.5.0"
 
 -- ---------------------------------------------------------------------------
 -- Gewichtungen
--- Rolle -> Faktor + Begruendung. Bewusst als Tabelle, damit die weiteren
--- Faktoren lassen sich hier einfach ergaenzen.
--- Testphase: nur HEALER aktiv, alle anderen 1.0 = unveraendert.
+-- Rolle -> Faktor + Begruendung. Bewusst als Tabelle, damit weitere Faktoren
+-- einfach ergaenzt werden koennen. 1.0 = unveraendert.
 -- ---------------------------------------------------------------------------
 ns.WEIGHTS = {
-    HEALER  = { factor = 0.5,  reason = "Heilung bringt weniger direkten Kill-Beitrag als Schaden" },
-    TANK    = { factor = 0.25, reason = "Tank-Schaden skaliert nicht mit dem Raid-Fortschritt" },
+    HEALER  = { factor = 0.52, reason = "Heilung traegt weniger direkt zum Kill bei" },
+    TANK    = { factor = 1.15, reason = "Tanks uebernehmen Mechaniken und Ueberleben im Kampf" },
     DAMAGER = { factor = 1.0,  reason = "unveraendert" },
 }
 
