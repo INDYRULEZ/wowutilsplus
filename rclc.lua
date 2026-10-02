@@ -292,52 +292,58 @@ local function tooltipZeigen(frame, kandidat)
         end
     else
         local einheit = d.prozent and "%" or ""
-        -- Nur die Begruendung: wie kommt die gewichtete Zahl zustande.
+        -- Tabellenform: links Bezeichnung + absoluter Wert, rechts der Faktor.
         -- Der Grundwert steht in der Spalte daneben (WowUtils), deshalb hier nicht nochmal.
-        local function zeile(bezeichnung, text)
-            GameTooltip:AddLine(("  %-12s %s"):format(bezeichnung, text), 0.9, 0.9, 0.9)
+        local function zeile(bezeichnung, wert, faktor)
+            GameTooltip:AddDoubleLine(
+                ("  %-13s %s"):format(bezeichnung, wert or ""), faktor or "",
+                0.78, 0.78, 0.78, 1, 1, 1)
         end
 
-        zeile("Rolle", ("%s  x%s"):format(ns.RollenName(d.role), ns.Faktor(d.roleFaktor)))
+        local function unter(text)
+            GameTooltip:AddLine("                 " .. text, 0.55, 0.55, 0.55)
+        end
+
+        zeile("Rolle", ns.RollenName(d.role), ns.Faktor(d.roleFaktor))
         if d.prio then
-            zeile("Prio", ("%d  x%s"):format(d.prio, ns.Faktor(d.prioFaktor)))
+            zeile("Prio", tostring(d.prio), ns.Faktor(d.prioFaktor))
         end
         if d.wunsch then
-            zeile("Wunschliste", ("%s  x%s"):format(
-                ns.WUNSCHNAME[d.wunsch] or ("Wunsch " .. tostring(d.wunsch)),
-                ns.Faktor(d.wunschFaktor)))
+            zeile("Wunschliste", ns.WUNSCHNAME[d.wunsch] or ("Wunsch " .. tostring(d.wunsch)),
+                ns.Faktor(d.wunschFaktor))
         end
 
         local lw = d.leistung
         local det = lw and lw.details or nil
         if lw and lw.average and lw.average ~= 1.0 then
-            local zusatz = ""
-            if det and det.avgMedian then
-                zusatz = ("   (%s, %s Kills)"):format(
-                    ns.ZahlEinfach(det.avgMedian, " %"), tostring(det.avgKills or "?"))
+            local wert = (det and det.avgMedian) and ns.ZahlEinfach(det.avgMedian, " %") or ""
+            zeile("Average log", wert, ns.Faktor(lw.average))
+            if det and det.avgKills then
+                unter(("%s Kills"):format(tostring(det.avgKills)))
             end
-            zeile("Average log", ("x%s%s"):format(ns.Faktor(lw.average), zusatz))
         end
         if lw and lw.firstkill and lw.firstkill ~= 1.0 then
-            local zusatz = ""
-            if det and det.fkPlatz then
-                zusatz = ("   (Platz %s/%s"):format(tostring(det.fkPlatz), tostring(det.fkVon))
-                if det.fkDps then
-                    zusatz = zusatz .. (", %s DPS"):format(ns.ZahlTausend(det.fkDps))
-                end
-                if det.fkAnteil then
-                    zusatz = zusatz .. (", %s %% vom Besten"):format(ns.ZahlEinfach(det.fkAnteil))
-                end
-                zusatz = zusatz .. ")"
+            local wert = (det and det.fkPlatz) and ("Platz %s/%s"):format(
+                tostring(det.fkPlatz), tostring(det.fkVon)) or ""
+            zeile("First kill", wert, ns.Faktor(lw.firstkill))
+            local teile = {}
+            if det and det.fkDps then
+                teile[#teile + 1] = ns.ZahlTausend(det.fkDps) .. " DPS"
             end
-            zeile("First kill", ("x%s%s"):format(ns.Faktor(lw.firstkill), zusatz))
+            if det and det.fkAnteil then
+                teile[#teile + 1] = ns.ZahlEinfach(det.fkAnteil) .. " % vom Besten"
+            end
+            if #teile > 0 then
+                unter(table.concat(teile, " · "))
+            end
         end
         if lw and lw.movement and lw.movement ~= 1.0 then
-            zeile("Movement", ("x%s"):format(ns.Faktor(lw.movement)))
+            zeile("Movement", "", ns.Faktor(lw.movement))
         end
 
-        GameTooltip:AddLine(("Gewichtet:  %s"):format(ns.Zahl(d.gewichtet, einheit)),
-            1, 0.85, 0.2)
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddDoubleLine("  Gewichtet", ns.Zahl(d.gewichtet, einheit),
+            1, 1, 1, 1, 0.85, 0.2)
         if d.grund then
             GameTooltip:AddLine(d.grund, 0.7, 0.7, 0.7, true)
         end

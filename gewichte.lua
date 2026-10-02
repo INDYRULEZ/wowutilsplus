@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 09:52
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 09:56
 
 local _, ns = ...
 
