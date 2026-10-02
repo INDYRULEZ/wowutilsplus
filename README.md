@@ -44,12 +44,12 @@ Die Faktoren werden multipliziert:
 | **Movement/Survival** | von Hand gepflegt, Abzug in Prozent (Vorgabe: höchstens 20 %) |
 
 Die Leistungswerte (Average log, First kill log) kommen aus **Warcraft Logs** und werden
-je Charakter berechnet — gefiltert auf **Kills der eigenen Gilde**, auf die **letzten vier
-Wochen** und **nur auf mythische Kills**. Normal- und heroische Kills sind andere
-Bedingungen (kürzere Kämpfe, weniger Mechaniken, andere Ausrüstung) und wären kein
-sauberer Maßstab.
+je Charakter berechnet — gefiltert auf **Kills der eigenen Gilde**, **nur auf mythische
+Kills** und **ohne Tanks**. Normal- und heroische Kills sind andere Bedingungen (kürzere
+Kämpfe, weniger Mechaniken, andere Ausrüstung) und wären kein sauberer Maßstab.
 
-- **Average log:** Median der Parse-Prozente über alle mythischen Kills im Zeitfenster.
+- **Average log:** Median der Parse-Prozente über die **letzten 10 mythischen Kills**
+  (einstellbar). Einzelne Bosse lassen sich von der Wertung ausnehmen.
 - **First kill log:** die mythischen **Erst-Kills** je Boss. Der Wert wird auf 100 %
   Aktivzeit hochgerechnet, und für jede fehlende 5 % Aktivzeit sinkt er um 1 % (bezogen
   auf den ursprünglichen Wert). Verglichen wird mit dem besten Wert **derselben Rolle** im
@@ -65,9 +65,9 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
 ## Aktueller Stand
 
-*Automatisch erzeugt — Stand: 02.10.2026 12:02*
+*Automatisch erzeugt — Stand: 02.10.2026 12:03*
 
-**Einstellungen:** die letzten 10 mythischen Kills · Abzug bei 0er Log 10 % · Abzug am letzten Erst-Kill-Platz 15 % · Movement höchstens 20 % · Bosse wie Nek'zali zählen nicht mit.
+**Einstellungen:** die letzten 10 mythischen Kills · Abzug bei 0er Log 10 % · Abzug am letzten Erst-Kill-Platz 15 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
 
 **Quelle:** mythischen Kills der eigenen Gilde aus Warcraft Logs (Average log: alle Kills im Zeitfenster, First kill log: die Erst-Kills je Boss).
 
