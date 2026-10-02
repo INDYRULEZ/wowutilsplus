@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 03:07
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 07:53
 
 local _, ns = ...
 
@@ -25,39 +25,46 @@ ns.LEISTUNG = {
     movement  = 1.00,   -- Movement/Survival
 }
 
--- Leistungsfaktor je Spieler, automatisch aus Warcraft Logs.
--- Nur Kills der eigenen Gilde, nur die letzten 4 Wochen.
--- Nulllinie = Kaderschnitt (36,5 %), volle Auswirkung ab 25 Punkten Abstand,
--- begrenzt auf 0.95 bis 1.05.
+-- Leistungswerte je Spieler, automatisch aus Warcraft Logs.
+-- average:   Median der Parse-Prozente, nur Kills der eigenen Gilde,
+--            Zeitfenster 4 Wochen, Nulllinie Kaderschnitt (36,5 %),
+--            volle Auswirkung ab 25 Punkten Abstand, begrenzt auf 0.95 bis 1.05.
+-- firstkill: Rangfolge in den Erst-Kills, Platz 1 ohne Abzug, letzter Platz -15 %.
+-- movement:  von Hand auf der Seite gepflegt.
 ns.LEISTUNG_REFERENZ = 36.5
 ns.LEISTUNG_SPANNE = 25.0
 ns.LEISTUNG_SPIELER = {
-    ["cheliia"] = 1.05,   -- Cheliia · Median 68,5 % · 18 Kills
-    ["neyzxd"] = 1.05,   -- Neyzxd · Median 67,0 % · 1 Kills
-    ["setupx"] = 1.05,   -- Setupx · Median 91,5 % · 14 Kills
-    ["thunderdebbo"] = 1.05,   -- Thunderdebbo · Median 64,0 % · 15 Kills
-    ["sikkz"] = 1.05,   -- Sikkz · Median 61,0 % · 23 Kills
-    ["vilarie"] = 1.05,   -- Vilarie · Median 60,0 % · 13 Kills
-    ["moriko"] = 1.04,   -- Moríko · Median 58,0 % · 18 Kills
-    ["hyperhardw"] = 1.04,   -- Hyperhardw · Median 57,5 % · 16 Kills
-    ["merlon"] = 1.03,   -- Merlón · Median 53,5 % · 16 Kills
-    ["tobii"] = 1.03,   -- Tobii · Median 53,0 % · 13 Kills
-    ["balren"] = 1.01,   -- Balren · Median 43,0 % · 23 Kills
-    ["blitzfaust"] = 1.01,   -- Blitzfaust · Median 43,0 % · 8 Kills
-    ["schmeckies"] = 1.01,   -- Schmeckies · Median 40,0 % · 1 Kills
-    ["cep"] = 1.00,   -- Cep · Median 38,5 % · 12 Kills
-    ["indydrakes"] = 1.00,   -- Indydrakes · Median 34,5 % · 22 Kills
-    ["ophrys"] = 0.99,   -- Ophrys · Median 34,0 % · 16 Kills
-    ["exudes"] = 0.99,   -- Exudes · Median 32,0 % · 9 Kills
-    ["gweni"] = 0.99,   -- Gwêni · Median 32,0 % · 23 Kills
-    ["notam"] = 0.99,   -- Notam · Median 32,0 % · 16 Kills
-    ["exorzist"] = 0.99,   -- Exorzist · Median 31,0 % · 23 Kills
-    ["garshu"] = 0.99,   -- Garshû · Median 30,0 % · 16 Kills
-    ["dranash"] = 0.98,   -- Dránash · Median 29,0 % · 16 Kills
-    ["silanhunt"] = 0.97,   -- Silanhunt · Median 23,0 % · 14 Kills
-    ["twosocks"] = 0.97,   -- Twosocks · Median 23,0 % · 3 Kills
-    ["enshirou"] = 0.97,   -- Enshirou · Median 22,0 % · 11 Kills
-    ["beaybewhy"] = 0.97,   -- Beaybewhy · Median 20,0 % · 4 Kills
-    ["palacetamol"] = 0.96,   -- Palacetamol · Median 18,0 % · 1 Kills
-    ["jekyl"] = 0.95,   -- Jekyl · Median 1,0 % · 1 Kills
+    ["auakaka"] = { firstkill = 0.91 },   -- Auakaka · Erst-Kill Platz 12/20
+    ["balren"] = { average = 1.01, firstkill = 0.88 },   -- Balren · Erst-Kill Platz 16/20
+    ["beaybewhy"] = { average = 0.97, firstkill = 0.94 },   -- Beaybewhy · Erst-Kill Platz 9/20
+    ["blitzfaust"] = { average = 1.01, firstkill = 0.94 },   -- Blitzfaust · Erst-Kill Platz 8/20
+    ["cep"] = { average = 1.00, firstkill = 0.95 },   -- Cep · Erst-Kill Platz 7/20
+    ["cheliia"] = { average = 1.05 },
+    ["cornfakez"] = { firstkill = 1.00 },   -- Cornfakez · Erst-Kill Platz 1/20
+    ["cornzwojer"] = { firstkill = 0.85 },   -- Cornzwojer · Erst-Kill Platz 20/20
+    ["dranash"] = { average = 0.98 },
+    ["enshirou"] = { average = 0.97 },
+    ["exorzist"] = { average = 0.99 },
+    ["exudes"] = { average = 0.99, firstkill = 0.87 },   -- Exudes · Erst-Kill Platz 18/20
+    ["garshu"] = { average = 0.99, firstkill = 0.91 },   -- Garshû · Erst-Kill Platz 13/20
+    ["gweni"] = { average = 0.99, firstkill = 0.92 },   -- Gwêni · Erst-Kill Platz 11/20
+    ["hyperhardw"] = { average = 1.04, firstkill = 0.86 },   -- Hyperhardw · Erst-Kill Platz 19/20
+    ["indydrakes"] = { average = 1.00, firstkill = 0.98 },   -- Indydrakes · Erst-Kill Platz 4/20
+    ["jekyl"] = { average = 0.95, firstkill = 0.90 },   -- Jekyl · Erst-Kill Platz 14/20
+    ["kiesel"] = { firstkill = 0.99 },   -- Kîesel · Erst-Kill Platz 2/20
+    ["merlon"] = { average = 1.03, firstkill = 0.97 },   -- Merlón · Erst-Kill Platz 5/20
+    ["moriko"] = { average = 1.04 },
+    ["neyzxd"] = { average = 1.05, firstkill = 0.96 },   -- Neyzxd · Erst-Kill Platz 6/20
+    ["notam"] = { average = 0.99 },
+    ["ophrys"] = { average = 0.99 },
+    ["palacetamol"] = { average = 0.96 },
+    ["schmeckies"] = { average = 1.01 },
+    ["setupx"] = { average = 1.05 },
+    ["sikkz"] = { average = 1.05, firstkill = 0.98 },   -- Sikkz · Erst-Kill Platz 3/20
+    ["silanhunt"] = { average = 0.97 },
+    ["sillan"] = { firstkill = 0.87 },   -- Sillan · Erst-Kill Platz 17/20
+    ["thunderdebbo"] = { average = 1.05, firstkill = 0.93 },   -- Thunderdebbo · Erst-Kill Platz 10/20
+    ["tobii"] = { average = 1.03 },
+    ["twosocks"] = { average = 0.97 },
+    ["vilarie"] = { average = 1.05, firstkill = 0.89 },   -- Vilarie · Erst-Kill Platz 15/20
 }

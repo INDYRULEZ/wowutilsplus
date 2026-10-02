@@ -56,26 +56,33 @@ ns.LEISTUNGNAME = {
     movement  = "Movement/Survival",
 }
 
---- Leistungsfaktoren je Spieler, aus Warcraft Logs berechnet (gewichte.lua).
+--- Leistungswerte je Spieler, aus Warcraft Logs berechnet (gewichte.lua).
 --- Schluessel = normalisierter Charaktername, wie bei der Prioritaetsliste.
+--- Aufbau: ns.LEISTUNG_SPIELER["name"] = { average = 1.05, firstkill = 0.92, movement = 1.0 }
+--- Fehlt eine Angabe, gilt der Wert aus ns.LEISTUNG (Vorgabe 1.0).
 ns.LEISTUNG_SPIELER = ns.LEISTUNG_SPIELER or {}
 ns.LEISTUNG_REFERENZ = ns.LEISTUNG_REFERENZ or nil
 ns.LEISTUNG_SPANNE = ns.LEISTUNG_SPANNE or nil
 
 --- Gesamtfaktor aus den Leistungswerten (1.0 = ohne Wirkung).
---- Die drei Werte in ns.LEISTUNG gelten fuer alle; der Wert aus
---- ns.LEISTUNG_SPIELER gilt nur fuer den uebergebenen Charakter.
+--- Je Wert gilt: Angabe des Charakters schlaegt die allgemeine Vorgabe.
 --- @param kandidat string? Charaktername
 --- @return number
 function ns.LeistungFaktor(kandidat)
-    local f = 1.0
-    for _, wert in pairs(ns.LEISTUNG) do
-        f = f * (tonumber(wert) or 1.0)
-    end
+    local jeSpieler
     if kandidat and ns.Normalisiere then
-        local schluessel = ns.Normalisiere(kandidat)
-        local jeSpieler = schluessel and ns.LEISTUNG_SPIELER[schluessel]
-        if jeSpieler then f = f * (tonumber(jeSpieler) or 1.0) end
+        jeSpieler = ns.LEISTUNG_SPIELER[ns.Normalisiere(kandidat)]
+    end
+    local f = 1.0
+    for art, vorgabe in pairs(ns.LEISTUNG) do
+        local wert = vorgabe
+        if type(jeSpieler) == "table" and jeSpieler[art] ~= nil then
+            wert = jeSpieler[art]
+        elseif type(jeSpieler) == "number" and art == "average" then
+            -- Alte Form: eine einzelne Zahl galt fuer den Average-Wert.
+            wert = jeSpieler
+        end
+        f = f * (tonumber(wert) or 1.0)
     end
     return f
 end
