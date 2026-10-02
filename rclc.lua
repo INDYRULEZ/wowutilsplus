@@ -281,7 +281,7 @@ end
 local function tooltipZeigen(frame, kandidat)
     local d = ns.rohcache[kandidat]
     GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
-    GameTooltip:AddLine(kandidat, 1, 1, 1)
+    -- Kein Namenskopf: der Name steht schon in der Zeile, auf der der Mauszeiger liegt.
     if not d or d.fehlt then
         if d and d.fehlt == "kein-kontext" then
             GameTooltip:AddLine(rot("Item-Info noch nicht geladen — wird gleich erneut versucht"), 1, 0.4, 0.4)
