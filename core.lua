@@ -123,7 +123,13 @@ function ns.WunschFaktor(prioId)
 end
 
 --- Anzeigename einer Wunschlisten-Prioritaet.
-ns.WUNSCHNAME = { [1] = "Best in Slot", [2] = "Upgrade" }
+ns.WUNSCHNAME = {
+    [1] = "Best in Slot",
+    [2] = "Upgrade",
+    [3] = "Offspec",
+    [4] = "Transmog",
+    [5] = "Nicht gewünscht",
+}
 
 --- @param role string
 --- @return string
@@ -228,11 +234,10 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
         info.prioFaktor = ns.PrioFaktor(prio)
     end
     if wunschPrio then
-        local wf = ns.WunschFaktor(wunschPrio)
-        if wf ~= 1.0 then
-            info.wunsch = wunschPrio
-            info.wunschFaktor = wf
-        end
+        -- Auch bei Faktor 1.00 merken (z. B. Best in Slot), damit der Tooltip zeigt,
+        -- was auf der Wunschliste steht — vorher blieb die Zeile bei BiS stumm.
+        info.wunsch = wunschPrio
+        info.wunschFaktor = ns.WunschFaktor(wunschPrio)
     end
     local leistung = ns.LeistungsWerte(kandidat)
     info.leistung = leistung

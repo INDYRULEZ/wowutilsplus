@@ -281,7 +281,9 @@ end
 local function tooltipZeigen(frame, kandidat)
     local d = ns.rohcache[kandidat]
     GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
-    -- Kein Namenskopf: der Name steht schon in der Zeile, auf der der Mauszeiger liegt.
+    -- Die erste Zeile eines Tooltips zeichnet WoW gross und eingerueckt (Titelplatz).
+    -- Deshalb hier eine leere Zeile als Platzhalter — der Name steht schon in der Zeile.
+    GameTooltip:AddLine(" ")
     if not d or d.fehlt then
         if d and d.fehlt == "kein-kontext" then
             GameTooltip:AddLine(rot("Item-Info noch nicht geladen — wird gleich erneut versucht"), 1, 0.4, 0.4)
