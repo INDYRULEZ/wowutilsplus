@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 10:55
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 11:01
 
 local _, ns = ...
 
@@ -29,7 +29,8 @@ ns.LEISTUNG = {
 -- average:   Median der Parse-Prozente, nur mythischen Kills der eigenen Gilde,
 --            Zeitfenster 4 Wochen. 100er Log = 1.00, 0er Log = 0.90 (linear).
 -- firstkill: Rangfolge in den mythischen Erst-Kills, Platz 1 ohne Abzug, letzter Platz -15 %.
--- movement:  von Hand auf der Seite gepflegt.
+-- movement:  von Hand auf der Seite gepflegt, dort als Abzug in Prozent
+--            (hoechstens 20 %, also Faktor bis 0.80).
 ns.LEISTUNG_AVG_ABZUG = 0.100
 ns.LEISTUNG_KADERSCHNITT = 31.0
 ns.LEISTUNG_SPIELER = {
@@ -57,7 +58,7 @@ ns.LEISTUNG_SPIELER = {
     ["setupx"] = { average = 0.99, avgMedian = 91.0, avgKills = 11, firstkill = 1.00, fkPlatz = 1, fkVon = 24, fkAnteil = 100.0, fkKaempfe = 4, fkMenge = 122996 },   -- Setupx · Average 91,0 % (11 Kills) · Erst-Kill Platz 1/24
     ["sikkz"] = { average = 0.96, avgMedian = 61.0, avgKills = 11, firstkill = 0.97, fkPlatz = 5, fkVon = 24, fkAnteil = 90.5, fkKaempfe = 4, fkMenge = 215172 },   -- Sikkz · Average 61,0 % (11 Kills) · Erst-Kill Platz 5/24
     ["silanhunt"] = { average = 0.91, avgMedian = 6.0, avgKills = 10, firstkill = 0.93, fkPlatz = 12, fkVon = 24, fkAnteil = 79.5, fkKaempfe = 4, fkMenge = 187334 },   -- Silanhunt · Average 6,0 % (10 Kills) · Erst-Kill Platz 12/24
-    ["thunderdebbo"] = { average = 0.92, avgMedian = 17.5, avgKills = 10, firstkill = 0.89, fkPlatz = 18, fkVon = 24, fkAnteil = 54.1, fkKaempfe = 4, fkMenge = 245802 },   -- Thunderdebbo · Average 17,5 % (10 Kills) · Erst-Kill Platz 18/24 von Hand
+    ["thunderdebbo"] = { average = 0.92, avgMedian = 17.5, avgKills = 10, firstkill = 0.92, fkPlatz = 14, fkVon = 24, fkAnteil = 54.1, fkKaempfe = 4, fkMenge = 245802 },   -- Thunderdebbo · Average 17,5 % (10 Kills) · Erst-Kill Platz 14/24 von Hand
     ["tobii"] = { average = 1.00, avgMedian = 99.0, avgKills = 9, firstkill = 1.00, fkPlatz = 1, fkVon = 24, fkAnteil = 100.0, fkKaempfe = 4, fkMenge = 447149 },   -- Tobii · Average 99,0 % (9 Kills) · Erst-Kill Platz 1/24 von Hand
     ["twosocks"] = { average = 0.92, avgMedian = 23.0, avgKills = 3, firstkill = 0.98, fkPlatz = 4, fkVon = 24, fkAnteil = 95.6, fkKaempfe = 1, fkMenge = 207568 },   -- Twosocks · Average 23,0 % (3 Kills) · Erst-Kill Platz 4/24
     ["vilarie"] = { average = 0.93, avgMedian = 28.0, avgKills = 3, firstkill = 0.88, fkPlatz = 19, fkVon = 24, fkAnteil = 74.7, fkKaempfe = 1, fkMenge = 195189 },   -- Vilarie · Average 28,0 % (3 Kills) · Erst-Kill Platz 19/24
