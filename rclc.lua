@@ -324,7 +324,9 @@ local function tooltipZeigen(frame, kandidat)
             zeile("First kill", wert, ns.Faktor(lw.firstkill))
         end
         if lw and lw.movement and lw.movement ~= 1.0 then
-            zeile("Movement", "", ns.Faktor(lw.movement))
+            -- Movement wird auf der Seite als Abzug in Prozent gepflegt.
+            local abzug = (1.0 - lw.movement) * 100.0
+            zeile("Movement", ("-%s %%"):format(ns.ZahlEinfach(abzug)), ns.Faktor(lw.movement))
         end
 
         if d.grund then
