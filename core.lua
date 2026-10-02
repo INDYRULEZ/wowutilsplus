@@ -18,9 +18,9 @@ ns.VERSION = "0.5.0"
 -- einfach ergaenzt werden koennen. 1.0 = unveraendert.
 -- ---------------------------------------------------------------------------
 ns.WEIGHTS = {
-    HEALER  = { factor = 0.52, reason = "Heilung traegt weniger direkt zum Kill bei" },
-    TANK    = { factor = 1.15, reason = "Tanks uebernehmen Mechaniken und Ueberleben im Kampf" },
-    DAMAGER = { factor = 1.0,  reason = "unveraendert" },
+    HEALER  = { factor = 0.52 },
+    TANK    = { factor = 1.15 },
+    DAMAGER = { factor = 1.0 },
 }
 
 -- ---------------------------------------------------------------------------
@@ -125,15 +125,12 @@ function ns.Gewichten(wert, role, kandidat)
     local w = ns.WEIGHTS[role]
     if w and w.factor ~= 1.0 then
         info.roleFaktor = w.factor
-        info.gruende[#info.gruende + 1] = w.reason
+        if w.reason then info.gruende[#info.gruende + 1] = w.reason end
     end
     local prio = ns.PrioVon(kandidat)
     if prio and prio > 1 then
         info.prio = prio
         info.prioFaktor = ns.PrioFaktor(prio)
-        info.gruende[#info.gruende + 1] =
-            ("Prioritaet %d auf der Liste (%d %% Abzug)")
-            :format(prio, math.floor((1 - info.prioFaktor) * 100 + 0.5))
     end
     info.faktor = info.roleFaktor * info.prioFaktor
     info.gewichtet = wert * info.faktor
@@ -202,7 +199,7 @@ local function gewichte()
     print(gelb("Aktive Gewichtungen"))
     for role, w in pairs(ns.WEIGHTS) do
         local zustand = w.factor == 1.0 and grau("aus") or gruen(("x%.2f"):format(w.factor))
-        print(("  %-8s %s  %s"):format(role, zustand, grau(w.reason)))
+        print(("  %-8s %s  %s"):format(role, zustand, grau(w.reason or "")))
     end
     print(gelb("Prioritaetsliste"))
     print(("  %d Charaktere zugeordnet%s"):format(ns.PRIO_ANZAHL or 0,
