@@ -59,6 +59,51 @@ sauberer Maßstab.
 Die Zahlen je Charakter stehen in `gewichte.lua` und werden mit jeder Version
 mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
+## Aktueller Stand
+
+<!-- STAND:ANFANG -->
+
+## Aktueller Stand
+
+*Automatisch erzeugt — Stand: 02.10.2026 11:18*
+
+**Einstellungen:** Zeitfenster 4 Wochen · Abzug bei 0er Log 10 % · Abzug am letzten Erst-Kill-Platz 15 % · Movement höchstens 20 %
+
+**Quelle:** mythischen Kills der eigenen Gilde aus Warcraft Logs (Average log: alle Kills im Zeitfenster, First kill log: die Erst-Kills je Boss).
+
+| Spieler | Rolle | Average log | First kill | Movement | Skill-Abzug |
+|---|---|---|---|---|---|
+| Balren (Paldros) | ranged | 31,0 % (11 Kills) → 0,93 | Platz 11/24 → 0,93 | – | 0,87 → −13,0 % |
+| Beaybewhy | ranged | 0,0 % (1 Kills) → 0,9 | – | – | 0,9 → −10,0 % |
+| Bigboysushi | DPS | – | Platz 13/24 → 0,92 | – | 0,92 → −8,0 % |
+| Blitzfaust | ranged | 42,0 % (5 Kills) → 0,94 | Platz 9/24 → 0,95 | – | 0,89 → −11,0 % |
+| Cep | ranged | 29,5 % (8 Kills) → 0,93 | Platz 7/24 → 0,96 | – | 0,89 → −11,0 % |
+| Cheliia | melee | 37,0 % (9 Kills) → 0,94 | Platz 10/24 → 0,94 | – | 0,88 → −12,0 % |
+| Dránash | tank | 40,0 % (11 Kills) → 0,94 | Platz 21/24 → 0,87 | – | 0,81 → −19,0 % |
+| Enshirou | melee | 22,0 % (9 Kills) → 0,92 | Platz 14/24 → 0,92 | – | 0,84 → −16,0 % |
+| Exorzist (cheetah) | Heiler | 53,0 % (11 Kills) → 0,95 | Platz 12/24 → 0,93 | – | 0,88 → −12,0 % |
+| Exudes | ranged | 22,0 % (4 Kills) → 0,92 | Platz 3/24 → 0,99 | – | 0,9 → −10,0 % |
+| Garshû | melee | 20,0 % (11 Kills) → 0,92 | Platz 17/24 → 0,9 | – | 0,82 → −18,0 % |
+| Gwêni (Snowi) | ranged | 23,0 % (11 Kills) → 0,92 | Platz 8/24 → 0,95 | – | 0,88 → −12,0 % |
+| Hyperhardw (Pasipháë) | ranged | 42,0 % (9 Kills) → 0,94 | Platz 15/24 → 0,91 | – | 0,85 → −15,0 % |
+| Indydrakes | ranged | 10,0 % (10 Kills) → 0,91 | Platz 20/24 → 0,88 | – | 0,79 → −21,0 % |
+| Jekyl (Rone) | ranged | 1,0 % (1 Kills) → 0,9 | Platz 22/24 → 0,86 | – | 0,77 → −23,0 % |
+| Merlón | melee | 52,0 % (11 Kills) → 0,95 | Platz 6/24 → 0,97 | – | 0,92 → −8,0 % |
+| Neyzxd (Neyz) | melee | 68,0 % (1 Kills) → 0,97 | – | – | 0,96 → −4,0 % |
+| Notam | melee | 21,0 % (11 Kills) → 0,92 | Platz 18/24 → 0,89 | – | 0,81 → −19,0 % |
+| Ophrys (Juxe) | Heiler | 45,0 % (11 Kills) → 0,94 | Platz 18/24 → 0,89 | – | 0,84 → −16,0 % |
+| Palacetamol | Heiler | 95,0 % (1 Kills) → 0,99 | Platz 14/1 → 0,85 | – | 0,84 → −16,0 % |
+| Schmeckies | ranged | 40,0 % (1 Kills) → 0,94 | – | – | 0,94 → −6,0 % |
+| Setupx (setup) | tank | 91,0 % (11 Kills) → 0,99 | Platz 1/24 → 1,0 | – | 0,99 → −1,0 % |
+| Sikkz | melee | 61,0 % (11 Kills) → 0,96 | Platz 5/24 → 0,97 | – | 0,93 → −7,0 % |
+| Silanhunt (Silan) | ranged | 6,0 % (10 Kills) → 0,91 | Platz 12/24 → 0,93 | – | 0,84 → −16,0 % |
+| Thunderdebbo | Heiler | 17,5 % (10 Kills) → 0,92 | Platz 14/24 → 0,92 | – | 0,83 → −17,0 % |
+| Tobii (Luc) | Heiler | 99,0 % (9 Kills) → 1,0 | Platz 1/24 → 1,0 | – | 0,99 → −1,0 % |
+| Twosocks (Sushi) | melee | 23,0 % (3 Kills) → 0,92 | Platz 4/24 → 0,98 | – | 0,9 → −10,0 % |
+| Vilarie | melee | 28,0 % (3 Kills) → 0,93 | Platz 19/24 → 0,88 | – | 0,81 → −19,0 % |
+
+<!-- STAND:ENDE -->
+
 ## Voraussetzungen
 
 - `wowutils` und `wowutils_data` (die Daten liefert die WowUtils-Bridge)
