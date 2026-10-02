@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 09:11
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 09:12
 
 local _, ns = ...
 
@@ -27,10 +27,10 @@ ns.LEISTUNG = {
 
 -- Leistungswerte je Spieler, automatisch aus Warcraft Logs.
 -- average:   Median der Parse-Prozente, nur Kills der eigenen Gilde,
---            Zeitfenster 4 Wochen. 100er Log = 1.00, 0er Log = -9.00 (linear).
--- firstkill: Rangfolge in den Erst-Kills, Platz 1 ohne Abzug, letzter Platz -1500 %.
+--            Zeitfenster 4 Wochen. 100er Log = 1.00, 0er Log = 0.90 (linear).
+-- firstkill: Rangfolge in den Erst-Kills, Platz 1 ohne Abzug, letzter Platz -15 %.
 -- movement:  von Hand auf der Seite gepflegt.
-ns.LEISTUNG_AVG_ABZUG = 10.000
+ns.LEISTUNG_AVG_ABZUG = 0.100
 ns.LEISTUNG_KADERSCHNITT = 36.5
 ns.LEISTUNG_SPIELER = {
     ["auakaka"] = { firstkill = 0.91 },   -- Auakaka · Erst-Kill Platz 12/20
