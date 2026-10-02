@@ -303,10 +303,6 @@ local function tooltipZeigen(frame, kandidat)
                 0.78, 0.78, 0.78, 1, 1, 1)
         end
 
-        local function unter(text)
-            GameTooltip:AddLine("                 " .. text, 0.55, 0.55, 0.55)
-        end
-
         zeile("Rolle", ns.RollenName(d.role), ns.Faktor(d.roleFaktor))
         if d.prio then
             zeile("Prio", tostring(d.prio), ns.Faktor(d.prioFaktor))
@@ -321,24 +317,11 @@ local function tooltipZeigen(frame, kandidat)
         if lw and lw.average and lw.average ~= 1.0 then
             local wert = (det and det.avgMedian) and ns.ZahlEinfach(det.avgMedian, " %") or ""
             zeile("Average log", wert, ns.Faktor(lw.average))
-            if det and det.avgKills then
-                unter(("%s Kills"):format(tostring(det.avgKills)))
-            end
         end
         if lw and lw.firstkill and lw.firstkill ~= 1.0 then
             local wert = (det and det.fkPlatz) and ("Platz %s/%s"):format(
                 tostring(det.fkPlatz), tostring(det.fkVon)) or ""
             zeile("First kill", wert, ns.Faktor(lw.firstkill))
-            local teile = {}
-            if det and det.fkDps then
-                teile[#teile + 1] = ns.ZahlTausend(det.fkDps) .. " DPS"
-            end
-            if det and det.fkAnteil then
-                teile[#teile + 1] = ns.ZahlEinfach(det.fkAnteil) .. " % vom Besten"
-            end
-            if #teile > 0 then
-                unter(table.concat(teile, " · "))
-            end
         end
         if lw and lw.movement and lw.movement ~= 1.0 then
             zeile("Movement", "", ns.Faktor(lw.movement))
