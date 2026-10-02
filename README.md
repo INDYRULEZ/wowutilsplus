@@ -1,93 +1,66 @@
 # WoWUtils Plus
 
-Eigenes Zusatz-Addon für WoW, das auf den Daten von **WowUtils** aufsetzt und
-eigene Zahlen draufrechnet. Ziel: eigene Gewichtungen (Tank/Heiler/…) mit
-Begründung, ohne das Original-Addon zu verändern.
+Ein Zusatz-Addon für **World of Warcraft**, das im Abstimmungsfenster von
+**RCLootCouncil** eine eigene Spalte mit einem **gewichteten** Sim-Gewinn anzeigt.
+Es setzt auf den Daten von [WowUtils](https://wowutils.com) auf und lässt das
+Original-Addon unangetastet.
 
-## Warum ein eigenes Addon statt eines Forks?
+## Was es macht
 
-Das Original (`github.com/wowutils/addon`, GPL-3.0) wird weiterentwickelt. Wenn
-wir dessen Code patchen, gibt es bei jedem Update Konflikte. Stattdessen:
+- **Spalte „Gewichtet"** rechts neben der WowUtils-Spalte im Loot-Council-Fenster
+- Angezeigt wird der Sim-Gewinn des Kandidaten für **genau das Item, über das gerade
+  abgestimmt wird** — mit derselben Auswahl wie das Original: Schwierigkeit des
+  gedroppten Items, bevorzugt der 1-Ziel-Patchwerk-Sim
+- Darauf werden eigene Faktoren angewendet:
+  - **Rolle:** Heiler ×0,5 · Tank ×0,25 · Schaden unverändert
+  - **Prioritätsliste:** 1 = kein Abzug · 2 = −10 % · 3 = −20 % · 4 = −30 % · 5 = −40 %
+- **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
+  gewichteten Wert (nicht nach dem angezeigten Text)
+- **Tooltip** an der Zelle: Rohwert, gewichteter Wert, beide Faktoren mit Begründung,
+  benutzter Sim und Item-Stufe
+- Ohne passenden Sim-Eintrag steht `---` — es wird nie geraten
 
-- Original bleibt unverändert (Updates laufen normal weiter)
-- Wir lesen die Daten über die **offizielle Schnittstelle** des Originals:
-  das Global `WowUtilsAPI` (siehe `publicAPI.lua` im Original)
-  - `WowUtilsAPI.GetDroptimizers(unit)` → Sim-Ergebnisse
-  - `WowUtilsAPI.GetWishlist(unit)` → Wunschliste mit Prioritäts-Label
-  - `WowUtilsAPI.GetCharacterData(unit)` → Stammdaten
-- Unser Addon hat einen eigenen Namen (`wowutilsplus`) — deshalb kann der
-  Addon-Manager (WowUp) das Original aktualisieren, ohne uns zu überschreiben.
+## Voraussetzungen
 
-## Datenlage (aus der Bridge-Datei, geprüft am 01.10.2026)
+- `wowutils` und `wowutils_data` (die Daten liefert die WowUtils-Bridge)
+- `RCLootCouncil`
 
-Die Bridge schreibt alles nach
-`…/Interface/AddOns/wowutils_data/data.lua` (35 Charaktere, 650 KB).
+Es wird **nichts** am Original-Addon geändert: alle Daten kommen über dessen
+öffentliche Schnittstelle `WowUtilsAPI`.
 
-Zwei Sim-Quellen mit **unterschiedlichen Feldern**:
+## Installation
 
-| Quelle | Feld | Inhalt |
-|---|---|---|
-| Raidbots | `gain` | absoluter Gewinn (z. B. `+1970`) |
-| QE Live | `gainPercent` | **nur Prozentwert** |
+1. ZIP aus den [Releases](../../releases) herunterladen
+2. Den Ordner `wowutilsplus` nach
+   `World of Warcraft/_retail_/Interface/AddOns/` legen
+3. Das Spiel neu starten
 
-Das ist der Grund, warum manche Leute (z. B. Heiler mit QE-Live-Sims) nur
-Prozentwerte zeigen: Es ist eine Frage der **Sim-Quelle**, nicht der Rolle.
+## Befehle
 
-Weitere Felder je Sim-Ergebnis: `equipmentSlot`, `ilvl`, `difficultyId`,
-`encounterId`, `sourceItem` (Tier-Token/Catalyst). Je Sim: `specId`,
-`simType`, `simmedAt`, `baseline` (nur Raidbots).
+| Befehl | Wirkung |
+|---|---|
+| `/wup` | Datenlage — wie viele Charaktere haben Sim-Daten |
+| `/wup gewichte` | aktive Gewichtungen und Stand der Prioritätsliste |
+| `/wup test` | eigene Wunschliste: roher Gewinn → gewichteter Gewinn + Begründung |
+| `/wup rcl` | Diagnose zum Item, das gerade im Abstimmungsfenster steht |
 
-Wunschliste je Charakter: `priority` (Anzeigelabel) + `priorityId` (1–5):
-`1 = Best in Slot`, `2 = Upgrade`, `3 = Offspec`, `4 = Transmog`, `5 = Do not want`.
+## Prioritätsliste
 
-## Rollen-Erkennung
+`prioliste.lua` ordnet jedem Charakter eine Zahl von 1 bis 5 zu und wird mit jeder
+Version mitgeliefert. Die Zuordnung ist unabhängig von Groß-/Kleinschreibung und
+Schreibweise (Akzente werden ignoriert), damit Namen aus einer externen Liste zu den
+Charakteren im Spiel passen. Gilt für den Main **und** die Nebencharaktere einer Person.
 
-Das Original liefert **Klasse** und **specId** — aber keine Rolle.
-Die Rolle holen wir direkt aus dem Spiel:
+## Aufbau
 
-```lua
-local role = select(5, GetSpecializationInfoByID(specId))  -- TANK / HEALER / DAMAGER
-```
+| Datei | Inhalt |
+|---|---|
+| `core.lua` | Gewichtungen, Rollen-Erkennung, Befehle |
+| `rclc.lua` | Spalte im RCLootCouncil-Fenster (offizielle Spalten-API) |
+| `prioliste.lua` | Prioritätsliste je Charakter |
+| `wowutilsplus.toc` | Addon-Manifest |
 
-## Gewichtungen
+## Danksagung
 
-Aktuell **ein** aktiver Faktor (Testphase), Tabelle in `core.lua`:
-
-```lua
-ns.WEIGHTS = {
-    HEALER  = { factor = 0.5,  reason = "Heilung bringt weniger direkten Kill-Beitrag als Schaden" },
-    TANK    = { factor = 1.0,  reason = "noch nicht aktiv" },
-    DAMAGER = { factor = 1.0,  reason = "unveraendert" },
-}
-```
-
-Weitere Faktoren (Jonas hat 4–5 im Kopf) kommen als zusätzliche Einträge dazu.
-Jede Reduzierung wird im Text **mit Begründung** angezeigt.
-
-## Testen
-
-```bash
-./deploy.sh          # kopiert nach …/Interface/AddOns/wowutilsplus
-```
-
-Im Spiel: `/reload`, dann
-
-- `/wup` → Datenlage (wie viele Charaktere haben Sim-Daten)
-- `/wup gewichte` → aktive Gewichtungen
-- `/wup test` → eigene Wunschliste: roher Gewinn → gewichteter Gewinn + Grund
-
-## Syntax prüfen (ohne Spiel)
-
-WoW nutzt Lua 5.1. Prüfer liegt in `/tmp/luacheck-dir`:
-
-```bash
-cd /tmp/luacheck-dir && node check.js /home/heimlaptop/dev/wowutilsplus/core.lua
-```
-
-## Nächste Schritte
-
-1. Test im Spiel (`/wup test`) — kommt die Gewichtung sichtbar an?
-2. Weitere Faktoren ergänzen
-3. Anzeige in den Tooltip / das Loot-Council-Fenster des Originals hängen
-   (statt Chat-Ausgabe)
-4. Erst dann: eigenes GitHub-Repo (Fork braucht gültiges Token — das in `.env` ist abgelaufen)
+Baut auf den Daten von [WowUtils](https://wowutils.com) und dem Addon
+**RCLootCouncil** auf.

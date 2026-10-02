@@ -15,7 +15,7 @@ ns.VERSION = "0.5.0"
 -- ---------------------------------------------------------------------------
 -- Gewichtungen
 -- Rolle -> Faktor + Begruendung. Bewusst als Tabelle, damit die weiteren
--- Faktoren (Jonas hat 4-5 im Kopf) einfach ergaenzt werden koennen.
+-- Faktoren lassen sich hier einfach ergaenzen.
 -- Testphase: nur HEALER aktiv, alle anderen 1.0 = unveraendert.
 -- ---------------------------------------------------------------------------
 ns.WEIGHTS = {
