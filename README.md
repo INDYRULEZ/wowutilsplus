@@ -14,9 +14,11 @@ Original-Addon unangetastet.
 - Darauf werden eigene Faktoren angewendet:
   - **Rolle:** DPS ×1,00 · Healer ×0,52 · Tank ×1,15
   - **Prioritätsliste:** 1 = kein Abzug · 2 = −10 % · 3 = −20 % · 4 = −30 % · 5 = −40 %
+  - **Wunschliste:** Best in Slot ×1,00 · Upgrade ×0,60 (greift nur, wenn jemand das Item
+    als BiS bzw. Upgrade führt; andere Wunschlisten-Werte verändern nichts)
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
-- **Tooltip** an der Zelle: Rohwert, gewichteter Wert, beide Faktoren mit Begründung,
+- **Tooltip** an der Zelle: Rohwert, gewichteter Wert und die angewendeten Faktoren,
   benutzter Sim und Item-Stufe
 - Ohne passenden Sim-Eintrag steht `---` — es wird nie geraten
 

@@ -205,6 +205,17 @@ local function berechne(kandidat)
         ns.letzteUrsache = "kein-kontext"   -- Item-Info noch nicht geladen -> spaeter erneut
     end
 
+    -- Wunschliste des Kandidaten fuer genau dieses Item in dieser Schwierigkeit.
+    -- Im Spiel liegt sie unter "<difficultyId>-<itemId>" mit priorityId 1-5.
+    local wunschPrio
+    if zielDif and WowUtilsAPI.GetWishlist then
+        local wunsch = WowUtilsAPI.GetWishlist(kandidat)
+        local eintrag = wunsch and wunsch[("%d-%d"):format(zielDif, itemId)]
+        if eintrag then
+            wunschPrio = eintrag.priorityId or tonumber(eintrag.priority)
+        end
+    end
+
     local daten = WowUtilsAPI.GetDroptimizers(kandidat)
     if not (daten and daten.specs) then return nil end
 
@@ -252,9 +263,11 @@ local function berechne(kandidat)
         kontextQuelle = quelle,
         art = gewaehlt.art,
     }
-    local gewichtet, info = ns.Gewichten(basis, gewaehlt.role, kandidat)
+    local gewichtet, info = ns.Gewichten(basis, gewaehlt.role, kandidat, wunschPrio)
     details.faktor, details.grund, details.gewichtet = info.faktor, info.grund, gewichtet
     details.roleFaktor, details.prioFaktor, details.prio = info.roleFaktor, info.prioFaktor, info.prio
+    details.wunschFaktor, details.wunsch = info.wunschFaktor, info.wunsch
+    details.wunschPrio = wunschPrio
     diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, gewaehlt)
     return gewichtet, details
 end
@@ -285,6 +298,10 @@ local function tooltipZeigen(frame, kandidat)
             end
             if d.prio then
                 teile[#teile + 1] = ("Prio %d %s"):format(d.prio, ns.Faktor(d.prioFaktor))
+            end
+            if d.wunsch then
+                teile[#teile + 1] = ("%s %s"):format(ns.WUNSCHNAME[d.wunsch] or
+                    ("Wunsch " .. tostring(d.wunsch)), ns.Faktor(d.wunschFaktor))
             end
             GameTooltip:AddLine(("Gewichtet:  %s  (%s)")
                 :format(ns.Zahl(d.gewichtet, einheit), table.concat(teile, " + ")), 1, 0.85, 0.2)

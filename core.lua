@@ -43,6 +43,20 @@ end
 --- Anzeigenamen der Rollen — ueberall dieselben Worte wie auf der Weboberflaeche.
 ns.ROLLENNAME = { DAMAGER = "DPS", HEALER = "Healer", TANK = "Tank" }
 
+-- Vorgabe, falls gewichte.lua fehlt (siehe oben).
+ns.WUNSCH = ns.WUNSCH or { [1] = 1.0, [2] = 0.6 }
+
+--- Faktor aus der Wunschlisten-Priorität (1 = Best in Slot, 2 = Upgrade).
+--- @param prioId number? 1-5
+--- @return number
+function ns.WunschFaktor(prioId)
+    if not prioId or not ns.WUNSCH then return 1.0 end
+    return ns.WUNSCH[prioId] or 1.0
+end
+
+--- Anzeigename einer Wunschlisten-Prioritaet.
+ns.WUNSCHNAME = { [1] = "Best in Slot", [2] = "Upgrade" }
+
 --- @param role string
 --- @return string
 function ns.RollenName(role)
@@ -123,15 +137,17 @@ function ns.RolleVonSpec(specId)
     return "DAMAGER"
 end
 
---- Einen Gewinn gewichten: Rollen-Faktor × Prioritaets-Faktor.
+--- Einen Gewinn gewichten: Rollen-Faktor × Prioritaets-Faktor × Wunschlisten-Faktor.
 --- @param wert number Basiswert (absoluter Gewinn ODER Prozentwert)
 --- @param role string
 --- @param kandidat string? Charaktername (fuer die Prioritaetsliste)
---- @return number gewichtet, table info  (info.faktor, .roleFaktor, .prioFaktor, .prio, .grund)
-function ns.Gewichten(wert, role, kandidat)
+--- @param wunschPrio number? Wunschlisten-Prioritaet 1-5 (1 = BiS, 2 = Upgrade)
+--- @return number gewichtet, table info
+function ns.Gewichten(wert, role, kandidat, wunschPrio)
     local info = {
         wert = wert, role = role,
-        roleFaktor = 1.0, prioFaktor = 1.0, prio = nil, gruende = {},
+        roleFaktor = 1.0, prioFaktor = 1.0, wunschFaktor = 1.0,
+        prio = nil, wunsch = nil, gruende = {},
     }
     local w = ns.WEIGHTS[role]
     if w and w.factor ~= 1.0 then
@@ -143,7 +159,14 @@ function ns.Gewichten(wert, role, kandidat)
         info.prio = prio
         info.prioFaktor = ns.PrioFaktor(prio)
     end
-    info.faktor = info.roleFaktor * info.prioFaktor
+    if wunschPrio then
+        local wf = ns.WunschFaktor(wunschPrio)
+        if wf ~= 1.0 then
+            info.wunsch = wunschPrio
+            info.wunschFaktor = wf
+        end
+    end
+    info.faktor = info.roleFaktor * info.prioFaktor * info.wunschFaktor
     info.gewichtet = wert * info.faktor
     info.grund = #info.gruende > 0 and table.concat(info.gruende, " + ") or nil
     return info.gewichtet, info
