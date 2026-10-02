@@ -46,6 +46,26 @@ ns.ROLLENNAME = { DAMAGER = "DPS", HEALER = "Healer", TANK = "Tank" }
 -- Vorgabe, falls gewichte.lua fehlt (siehe oben).
 ns.WUNSCH = ns.WUNSCH or { [1] = 1.0, [2] = 0.6 }
 
+--- Leistungs-Faktoren: Average log, First kill log, Movement/Survival.
+--- Die Werte je Spieler werden spaeter automatisch berechnet; vorerst neutral.
+ns.LEISTUNG = ns.LEISTUNG or { average = 1.0, firstkill = 1.0, movement = 1.0 }
+
+ns.LEISTUNGNAME = {
+    average   = "Average log",
+    firstkill = "First kill log",
+    movement  = "Movement/Survival",
+}
+
+--- Gesamtfaktor aus den drei Leistungswerten (1.0 = ohne Wirkung).
+--- @return number
+function ns.LeistungFaktor()
+    local f = 1.0
+    for _, wert in pairs(ns.LEISTUNG) do
+        f = f * (tonumber(wert) or 1.0)
+    end
+    return f
+end
+
 --- Faktor aus der Wunschlisten-Priorität (1 = Best in Slot, 2 = Upgrade).
 --- @param prioId number? 1-5
 --- @return number
@@ -166,7 +186,8 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
             info.wunschFaktor = wf
         end
     end
-    info.faktor = info.roleFaktor * info.prioFaktor * info.wunschFaktor
+    info.leistungFaktor = ns.LeistungFaktor()
+    info.faktor = info.roleFaktor * info.prioFaktor * info.wunschFaktor * info.leistungFaktor
     info.gewichtet = wert * info.faktor
     info.grund = #info.gruende > 0 and table.concat(info.gruende, " + ") or nil
     return info.gewichtet, info

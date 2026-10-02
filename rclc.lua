@@ -267,6 +267,7 @@ local function berechne(kandidat)
     details.faktor, details.grund, details.gewichtet = info.faktor, info.grund, gewichtet
     details.roleFaktor, details.prioFaktor, details.prio = info.roleFaktor, info.prioFaktor, info.prio
     details.wunschFaktor, details.wunsch = info.wunschFaktor, info.wunsch
+    details.leistungFaktor = info.leistungFaktor
     details.wunschPrio = wunschPrio
     diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, gewaehlt)
     return gewichtet, details
@@ -302,6 +303,9 @@ local function tooltipZeigen(frame, kandidat)
             if d.wunsch then
                 teile[#teile + 1] = ("%s %s"):format(ns.WUNSCHNAME[d.wunsch] or
                     ("Wunsch " .. tostring(d.wunsch)), ns.Faktor(d.wunschFaktor))
+            end
+            if d.leistungFaktor and d.leistungFaktor ~= 1.0 then
+                teile[#teile + 1] = ("Leistung %s"):format(ns.Faktor(d.leistungFaktor))
             end
             GameTooltip:AddLine(("Gewichtet:  %s  (%s)")
                 :format(ns.Zahl(d.gewichtet, einheit), table.concat(teile, " + ")), 1, 0.85, 0.2)
