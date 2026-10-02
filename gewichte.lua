@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 10:24
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 02.10.2026 10:30
 
 local _, ns = ...
 
@@ -50,7 +50,7 @@ ns.LEISTUNG_SPIELER = {
     ["jekyl"] = { average = 0.90, avgMedian = 1.0, avgKills = 1, firstkill = 0.85, fkPlatz = 27, fkVon = 27, fkAnteil = 48.2, fkKaempfe = 1, fkMenge = 125584 },   -- Jekyl · Average 1,0 % (1 Kills) · Erst-Kill Platz 27/27
     ["keito"] = { firstkill = 0.93, fkPlatz = 13, fkVon = 27, fkAnteil = 83.5, fkKaempfe = 1, fkMenge = 217568 },   -- Keito · Erst-Kill Platz 13/27
     ["kiesel"] = { firstkill = 0.91, fkPlatz = 16, fkVon = 27, fkAnteil = 78.5, fkKaempfe = 1, fkMenge = 204428 },   -- Kîesel · Erst-Kill Platz 16/27
-    ["merlon"] = { average = 0.95, avgMedian = 52.0, avgKills = 11, firstkill = 0.96, fkPlatz = 7, fkVon = 27, fkAnteil = 90.2, fkKaempfe = 4, fkMenge = 209515 },   -- Merlón · Average 52,0 % (11 Kills) · Erst-Kill Platz 7/27
+    ["merlon"] = { average = 0.95, avgMedian = 52.0, avgKills = 11, firstkill = 0.97, fkPlatz = 7, fkVon = 27, fkAnteil = 90.2, fkKaempfe = 4, fkMenge = 209515 },   -- Merlón · Average 52,0 % (11 Kills) · Erst-Kill Platz 7/27
     ["moriko"] = { average = 0.95, avgMedian = 46.0, avgKills = 9, firstkill = 0.94, fkPlatz = 12, fkVon = 27, fkAnteil = 84.2, fkKaempfe = 3, fkMenge = 193055 },   -- Moríko · Average 46,0 % (9 Kills) · Erst-Kill Platz 12/27
     ["neyzxd"] = { average = 0.97, avgMedian = 67.0, avgKills = 1 },   -- Neyzxd · Average 67,0 % (1 Kills)
     ["notam"] = { average = 0.92, avgMedian = 21.0, avgKills = 11, firstkill = 0.90, fkPlatz = 18, fkVon = 27, fkAnteil = 76.7, fkKaempfe = 4, fkMenge = 164437 },   -- Notam · Average 21,0 % (11 Kills) · Erst-Kill Platz 18/27
@@ -59,7 +59,7 @@ ns.LEISTUNG_SPIELER = {
     ["schmeckies"] = { average = 0.94, avgMedian = 40.0, avgKills = 1 },   -- Schmeckies · Average 40,0 % (1 Kills)
     ["setupx"] = { average = 0.99, avgMedian = 91.0, avgKills = 11, firstkill = 1.00, fkPlatz = 1, fkVon = 27, fkAnteil = 100.0, fkKaempfe = 4, fkMenge = 121492 },   -- Setupx · Average 91,0 % (11 Kills) · Erst-Kill Platz 1/27
     ["sikkz"] = { average = 0.96, avgMedian = 61.0, avgKills = 11, firstkill = 0.98, fkPlatz = 5, fkVon = 27, fkAnteil = 94.5, fkKaempfe = 4, fkMenge = 212062 },   -- Sikkz · Average 61,0 % (11 Kills) · Erst-Kill Platz 5/27
-    ["silanhunt"] = { average = 0.91, avgMedian = 6.0, avgKills = 10, firstkill = 0.89, fkPlatz = 21, fkVon = 27, fkAnteil = 72.2, fkKaempfe = 4, fkMenge = 169525 },   -- Silanhunt · Average 6,0 % (10 Kills) · Erst-Kill Platz 21/27
+    ["silanhunt"] = { average = 0.91, avgMedian = 6.0, avgKills = 10, firstkill = 0.88, fkPlatz = 21, fkVon = 27, fkAnteil = 72.2, fkKaempfe = 4, fkMenge = 169525 },   -- Silanhunt · Average 6,0 % (10 Kills) · Erst-Kill Platz 21/27
     ["thunderdebbo"] = { average = 0.92, avgMedian = 17.5, avgKills = 10, firstkill = 0.86, fkPlatz = 26, fkVon = 27, fkAnteil = 54.1, fkKaempfe = 4, fkMenge = 245802 },   -- Thunderdebbo · Average 17,5 % (10 Kills) · Erst-Kill Platz 26/27
     ["tobii"] = { average = 1.00, avgMedian = 99.0, avgKills = 9, firstkill = 0.99, fkPlatz = 2, fkVon = 27, fkAnteil = 100.0, fkKaempfe = 4, fkMenge = 447149 },   -- Tobii · Average 99,0 % (9 Kills) · Erst-Kill Platz 2/27
     ["twosocks"] = { average = 0.92, avgMedian = 23.0, avgKills = 3, firstkill = 0.98, fkPlatz = 4, fkVon = 27, fkAnteil = 95.4, fkKaempfe = 1, fkMenge = 206727 },   -- Twosocks · Average 23,0 % (3 Kills) · Erst-Kill Platz 4/27

@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 02.10.2026 10:24
+-- Stand: 02.10.2026 10:30
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -8,12 +8,12 @@
 local _, ns = ...
 
 ns.PRIO = {
-    ["ashylie"] = 3,   -- ashylie (Nebenchar von Blitzfaust)
+    ["ashylie"] = 4,   -- ashylie (Nebenchar von Blitzfaust)
     ["balren"] = 2,   -- Balren
     ["beaybewhy"] = 4,   -- Beaybewhy
     ["bigboysushi"] = 1,   -- bigboysushi (Nebenchar von Twosocks)
-    ["blitzfaust"] = 3,   -- Blitzfaust
-    ["bloodyiron"] = 3,   -- bloodyiron (Nebenchar von Blitzfaust)
+    ["blitzfaust"] = 4,   -- Blitzfaust
+    ["bloodyiron"] = 4,   -- bloodyiron (Nebenchar von Blitzfaust)
     ["cep"] = 2,   -- Cep
     ["charlemagne"] = 3,   -- charlemagne (Nebenchar von Ophrys)
     ["cheliia"] = 2,   -- Cheliia
@@ -33,10 +33,10 @@ ns.PRIO = {
     ["jekyl"] = 5,   -- Jekyl
     ["juxea"] = 3,   -- juxea (Nebenchar von Ophrys)
     ["kala"] = 5,   -- kala (Nebenchar von Moríko)
-    ["kaliistda"] = 3,   -- kaliistda (Nebenchar von Blitzfaust)
+    ["kaliistda"] = 4,   -- kaliistda (Nebenchar von Blitzfaust)
     ["kearney"] = 5,   -- kearney (Nebenchar von Moríko)
     ["keitabha"] = 5,   -- keitabha (Nebenchar von Enshirou)
-    ["kuhohnemilch"] = 3,   -- kuhohnemilch (Nebenchar von Blitzfaust)
+    ["kuhohnemilch"] = 4,   -- kuhohnemilch (Nebenchar von Blitzfaust)
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
     ["magirmx"] = 2,   -- magirmx (Nebenchar von Merlón)
     ["merlon"] = 2,   -- Merlón
@@ -72,7 +72,7 @@ ns.PRIO = {
     ["taovitotem"] = 5,   -- taovitotem (Nebenchar von Palaball)
     ["thunderdebbo"] = 3,   -- Thunderdebbo
     ["tobii"] = 1,   -- Tobii
-    ["trybuss"] = 3,   -- trybuss (Nebenchar von Blitzfaust)
+    ["trybuss"] = 4,   -- trybuss (Nebenchar von Blitzfaust)
     ["twosocks"] = 1,   -- Twosocks
     ["uneducated"] = 5,   -- uneducated (Nebenchar von Jekyl)
     ["vilarie"] = 2,   -- Vilarie
@@ -80,4 +80,4 @@ ns.PRIO = {
 
 ns.PRIO_ANZAHL = 68
 
-ns.PRIO_STAND = "02.10.2026 10:24"
+ns.PRIO_STAND = "02.10.2026 10:30"
