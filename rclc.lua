@@ -268,6 +268,7 @@ local function berechne(kandidat)
     details.roleFaktor, details.prioFaktor, details.prio = info.roleFaktor, info.prioFaktor, info.prio
     details.wunschFaktor, details.wunsch = info.wunschFaktor, info.wunsch
     details.leistungFaktor = info.leistungFaktor
+    details.leistung = info.leistung          -- Average log / First kill samt absoluten Zahlen
     details.wunschPrio = wunschPrio
     diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, gewaehlt)
     return gewichtet, details
