@@ -56,12 +56,26 @@ ns.LEISTUNGNAME = {
     movement  = "Movement/Survival",
 }
 
---- Gesamtfaktor aus den drei Leistungswerten (1.0 = ohne Wirkung).
+--- Leistungsfaktoren je Spieler, aus Warcraft Logs berechnet (gewichte.lua).
+--- Schluessel = normalisierter Charaktername, wie bei der Prioritaetsliste.
+ns.LEISTUNG_SPIELER = ns.LEISTUNG_SPIELER or {}
+ns.LEISTUNG_REFERENZ = ns.LEISTUNG_REFERENZ or nil
+ns.LEISTUNG_SPANNE = ns.LEISTUNG_SPANNE or nil
+
+--- Gesamtfaktor aus den Leistungswerten (1.0 = ohne Wirkung).
+--- Die drei Werte in ns.LEISTUNG gelten fuer alle; der Wert aus
+--- ns.LEISTUNG_SPIELER gilt nur fuer den uebergebenen Charakter.
+--- @param kandidat string? Charaktername
 --- @return number
-function ns.LeistungFaktor()
+function ns.LeistungFaktor(kandidat)
     local f = 1.0
     for _, wert in pairs(ns.LEISTUNG) do
         f = f * (tonumber(wert) or 1.0)
+    end
+    if kandidat and ns.Normalisiere then
+        local schluessel = ns.Normalisiere(kandidat)
+        local jeSpieler = schluessel and ns.LEISTUNG_SPIELER[schluessel]
+        if jeSpieler then f = f * (tonumber(jeSpieler) or 1.0) end
     end
     return f
 end
@@ -186,7 +200,7 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
             info.wunschFaktor = wf
         end
     end
-    info.leistungFaktor = ns.LeistungFaktor()
+    info.leistungFaktor = ns.LeistungFaktor(kandidat)
     info.faktor = info.roleFaktor * info.prioFaktor * info.wunschFaktor * info.leistungFaktor
     info.gewichtet = wert * info.faktor
     info.grund = #info.gruende > 0 and table.concat(info.gruende, " + ") or nil
