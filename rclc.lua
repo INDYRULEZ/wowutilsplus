@@ -293,32 +293,56 @@ local function tooltipZeigen(frame, kandidat)
         local einheit = d.prozent and "%" or ""
         -- Nur die Begruendung: wie kommt die gewichtete Zahl zustande.
         -- Der Grundwert steht in der Spalte daneben (WowUtils), deshalb hier nicht nochmal.
-        local teile = {}
-        if d.roleFaktor and d.roleFaktor ~= 1.0 then
-            teile[#teile + 1] = ("%s %s"):format(ns.RollenName(d.role), ns.Faktor(d.roleFaktor))
+        local function zeile(bezeichnung, text)
+            GameTooltip:AddLine(("  %-12s %s"):format(bezeichnung, text), 0.9, 0.9, 0.9)
         end
+
+        zeile("Rolle", ("%s  x%s"):format(ns.RollenName(d.role), ns.Faktor(d.roleFaktor)))
         if d.prio then
-            teile[#teile + 1] = ("Prio %d %s"):format(d.prio, ns.Faktor(d.prioFaktor))
+            zeile("Prio", ("%d  x%s"):format(d.prio, ns.Faktor(d.prioFaktor)))
         end
         if d.wunsch then
-            teile[#teile + 1] = ("%s %s"):format(ns.WUNSCHNAME[d.wunsch] or
-                ("Wunsch " .. tostring(d.wunsch)), ns.Faktor(d.wunschFaktor))
+            zeile("Wunschliste", ("%s  x%s"):format(
+                ns.WUNSCHNAME[d.wunsch] or ("Wunsch " .. tostring(d.wunsch)),
+                ns.Faktor(d.wunschFaktor)))
         end
-        if d.leistungFaktor and d.leistungFaktor ~= 1.0 then
-            teile[#teile + 1] = ("Leistung %s"):format(ns.Faktor(d.leistungFaktor))
+
+        local lw = d.leistung
+        local det = lw and lw.details or nil
+        if lw and lw.average and lw.average ~= 1.0 then
+            local zusatz = ""
+            if det and det.avgMedian then
+                zusatz = ("   (%s, %s Kills)"):format(
+                    ns.ZahlEinfach(det.avgMedian, " %"), tostring(det.avgKills or "?"))
+            end
+            zeile("Average log", ("x%s%s"):format(ns.Faktor(lw.average), zusatz))
         end
-        if #teile > 0 then
-            GameTooltip:AddLine(("Gewichtet:  %s  (%s)")
-                :format(ns.Zahl(d.gewichtet, einheit), table.concat(teile, " + ")), 1, 0.85, 0.2)
-        else
-            GameTooltip:AddLine(("Gewichtet:  %s  (keine Gewichtung — %s)")
-                :format(ns.Zahl(d.gewichtet, einheit), ns.RollenName(d.role)), 1, 0.85, 0.2)
+        if lw and lw.firstkill and lw.firstkill ~= 1.0 then
+            local zusatz = ""
+            if det and det.fkPlatz then
+                zusatz = ("   (Platz %s/%s"):format(tostring(det.fkPlatz), tostring(det.fkVon))
+                if det.fkDps then
+                    zusatz = zusatz .. (", %s DPS"):format(ns.ZahlTausend(det.fkDps))
+                end
+                if det.fkAnteil then
+                    zusatz = zusatz .. (", %s %% vom Besten"):format(ns.ZahlEinfach(det.fkAnteil))
+                end
+                zusatz = zusatz .. ")"
+            end
+            zeile("First kill", ("x%s%s"):format(ns.Faktor(lw.firstkill), zusatz))
         end
+        if lw and lw.movement and lw.movement ~= 1.0 then
+            zeile("Movement", ("x%s"):format(ns.Faktor(lw.movement)))
+        end
+
+        GameTooltip:AddLine(("Gewichtet:  %s"):format(ns.Zahl(d.gewichtet, einheit)),
+            1, 0.85, 0.2)
         if d.grund then
             GameTooltip:AddLine(d.grund, 0.7, 0.7, 0.7, true)
         end
         if not d.kontext then
-            GameTooltip:AddLine(rot("Item-Kontext noch nicht lesbar — wird gleich erneut versucht"), 1, 0.4, 0.4)
+            GameTooltip:AddLine(rot("Item-Kontext noch nicht lesbar — wird gleich erneut versucht"),
+                1, 0.4, 0.4)
         end
     end
     GameTooltip:Show()

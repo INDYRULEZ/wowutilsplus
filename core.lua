@@ -40,6 +40,24 @@ function ns.Zahl(wert, einheit)
     return s .. (einheit or "")
 end
 
+--- Zahl ohne Vorzeichen, deutsches Komma — fuer Prozentwerte und Anteile.
+--- @param wert number
+--- @param einheit string?
+--- @return string
+function ns.ZahlEinfach(wert, einheit)
+    local s = ("%.2f"):format(tonumber(wert) or 0)
+    return s:gsub("%.", ",") .. (einheit or "")
+end
+
+--- Ganze Zahl mit Tausenderpunkt, z. B. 199.641.
+--- @param wert number
+--- @return string
+function ns.ZahlTausend(wert)
+    local s = ("%d"):format(math.floor((tonumber(wert) or 0) + 0.5))
+    local fertig = s:reverse():gsub("(%d%d%d)", "%1."):reverse()
+    return (fertig:gsub("^%.", ""))
+end
+
 --- Anzeigenamen der Rollen — ueberall dieselben Worte wie auf der Weboberflaeche.
 ns.ROLLENNAME = { DAMAGER = "DPS", HEALER = "Healer", TANK = "Tank" }
 
@@ -64,16 +82,16 @@ ns.LEISTUNG_SPIELER = ns.LEISTUNG_SPIELER or {}
 ns.LEISTUNG_REFERENZ = ns.LEISTUNG_REFERENZ or nil
 ns.LEISTUNG_SPANNE = ns.LEISTUNG_SPANNE or nil
 
---- Gesamtfaktor aus den Leistungswerten (1.0 = ohne Wirkung).
+--- Die Leistungswerte einzeln, je Spieler aufgeloest.
 --- Je Wert gilt: Angabe des Charakters schlaegt die allgemeine Vorgabe.
 --- @param kandidat string? Charaktername
---- @return number
-function ns.LeistungFaktor(kandidat)
+--- @return table { average, firstkill, movement, details }
+function ns.LeistungsWerte(kandidat)
     local jeSpieler
     if kandidat and ns.Normalisiere then
         jeSpieler = ns.LEISTUNG_SPIELER[ns.Normalisiere(kandidat)]
     end
-    local f = 1.0
+    local werte = {}
     for art, vorgabe in pairs(ns.LEISTUNG) do
         local wert = vorgabe
         if type(jeSpieler) == "table" and jeSpieler[art] ~= nil then
@@ -82,9 +100,18 @@ function ns.LeistungFaktor(kandidat)
             -- Alte Form: eine einzelne Zahl galt fuer den Average-Wert.
             wert = jeSpieler
         end
-        f = f * (tonumber(wert) or 1.0)
+        werte[art] = tonumber(wert) or 1.0
     end
-    return f
+    werte.details = (type(jeSpieler) == "table") and jeSpieler or nil
+    return werte
+end
+
+--- Gesamtfaktor aus den Leistungswerten (1.0 = ohne Wirkung).
+--- @param kandidat string? Charaktername
+--- @return number
+function ns.LeistungFaktor(kandidat)
+    local w = ns.LeistungsWerte(kandidat)
+    return (w.average or 1.0) * (w.firstkill or 1.0) * (w.movement or 1.0)
 end
 
 --- Faktor aus der Wunschlisten-Priorität (1 = Best in Slot, 2 = Upgrade).
@@ -207,7 +234,10 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
             info.wunschFaktor = wf
         end
     end
-    info.leistungFaktor = ns.LeistungFaktor(kandidat)
+    local leistung = ns.LeistungsWerte(kandidat)
+    info.leistung = leistung
+    info.leistungFaktor = (leistung.average or 1.0) * (leistung.firstkill or 1.0)
+        * (leistung.movement or 1.0)
     info.faktor = info.roleFaktor * info.prioFaktor * info.wunschFaktor * info.leistungFaktor
     info.gewichtet = wert * info.faktor
     info.grund = #info.gruende > 0 and table.concat(info.gruende, " + ") or nil
