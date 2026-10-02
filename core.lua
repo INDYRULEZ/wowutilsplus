@@ -17,7 +17,9 @@ ns.VERSION = "0.5.0"
 -- Rolle -> Faktor + Begruendung. Bewusst als Tabelle, damit weitere Faktoren
 -- einfach ergaenzt werden koennen. 1.0 = unveraendert.
 -- ---------------------------------------------------------------------------
-ns.WEIGHTS = {
+-- Vorgabe, falls gewichte.lua fehlt. Normalerweise kommt die Tabelle aus
+-- gewichte.lua, das die Weboberflaeche erzeugt (laedt vor dieser Datei).
+ns.WEIGHTS = ns.WEIGHTS or {
     HEALER  = { factor = 0.52 },
     TANK    = { factor = 1.15 },
     DAMAGER = { factor = 1.0 },
