@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 02.10.2026 11:55
+-- Stand: 03.10.2026 00:01
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -36,8 +36,8 @@ ns.PRIO = {
     ["keitabha"] = 5,   -- keitabha (Nebenchar von Enshirou)
     ["kuhohnemilch"] = 4,   -- kuhohnemilch (Nebenchar von Blitzfaust)
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
-    ["magirmx"] = 2,   -- magirmx (Nebenchar von Merlón)
-    ["merlon"] = 2,   -- Merlón
+    ["magirmx"] = 3,   -- magirmx (Nebenchar von Merlón)
+    ["merlon"] = 3,   -- Merlón
     ["neyzdk"] = 5,   -- neyzdk (Nebenchar von Neyzxd)
     ["neyzxd"] = 5,   -- Neyzxd
     ["nitroboost"] = 3,   -- nitroboost (Nebenchar von Setupx)
@@ -77,4 +77,4 @@ ns.PRIO = {
 
 ns.PRIO_ANZAHL = 65
 
-ns.PRIO_STAND = "02.10.2026 11:55"
+ns.PRIO_STAND = "03.10.2026 00:01"
