@@ -436,7 +436,13 @@ end
 function mod:OnInitialize()
     -- RCL braucht einen Moment, bis das Abstimmungsfenster-Modul steht
     local versuche = 0
-    local t = C_Timer.NewTicker(1, function()
+    -- 🔴 `local t` MUSS vor dem Ticker stehen. In `local t = C_Timer.NewTicker(1, function()
+    -- ... t:Cancel() end)` ist `t` innerhalb der Funktion noch nicht in Sichtweite — Lua bindet
+    -- den Namen dort an ein GLOBALES `t`, das es nicht gibt:
+    -- „rclc.lua:442: attempt to index global 't' (a nil value)", bei JEDEM Laden, sobald die
+    -- Spalte haengt. Gemeldet von Jonas (BugSack) am 03.10.2026. Nicht wieder zusammenziehen.
+    local t
+    t = C_Timer.NewTicker(1, function()
         versuche = versuche + 1
         if mod:SpalteEinhaengen() then
             t:Cancel()
