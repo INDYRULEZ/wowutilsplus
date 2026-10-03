@@ -65,7 +65,7 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
 ## Aktueller Stand
 
-*Automatisch erzeugt — Stand: 02.10.2026 22:38*
+*Automatisch erzeugt — Stand: 03.10.2026 13:12*
 
 **Einstellungen:** die letzten 10 mythischen Kills · Abzug bei 0er Log 10 % · Abzug am letzten Erst-Kill-Platz 15 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
 
@@ -78,16 +78,16 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 | Blitzfaust | DPS | 42,5 % (4 Kills) → 0,94 | Platz 8/22 → 0,95 | −8,0 % | 0,82 → −18,0 % |
 | Cep | DPS | 30,0 % (7 Kills) → 0,93 | Platz 6/22 → 0,96 | −2,0 % | 0,87 → −13,0 % |
 | Cheliia | DPS | 37,0 % (8 Kills) → 0,94 | Platz 9/22 → 0,94 | −2,0 % | 0,86 → −14,0 % |
-| Enshirou | DPS | 18,5 % (8 Kills) → 0,92 | Platz 13/22 → 0,91 | −8,0 % | 0,77 → −23,0 % |
+| Enshirou | DPS | 19,0 % (8 Kills) → 0,92 | Platz 13/22 → 0,91 | −8,0 % | 0,77 → −23,0 % |
 | Exorzist (cheetah) | Heiler | 40,0 % (9 Kills) → 0,94 | Platz 12/22 → 0,92 | −5,0 % | 0,82 → −18,0 % |
-| Exudes | DPS | 29,0 % (2 Kills) → 0,93 | Platz 2/22 → 0,99 | −4,0 % | 0,88 → −12,0 % |
+| Exudes | DPS | 30,5 % (2 Kills) → 0,93 | Platz 2/22 → 0,99 | −4,0 % | 0,88 → −12,0 % |
 | Garshû | DPS | 23,0 % (9 Kills) → 0,92 | Platz 16/22 → 0,89 | −3,0 % | 0,79 → −21,0 % |
 | Gwêni (Snowi) | DPS | 22,0 % (9 Kills) → 0,92 | Platz 7/22 → 0,96 | −10,0 % | 0,79 → −21,0 % |
 | Hyperhardw (Pasipháë) | DPS | 24,5 % (8 Kills) → 0,92 | Platz 14/22 → 0,91 | −5,0 % | 0,79 → −21,0 % |
 | Indydrakes | DPS | 5,0 % (8 Kills) → 0,91 | Platz 19/22 → 0,87 | −1,0 % | 0,78 → −22,0 % |
 | Jekyl (Rone) | DPS | 1,0 % (1 Kills) → 0,90 | Platz 20/22 → 0,86 | −10,0 % | 0,70 → −30,0 % |
 | Merlón | DPS | 51,0 % (9 Kills) → 0,95 | Platz 5/22 → 0,97 | −7,0 % | 0,85 → −15,0 % |
-| Neyzxd (Neyz) | DPS | 66,0 % (1 Kills) → 0,97 | – | −10,0 % | 0,86 → −14,0 % |
+| Neyzxd (Neyz) | DPS | 68,0 % (1 Kills) → 0,97 | – | −10,0 % | 0,87 → −13,0 % |
 | Notam | DPS | 6,0 % (9 Kills) → 0,91 | Platz 17/22 → 0,89 | −10,0 % | 0,72 → −28,0 % |
 | Ophrys (Juxe) | Heiler | 44,0 % (9 Kills) → 0,94 | Platz 18/22 → 0,88 | −7,0 % | 0,77 → −23,0 % |
 | palaball | Heiler | – | Platz 18/22 → 0,88 | −3,0 % | 0,85 → −15,0 % |
