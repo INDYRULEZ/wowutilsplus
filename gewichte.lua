@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 03.10.2026 00:01
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 03.10.2026 10:38
 
 local _, ns = ...
 
@@ -34,30 +34,30 @@ ns.LEISTUNG = {
 ns.LEISTUNG_AVG_ABZUG = 0.100
 ns.LEISTUNG_KADERSCHNITT = 30.0
 ns.LEISTUNG_SPIELER = {
-    ["balren"] = { average = 0.93, avgMedian = 30.0, avgKills = 9, firstkill = 0.94, fkPlatz = 10, fkVon = 22, fkAnteil = 85.3, fkKaempfe = 4, fkMenge = 204026 },   -- Balren · Average 30,0 % (9 Kills) · Erst-Kill Platz 10/22
+    ["balren"] = { average = 0.93, avgMedian = 30.0, avgKills = 9, firstkill = 0.94, fkPlatz = 10, fkVon = 22, fkAnteil = 85.3, fkKaempfe = 4, fkMenge = 204026, movement = 0.95 },   -- Balren · Average 30,0 % (9 Kills) · Erst-Kill Platz 10/22 · Movement -5,0 %
     ["bigboysushi"] = { firstkill = 0.92, fkPlatz = 12, fkVon = 22, fkAnteil = 79.1, fkKaempfe = 2, fkMenge = 205011 },   -- Bigboysushi · Erst-Kill Platz 12/22
-    ["blitzfaust"] = { average = 0.94, avgMedian = 42.5, avgKills = 4, firstkill = 0.95, fkPlatz = 8, fkVon = 22, fkAnteil = 87.5, fkKaempfe = 2, fkMenge = 206535 },   -- Blitzfaust · Average 42,5 % (4 Kills) · Erst-Kill Platz 8/22
-    ["cep"] = { average = 0.93, avgMedian = 30.0, avgKills = 7, firstkill = 0.96, fkPlatz = 6, fkVon = 22, fkAnteil = 89.3, fkKaempfe = 4, fkMenge = 216898 },   -- Cep · Average 30,0 % (7 Kills) · Erst-Kill Platz 6/22
-    ["cheliia"] = { average = 0.94, avgMedian = 37.0, avgKills = 8, firstkill = 0.94, fkPlatz = 9, fkVon = 22, fkAnteil = 85.7, fkKaempfe = 3, fkMenge = 187583 },   -- Cheliia · Average 37,0 % (8 Kills) · Erst-Kill Platz 9/22
-    ["enshirou"] = { average = 0.92, avgMedian = 18.5, avgKills = 8, firstkill = 0.91, fkPlatz = 13, fkVon = 22, fkAnteil = 78.8, fkKaempfe = 3, fkMenge = 183840 },   -- Enshirou · Average 18,5 % (8 Kills) · Erst-Kill Platz 13/22
-    ["exorzist"] = { average = 0.94, avgMedian = 40.0, avgKills = 9, firstkill = 0.92, fkPlatz = 12, fkVon = 22, fkAnteil = 75.6, fkKaempfe = 4, fkMenge = 329954 },   -- Exorzist · Average 40,0 % (9 Kills) · Erst-Kill Platz 12/22 von Hand
-    ["exudes"] = { average = 0.93, avgMedian = 29.0, avgKills = 2, firstkill = 0.99, fkPlatz = 2, fkVon = 22, fkAnteil = 100.0, fkKaempfe = 1, fkMenge = 261258 },   -- Exudes · Average 29,0 % (2 Kills) · Erst-Kill Platz 2/22
-    ["garshu"] = { average = 0.92, avgMedian = 23.0, avgKills = 9, firstkill = 0.89, fkPlatz = 16, fkVon = 22, fkAnteil = 75.0, fkKaempfe = 4, fkMenge = 190778 },   -- Garshû · Average 23,0 % (9 Kills) · Erst-Kill Platz 16/22
-    ["gweni"] = { average = 0.92, avgMedian = 22.0, avgKills = 9, firstkill = 0.96, fkPlatz = 7, fkVon = 22, fkAnteil = 88.9, fkKaempfe = 4, fkMenge = 197025 },   -- Gwêni · Average 22,0 % (9 Kills) · Erst-Kill Platz 7/22
-    ["hyperhardw"] = { average = 0.92, avgMedian = 24.5, avgKills = 8, firstkill = 0.91, fkPlatz = 14, fkVon = 22, fkAnteil = 77.5, fkKaempfe = 3, fkMenge = 164303 },   -- Hyperhardw · Average 24,5 % (8 Kills) · Erst-Kill Platz 14/22
-    ["indydrakes"] = { average = 0.91, avgMedian = 5.0, avgKills = 8, firstkill = 0.87, fkPlatz = 19, fkVon = 22, fkAnteil = 72.3, fkKaempfe = 3, fkMenge = 153253 },   -- Indydrakes · Average 5,0 % (8 Kills) · Erst-Kill Platz 19/22
-    ["jekyl"] = { average = 0.90, avgMedian = 1.0, avgKills = 1, firstkill = 0.86, fkPlatz = 20, fkVon = 22, fkAnteil = 67.9, fkKaempfe = 1, fkMenge = 177508 },   -- Jekyl · Average 1,0 % (1 Kills) · Erst-Kill Platz 20/22
-    ["merlon"] = { average = 0.95, avgMedian = 51.0, avgKills = 9, firstkill = 0.97, fkPlatz = 5, fkVon = 22, fkAnteil = 89.8, fkKaempfe = 4, fkMenge = 211056 },   -- Merlón · Average 51,0 % (9 Kills) · Erst-Kill Platz 5/22
-    ["neyzxd"] = { average = 0.97, avgMedian = 66.0, avgKills = 1 },   -- Neyzxd · Average 66,0 % (1 Kills)
-    ["notam"] = { average = 0.91, avgMedian = 6.0, avgKills = 9, firstkill = 0.89, fkPlatz = 17, fkVon = 22, fkAnteil = 74.9, fkKaempfe = 4, fkMenge = 169359 },   -- Notam · Average 6,0 % (9 Kills) · Erst-Kill Platz 17/22
-    ["ophrys"] = { average = 0.94, avgMedian = 44.0, avgKills = 9, firstkill = 0.88, fkPlatz = 18, fkVon = 22, fkAnteil = 63.7, fkKaempfe = 4, fkMenge = 271314 },   -- Ophrys · Average 44,0 % (9 Kills) · Erst-Kill Platz 18/22 von Hand
-    ["palaball"] = { firstkill = 0.88, fkPlatz = 18, fkVon = 22 },   -- palaball · Erst-Kill Platz 18/22 von Hand
+    ["blitzfaust"] = { average = 0.94, avgMedian = 42.5, avgKills = 4, firstkill = 0.95, fkPlatz = 8, fkVon = 22, fkAnteil = 87.5, fkKaempfe = 2, fkMenge = 206535, movement = 0.92 },   -- Blitzfaust · Average 42,5 % (4 Kills) · Erst-Kill Platz 8/22 · Movement -8,0 %
+    ["cep"] = { average = 0.93, avgMedian = 30.0, avgKills = 7, firstkill = 0.96, fkPlatz = 6, fkVon = 22, fkAnteil = 89.3, fkKaempfe = 4, fkMenge = 216898, movement = 0.98 },   -- Cep · Average 30,0 % (7 Kills) · Erst-Kill Platz 6/22 · Movement -2,0 %
+    ["cheliia"] = { average = 0.94, avgMedian = 37.0, avgKills = 8, firstkill = 0.94, fkPlatz = 9, fkVon = 22, fkAnteil = 85.7, fkKaempfe = 3, fkMenge = 187583, movement = 0.98 },   -- Cheliia · Average 37,0 % (8 Kills) · Erst-Kill Platz 9/22 · Movement -2,0 %
+    ["enshirou"] = { average = 0.92, avgMedian = 18.5, avgKills = 8, firstkill = 0.91, fkPlatz = 13, fkVon = 22, fkAnteil = 78.8, fkKaempfe = 3, fkMenge = 183840, movement = 0.92 },   -- Enshirou · Average 18,5 % (8 Kills) · Erst-Kill Platz 13/22 · Movement -8,0 %
+    ["exorzist"] = { average = 0.94, avgMedian = 40.0, avgKills = 9, firstkill = 0.92, fkPlatz = 12, fkVon = 22, fkAnteil = 75.6, fkKaempfe = 4, fkMenge = 329954, movement = 0.95 },   -- Exorzist · Average 40,0 % (9 Kills) · Erst-Kill Platz 12/22 von Hand · Movement -5,0 %
+    ["exudes"] = { average = 0.93, avgMedian = 29.0, avgKills = 2, firstkill = 0.99, fkPlatz = 2, fkVon = 22, fkAnteil = 100.0, fkKaempfe = 1, fkMenge = 261258, movement = 0.96 },   -- Exudes · Average 29,0 % (2 Kills) · Erst-Kill Platz 2/22 · Movement -4,0 %
+    ["garshu"] = { average = 0.92, avgMedian = 23.0, avgKills = 9, firstkill = 0.89, fkPlatz = 16, fkVon = 22, fkAnteil = 75.0, fkKaempfe = 4, fkMenge = 190778, movement = 0.97 },   -- Garshû · Average 23,0 % (9 Kills) · Erst-Kill Platz 16/22 · Movement -3,0 %
+    ["gweni"] = { average = 0.92, avgMedian = 22.0, avgKills = 9, firstkill = 0.96, fkPlatz = 7, fkVon = 22, fkAnteil = 88.9, fkKaempfe = 4, fkMenge = 197025, movement = 0.90 },   -- Gwêni · Average 22,0 % (9 Kills) · Erst-Kill Platz 7/22 · Movement -10,0 %
+    ["hyperhardw"] = { average = 0.92, avgMedian = 24.5, avgKills = 8, firstkill = 0.91, fkPlatz = 14, fkVon = 22, fkAnteil = 77.5, fkKaempfe = 3, fkMenge = 164303, movement = 0.95 },   -- Hyperhardw · Average 24,5 % (8 Kills) · Erst-Kill Platz 14/22 · Movement -5,0 %
+    ["indydrakes"] = { average = 0.91, avgMedian = 5.0, avgKills = 8, firstkill = 0.87, fkPlatz = 19, fkVon = 22, fkAnteil = 72.3, fkKaempfe = 3, fkMenge = 153253, movement = 0.99 },   -- Indydrakes · Average 5,0 % (8 Kills) · Erst-Kill Platz 19/22 · Movement -1,0 %
+    ["jekyl"] = { average = 0.90, avgMedian = 1.0, avgKills = 1, firstkill = 0.86, fkPlatz = 20, fkVon = 22, fkAnteil = 67.9, fkKaempfe = 1, fkMenge = 177508, movement = 0.90 },   -- Jekyl · Average 1,0 % (1 Kills) · Erst-Kill Platz 20/22 · Movement -10,0 %
+    ["merlon"] = { average = 0.95, avgMedian = 51.0, avgKills = 9, firstkill = 0.97, fkPlatz = 5, fkVon = 22, fkAnteil = 89.8, fkKaempfe = 4, fkMenge = 211056, movement = 0.93 },   -- Merlón · Average 51,0 % (9 Kills) · Erst-Kill Platz 5/22 · Movement -7,0 %
+    ["neyzxd"] = { average = 0.97, avgMedian = 66.0, avgKills = 1, movement = 0.90 },   -- Neyzxd · Average 66,0 % (1 Kills) · Movement -10,0 %
+    ["notam"] = { average = 0.91, avgMedian = 6.0, avgKills = 9, firstkill = 0.89, fkPlatz = 17, fkVon = 22, fkAnteil = 74.9, fkKaempfe = 4, fkMenge = 169359, movement = 0.90 },   -- Notam · Average 6,0 % (9 Kills) · Erst-Kill Platz 17/22 · Movement -10,0 %
+    ["ophrys"] = { average = 0.94, avgMedian = 44.0, avgKills = 9, firstkill = 0.88, fkPlatz = 18, fkVon = 22, fkAnteil = 63.7, fkKaempfe = 4, fkMenge = 271314, movement = 0.93 },   -- Ophrys · Average 44,0 % (9 Kills) · Erst-Kill Platz 18/22 von Hand · Movement -7,0 %
+    ["palaball"] = { firstkill = 0.88, fkPlatz = 18, fkVon = 22, movement = 0.97 },   -- palaball · Erst-Kill Platz 18/22 von Hand · Movement -3,0 %
     ["palacetamol"] = { average = 0.99, avgMedian = 95.0, avgKills = 1, firstkill = 0.91, fkPlatz = 14, fkVon = 22 },   -- Palacetamol · Average 95,0 % (1 Kills) · Erst-Kill Platz 14/22 von Hand
-    ["schmeckies"] = { average = 0.94, avgMedian = 40.0, avgKills = 1 },   -- Schmeckies · Average 40,0 % (1 Kills)
-    ["sikkz"] = { average = 0.96, avgMedian = 63.0, avgKills = 9, firstkill = 0.98, fkPlatz = 4, fkVon = 22, fkAnteil = 90.5, fkKaempfe = 4, fkMenge = 215172 },   -- Sikkz · Average 63,0 % (9 Kills) · Erst-Kill Platz 4/22
-    ["silanhunt"] = { average = 0.91, avgMedian = 6.0, avgKills = 9, firstkill = 0.93, fkPlatz = 11, fkVon = 22, fkAnteil = 79.5, fkKaempfe = 4, fkMenge = 187334 },   -- Silanhunt · Average 6,0 % (9 Kills) · Erst-Kill Platz 11/22
-    ["thunderdebbo"] = { average = 0.91, avgMedian = 12.0, avgKills = 8, firstkill = 0.91, fkPlatz = 14, fkVon = 22, fkAnteil = 54.1, fkKaempfe = 4, fkMenge = 245802 },   -- Thunderdebbo · Average 12,0 % (8 Kills) · Erst-Kill Platz 14/22 von Hand
-    ["tobii"] = { average = 1.00, avgMedian = 99.0, avgKills = 8, firstkill = 1.00, fkPlatz = 1, fkVon = 22, fkAnteil = 100.0, fkKaempfe = 4, fkMenge = 447149 },   -- Tobii · Average 99,0 % (8 Kills) · Erst-Kill Platz 1/22 von Hand
-    ["twosocks"] = { average = 0.92, avgMedian = 23.0, avgKills = 3, firstkill = 0.99, fkPlatz = 3, fkVon = 22, fkAnteil = 95.6, fkKaempfe = 1, fkMenge = 207568 },   -- Twosocks · Average 23,0 % (3 Kills) · Erst-Kill Platz 3/22
-    ["vilarie"] = { average = 0.95, avgMedian = 48.0, avgKills = 2, firstkill = 0.88, fkPlatz = 18, fkVon = 22, fkAnteil = 74.7, fkKaempfe = 1, fkMenge = 195189 },   -- Vilarie · Average 48,0 % (2 Kills) · Erst-Kill Platz 18/22
+    ["schmeckies"] = { average = 0.94, avgMedian = 40.0, avgKills = 1, movement = 0.90 },   -- Schmeckies · Average 40,0 % (1 Kills) · Movement -10,0 %
+    ["sikkz"] = { average = 0.96, avgMedian = 63.0, avgKills = 9, firstkill = 0.98, fkPlatz = 4, fkVon = 22, fkAnteil = 90.5, fkKaempfe = 4, fkMenge = 215172, movement = 1.00 },   -- Sikkz · Average 63,0 % (9 Kills) · Erst-Kill Platz 4/22
+    ["silanhunt"] = { average = 0.91, avgMedian = 6.0, avgKills = 9, firstkill = 0.93, fkPlatz = 11, fkVon = 22, fkAnteil = 79.5, fkKaempfe = 4, fkMenge = 187334, movement = 0.99 },   -- Silanhunt · Average 6,0 % (9 Kills) · Erst-Kill Platz 11/22 · Movement -1,0 %
+    ["thunderdebbo"] = { average = 0.91, avgMedian = 12.0, avgKills = 8, firstkill = 0.91, fkPlatz = 14, fkVon = 22, fkAnteil = 54.1, fkKaempfe = 4, fkMenge = 245802, movement = 0.92 },   -- Thunderdebbo · Average 12,0 % (8 Kills) · Erst-Kill Platz 14/22 von Hand · Movement -8,0 %
+    ["tobii"] = { average = 1.00, avgMedian = 99.0, avgKills = 8, firstkill = 1.00, fkPlatz = 1, fkVon = 22, fkAnteil = 100.0, fkKaempfe = 4, fkMenge = 447149, movement = 1.00 },   -- Tobii · Average 99,0 % (8 Kills) · Erst-Kill Platz 1/22 von Hand
+    ["twosocks"] = { average = 0.92, avgMedian = 23.0, avgKills = 3, firstkill = 0.99, fkPlatz = 3, fkVon = 22, fkAnteil = 95.6, fkKaempfe = 1, fkMenge = 207568, movement = 0.98 },   -- Twosocks · Average 23,0 % (3 Kills) · Erst-Kill Platz 3/22 · Movement -2,0 %
+    ["vilarie"] = { average = 0.95, avgMedian = 48.0, avgKills = 2, firstkill = 0.88, fkPlatz = 18, fkVon = 22, fkAnteil = 74.7, fkKaempfe = 1, fkMenge = 195189, movement = 0.98 },   -- Vilarie · Average 48,0 % (2 Kills) · Erst-Kill Platz 18/22 · Movement -2,0 %
 }
