@@ -281,11 +281,8 @@ end
 local function tooltipZeigen(frame, kandidat)
     local d = ns.rohcache[kandidat]
     GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
-    -- Erste Zeile = das Ergebnis (WoW zeichnet sie als Titelzeile gross und eingerueckt).
-    if d and not d.fehlt then
-        GameTooltip:AddDoubleLine("Gewichtet", ns.Zahl(d.gewichtet, d.prozent and "%" or ""),
-            1, 1, 1, 1, 0.85, 0.2)
-    end
+
+    -- Ohne Ergebnis bleibt nur die Ursache zu nennen. Die erste Zeile zeichnet WoW gross.
     if not d or d.fehlt then
         if d and d.fehlt == "kein-kontext" then
             GameTooltip:AddLine(rot("Item-Info noch nicht geladen — wird gleich erneut versucht"), 1, 0.4, 0.4)
@@ -294,48 +291,60 @@ local function tooltipZeigen(frame, kandidat)
         else
             GameTooltip:AddLine(grau("Keine Sim-Daten fuer dieses Item."))
         end
-    else
-        -- Tabellenform: links Bezeichnung + absoluter Wert, rechts der Faktor.
-        -- Der Grundwert steht in der Spalte daneben (WowUtils), deshalb hier nicht nochmal.
-        local function zeile(bezeichnung, wert, faktor)
-            GameTooltip:AddDoubleLine(
-                ("  %-13s %s"):format(bezeichnung, wert or ""), faktor or "",
-                0.78, 0.78, 0.78, 1, 1, 1)
-        end
+        GameTooltip:Show()
+        return
+    end
 
-        zeile("Rolle", ns.RollenName(d.role), ns.Faktor(d.roleFaktor))
-        if d.prio then
-            zeile("Prio", tostring(d.prio), ns.Faktor(d.prioFaktor))
-        end
-        if d.wunsch then
-            zeile("Wunschliste", ns.WUNSCHNAME[d.wunsch] or ("Wunsch " .. tostring(d.wunsch)),
-                ns.Faktor(d.wunschFaktor))
-        end
+    local einheit = d.prozent and "%" or ""
 
-        local lw = d.leistung
-        local det = lw and lw.details or nil
-        if lw and lw.average and lw.average ~= 1.0 then
-            local wert = (det and det.avgMedian) and ns.ZahlEinfach(det.avgMedian, " %") or ""
-            zeile("Average log", wert, ns.Faktor(lw.average))
-        end
-        if lw and lw.firstkill and lw.firstkill ~= 1.0 then
-            local wert = (det and det.fkPlatz) and ("Platz %s/%s"):format(
-                tostring(det.fkPlatz), tostring(det.fkVon)) or ""
-            zeile("First kill", wert, ns.Faktor(lw.firstkill))
-        end
-        if lw and lw.movement and lw.movement ~= 1.0 then
-            -- Movement wird auf der Seite als Abzug in Prozent gepflegt.
-            local abzug = (1.0 - lw.movement) * 100.0
-            zeile("Movement", ("-%s %%"):format(ns.ZahlEinfach(abzug)), ns.Faktor(lw.movement))
-        end
+    -- 1) Oben der Grundwert, aus dem gerechnet wird — der kommt aus WowUtils.
+    GameTooltip:AddDoubleLine("Grundwert aus WowUtils", ns.Zahl(d.basis, einheit),
+        1, 1, 1, 1, 1, 1)
 
-        if d.grund then
-            GameTooltip:AddLine(d.grund, 0.7, 0.7, 0.7, true)
-        end
-        if not d.kontext then
-            GameTooltip:AddLine(rot("Item-Kontext noch nicht lesbar — wird gleich erneut versucht"),
-                1, 0.4, 0.4)
-        end
+    -- 2) Darunter Zeile fuer Zeile, was davon abgezogen wird: links die Begruendung
+    --    (mit dem Wert, aus dem sich der Faktor ergibt), rechts der Faktor.
+    local function zeile(bezeichnung, wert, faktor)
+        GameTooltip:AddDoubleLine(
+            ("   %-13s %s"):format(bezeichnung, wert or ""), faktor or "",
+            0.78, 0.78, 0.78, 1, 1, 1)
+    end
+
+    zeile("Rolle", ns.RollenName(d.role), ns.Faktor(d.roleFaktor))
+    if d.prio then
+        zeile("Prio", tostring(d.prio), ns.Faktor(d.prioFaktor))
+    end
+    if d.wunsch then
+        zeile("Wunschliste", ns.WUNSCHNAME[d.wunsch] or ("Wunsch " .. tostring(d.wunsch)),
+            ns.Faktor(d.wunschFaktor))
+    end
+
+    local lw = d.leistung
+    local det = lw and lw.details or nil
+    if lw and lw.average and lw.average ~= 1.0 then
+        local wert = (det and det.avgMedian) and ns.ZahlEinfach(det.avgMedian, " %") or ""
+        zeile("Average log", wert, ns.Faktor(lw.average))
+    end
+    if lw and lw.firstkill and lw.firstkill ~= 1.0 then
+        local wert = (det and det.fkPlatz) and ("Platz %s/%s"):format(
+            tostring(det.fkPlatz), tostring(det.fkVon)) or ""
+        zeile("First kill", wert, ns.Faktor(lw.firstkill))
+    end
+    if lw and lw.movement and lw.movement ~= 1.0 then
+        -- Movement wird auf der Seite als Abzug in Prozent gepflegt.
+        local abzug = (1.0 - lw.movement) * 100.0
+        zeile("Movement", ("-%s %%"):format(ns.ZahlEinfach(abzug)), ns.Faktor(lw.movement))
+    end
+
+    -- 3) Unten das Ergebnis.
+    GameTooltip:AddDoubleLine("Gewichtet", ns.Zahl(d.gewichtet, einheit),
+        1, 1, 1, 1, 0.85, 0.2)
+
+    if d.grund then
+        GameTooltip:AddLine(d.grund, 0.7, 0.7, 0.7, true)
+    end
+    if not d.kontext then
+        GameTooltip:AddLine(rot("Item-Kontext noch nicht lesbar — wird gleich erneut versucht"),
+            1, 0.4, 0.4)
     end
     GameTooltip:Show()
 end
