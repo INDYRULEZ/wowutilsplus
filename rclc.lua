@@ -301,38 +301,48 @@ local function tooltipZeigen(frame, kandidat)
     GameTooltip:AddDoubleLine("Grundwert aus WowUtils", ns.Zahl(d.basis, einheit),
         1, 1, 1, 1, 1, 1)
 
-    -- 2) Darunter Zeile fuer Zeile, was davon abgezogen wird: links die Begruendung
-    --    (mit dem Wert, aus dem sich der Faktor ergibt), rechts der Faktor.
-    local function zeile(bezeichnung, wert, faktor)
+    -- 2) Darunter Zeile fuer Zeile, was davon abgezogen wird.
+    --    Drei Spalten: Faktor | Begruendung | Betrag, der in DIESEM Schritt wegfaellt.
+    --    🔴 Der Faktor steht VORN. Ein Tooltip richtet nur zwei Spalten aus (links- und
+    --    rechtsbuendig); der Faktor ist durch seine feste Form ("x0,90") von sich aus
+    --    gleich breit und bildet so die dritte Spalte. Stuende er hinten, waeren die
+    --    Spalten wieder versetzt. Die Betraege laufen mit und summieren sich zum Ergebnis.
+    local lauf = d.basis
+    local function zeile(faktor, text)
+        faktor = tonumber(faktor) or 1.0
+        local neu = lauf * faktor
+        local betrag = neu - lauf
+        lauf = neu
         GameTooltip:AddDoubleLine(
-            ("   %-13s %s"):format(bezeichnung, wert or ""), faktor or "",
-            0.78, 0.78, 0.78, 1, 1, 1)
+            ("%s  %s"):format(ns.Faktor(faktor), text),
+            ns.Zahl(betrag, einheit),
+            0.62, 0.62, 0.62, 1, 1, 1)
     end
 
-    zeile("Rolle", ns.RollenName(d.role), ns.Faktor(d.roleFaktor))
+    zeile(d.roleFaktor, "Rolle: " .. ns.RollenName(d.role))
     if d.prio then
-        zeile("Prio", tostring(d.prio), ns.Faktor(d.prioFaktor))
+        zeile(d.prioFaktor, "Prio: " .. tostring(d.prio))
     end
     if d.wunsch then
-        zeile("Wunschliste", ns.WUNSCHNAME[d.wunsch] or ("Wunsch " .. tostring(d.wunsch)),
-            ns.Faktor(d.wunschFaktor))
+        zeile(d.wunschFaktor, "Wunschliste: "
+            .. (ns.WUNSCHNAME[d.wunsch] or ("Wunsch " .. tostring(d.wunsch))))
     end
 
     local lw = d.leistung
     local det = lw and lw.details or nil
     if lw and lw.average and lw.average ~= 1.0 then
         local wert = (det and det.avgMedian) and ns.ZahlEinfach(det.avgMedian, " %") or ""
-        zeile("Average log", wert, ns.Faktor(lw.average))
+        zeile(lw.average, "Average log: " .. wert)
     end
     if lw and lw.firstkill and lw.firstkill ~= 1.0 then
         local wert = (det and det.fkPlatz) and ("Platz %s/%s"):format(
             tostring(det.fkPlatz), tostring(det.fkVon)) or ""
-        zeile("First kill", wert, ns.Faktor(lw.firstkill))
+        zeile(lw.firstkill, "First kill: " .. wert)
     end
     if lw and lw.movement and lw.movement ~= 1.0 then
         -- Movement wird auf der Seite als Abzug in Prozent gepflegt.
         local abzug = (1.0 - lw.movement) * 100.0
-        zeile("Movement", ("-%s %%"):format(ns.ZahlEinfach(abzug)), ns.Faktor(lw.movement))
+        zeile(lw.movement, "Movement: -" .. ns.ZahlEinfach(abzug) .. " %")
     end
 
     -- 3) Unten das Ergebnis.
