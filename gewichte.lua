@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 04.10.2026 10:55
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 04.10.2026 10:57
 
 local _, ns = ...
 
@@ -48,7 +48,7 @@ ns.LEISTUNG_SPIELER = {
     ["balren"] = { average = 0.90, avgMedian = 30.0, avgKills = 10, firstkill = 0.92, fkPlatz = 10, fkVon = 22, fkAnteil = 85.3, fkKaempfe = 4, fkMenge = 204026, movement = 0.95 },   -- Balren · Average 30,0 % (10 Kills) · Erst-Kill Platz 10/22 · Movement -5,0 %
     ["bigboysushi"] = { firstkill = 0.91, fkPlatz = 12, fkVon = 22, fkAnteil = 79.1, fkKaempfe = 2, fkMenge = 205011 },   -- Bigboysushi · Erst-Kill Platz 12/22
     ["blitzfaust"] = { average = 0.91, avgMedian = 41.0, avgKills = 6, firstkill = 0.94, fkPlatz = 8, fkVon = 22, fkAnteil = 87.5, fkKaempfe = 2, fkMenge = 206535, movement = 0.92 },   -- Blitzfaust · Average 41,0 % (6 Kills) · Erst-Kill Platz 8/22 · Movement -8,0 %
-    ["cep"] = { average = 0.90, avgMedian = 31.0, avgKills = 5, firstkill = 0.96, fkPlatz = 6, fkVon = 22, fkAnteil = 89.3, fkKaempfe = 4, fkMenge = 216898, movement = 0.98 },   -- Cep · Average 31,0 % (5 Kills) · Erst-Kill Platz 6/22 · Movement -2,0 %
+    ["cep"] = { average = 0.89, avgMedian = 29.0, avgKills = 5, firstkill = 0.96, fkPlatz = 6, fkVon = 22, fkAnteil = 89.3, fkKaempfe = 4, fkMenge = 216898, movement = 0.98 },   -- Cep · Average 29,0 % (5 Kills) · Erst-Kill Platz 6/22 · Movement -2,0 %
     ["cheliia"] = { average = 0.92, avgMedian = 48.0, avgKills = 10, firstkill = 0.93, fkPlatz = 9, fkVon = 22, fkAnteil = 85.7, fkKaempfe = 3, fkMenge = 187583, movement = 0.98 },   -- Cheliia · Average 48,0 % (10 Kills) · Erst-Kill Platz 9/22 · Movement -2,0 %
     ["dranash"] = { movement = 0.90 },   -- dranash · Movement -10,0 %
     ["enshirou"] = { average = 0.87, avgMedian = 15.0, avgKills = 8, firstkill = 0.90, fkPlatz = 13, fkVon = 22, fkAnteil = 78.8, fkKaempfe = 3, fkMenge = 183840, movement = 0.92 },   -- Enshirou · Average 15,0 % (8 Kills) · Erst-Kill Platz 13/22 · Movement -8,0 %
@@ -59,7 +59,7 @@ ns.LEISTUNG_SPIELER = {
     ["hyperhardw"] = { average = 0.91, avgMedian = 36.5, avgKills = 10, firstkill = 0.89, fkPlatz = 14, fkVon = 22, fkAnteil = 77.5, fkKaempfe = 3, fkMenge = 164303, movement = 0.95 },   -- Hyperhardw · Average 36,5 % (10 Kills) · Erst-Kill Platz 14/22 · Movement -5,0 %
     ["indydrakes"] = { average = 0.89, avgMedian = 28.5, avgKills = 10, firstkill = 0.85, fkPlatz = 19, fkVon = 22, fkAnteil = 72.3, fkKaempfe = 3, fkMenge = 153253, movement = 0.99 },   -- Indydrakes · Average 28,5 % (10 Kills) · Erst-Kill Platz 19/22 · Movement -1,0 %
     ["jekyl"] = { firstkill = 0.84, fkPlatz = 20, fkVon = 22, fkAnteil = 67.9, fkKaempfe = 1, fkMenge = 177508, movement = 0.90 },   -- Jekyl · Erst-Kill Platz 20/22 · Movement -10,0 %
-    ["merlon"] = { average = 0.93, avgMedian = 56.0, avgKills = 10, firstkill = 0.97, fkPlatz = 5, fkVon = 22, fkAnteil = 89.8, fkKaempfe = 4, fkMenge = 211056, movement = 0.93 },   -- Merlón · Average 56,0 % (10 Kills) · Erst-Kill Platz 5/22 · Movement -7,0 %
+    ["merlon"] = { average = 0.94, avgMedian = 58.0, avgKills = 10, firstkill = 0.97, fkPlatz = 5, fkVon = 22, fkAnteil = 89.8, fkKaempfe = 4, fkMenge = 211056, movement = 0.93 },   -- Merlón · Average 58,0 % (10 Kills) · Erst-Kill Platz 5/22 · Movement -7,0 %
     ["neyzxd"] = { average = 0.95, avgMedian = 66.0, avgKills = 3, movement = 0.90 },   -- Neyzxd · Average 66,0 % (3 Kills) · Movement -10,0 %
     ["notam"] = { average = 0.86, avgMedian = 6.0, avgKills = 10, firstkill = 0.86, fkPlatz = 17, fkVon = 22, fkAnteil = 74.9, fkKaempfe = 4, fkMenge = 169359, movement = 0.90 },   -- Notam · Average 6,0 % (10 Kills) · Erst-Kill Platz 17/22 · Movement -10,0 %
     ["ophrys"] = { average = 0.92, avgMedian = 44.0, avgKills = 10, firstkill = 0.87, fkPlatz = 16, fkVon = 22, fkAnteil = 63.7, fkKaempfe = 4, fkMenge = 271314, movement = 0.93 },   -- Ophrys · Average 44,0 % (10 Kills) · Erst-Kill Platz 16/22 von Hand · Movement -7,0 %
