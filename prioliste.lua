@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 04.10.2026 09:01
+-- Stand: 04.10.2026 09:50
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -77,4 +77,4 @@ ns.PRIO = {
 
 ns.PRIO_ANZAHL = 65
 
-ns.PRIO_STAND = "04.10.2026 09:01"
+ns.PRIO_STAND = "04.10.2026 09:50"
