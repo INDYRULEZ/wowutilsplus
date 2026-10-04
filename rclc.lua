@@ -351,7 +351,7 @@ local function tooltipZeigen(frame, kandidat)
     end
     if d.itemsFaktor and d.itemsFaktor ~= 1.0 then
         local st = d.itemsStand or {}
-        zeile(d.itemsFaktor, "Items heute: " .. tostring(st.heute or "?"))
+        zeile(d.itemsFaktor, "Items seit Reset: " .. tostring(st.seitReset or "?"))
     end
     if d.crestFaktor and d.crestFaktor ~= 1.0 then
         local st = d.crestStand or {}

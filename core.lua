@@ -243,7 +243,7 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
     info.leistung = leistung
     info.leistungFaktor = (leistung.average or 1.0) * (leistung.firstkill or 1.0)
         * (leistung.movement or 1.0)
-    -- Items heute + Crests: Zahlen gibt es nur im Spiel. Fehlt die Datenquelle,
+    -- Items seit Reset + Crests: Zahlen gibt es nur im Spiel. Fehlt die Datenquelle,
     -- bleibt der Faktor neutral 1.00 (siehe loot.lua).
     local itemsFaktor, itemsStand = 1.0, nil
     local crestFaktor, crestStand = 1.0, nil

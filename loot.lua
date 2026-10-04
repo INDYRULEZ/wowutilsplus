@@ -1,4 +1,4 @@
---[[ WoWUtils Plus — die zwei Zusatz-Faktoren: Items heute und Crests.
+--[[ WoWUtils Plus — die zwei Zusatz-Faktoren: Items seit Reset und Crests.
 
 Hier stehen NUR die Rechenkurven. Woher die Zahlen kommen, entscheidet die
 Datenquelle (`ns.ItemsStand` / `ns.CrestStand`, gefuellt aus der RCL-Historie
