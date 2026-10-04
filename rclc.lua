@@ -500,13 +500,17 @@ local function tooltipCrests(frame, kandidat)
     end
     GameTooltip:AddLine("Crests")
     for _, s in ipairs(stand.stufen) do
-        local rechts = tostring(s.hat)
-        if s.frei then rechts = rechts .. " + " .. tostring(s.frei) .. " frei" end
-        if s.grenze then rechts = rechts .. "  / " .. tostring(s.grenze) end
-        if s.id == 3446 then
-            GameTooltip:AddDoubleLine(s.name, rechts, 0.62, 0.62, 0.62, 1, 0.85, 0.2)
-        else
-            GameTooltip:AddDoubleLine(s.name, rechts, 0.62, 0.62, 0.62, 1, 1, 1)
+        -- 🔴 Nur Hero (3445) und Mythic (3446) zeigen — Veteran und Champion sind fuer
+        -- die Vergabe uninteressant (Jonas, 04.10.2026). Nicht wieder einblenden.
+        if s.id ~= 3443 and s.id ~= 3444 then
+            local rechts = tostring(s.hat)
+            if s.frei then rechts = rechts .. " + " .. tostring(s.frei) .. " frei" end
+            if s.grenze then rechts = rechts .. "  / " .. tostring(s.grenze) end
+            if s.id == 3446 then
+                GameTooltip:AddDoubleLine(s.name, rechts, 0.62, 0.62, 0.62, 1, 0.85, 0.2)
+            else
+                GameTooltip:AddDoubleLine(s.name, rechts, 0.62, 0.62, 0.62, 1, 1, 1)
+            end
         end
     end
     if faktor ~= 1.0 then

@@ -28,7 +28,7 @@ Original-Addon unangetastet.
   gewichteten Wert (nicht nach dem angezeigten Text)
 - **Zwei weitere Spalten:** **„Items"** (insgesamt · heute) und **„Crests"** (Mythic: in der
   Tasche + frei). Der Tooltip der Items-Spalte listet die heute erhaltenen Teile, der der
-  Crest-Spalte alle vier Creststufen einzeln
+  Crest-Spalte die Stufen **Hero und Mythic**
 - Ohne passenden Sim-Eintrag steht `---` — es wird nie geraten
 
 ## Die Gewichtung
