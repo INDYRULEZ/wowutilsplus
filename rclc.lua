@@ -15,6 +15,8 @@ local addonName, ns = ...
 
 local SPALTE = "wowutilsplus"
 local SPALTENNAME = "Gewichtet"
+local SPALTE_ITEMS = "wowutilsplusitems"
+local SPALTE_CRESTS = "wowutilspluscrests"
 local BREITE = 90
 
 -- RCLootCouncil muss geladen sein (OptionalDeps im .toc)
@@ -23,6 +25,7 @@ local RCL = LibStub("AceAddon-3.0"):GetAddon("RCLootCouncil", true)
 if not RCL then return end
 
 local mod = RCL:NewModule("WowUtilsPlusRCLC", "AceHook-3.0")
+ns.RCL = RCL               -- fuer daten.lua: die Loot-Historie liegt in RCL
 ns.cache = {}          -- Kandidatenname -> gewichteter Wert (fuer die Sortierung)
 ns.rohcache = {}       -- Kandidatenname -> { roh, faktor, grund, role, ilvl, prozent }
 local session = 0
@@ -269,6 +272,8 @@ local function berechne(kandidat)
     details.wunschFaktor, details.wunsch = info.wunschFaktor, info.wunsch
     details.leistungFaktor = info.leistungFaktor
     details.leistung = info.leistung          -- Average log / First kill samt absoluten Zahlen
+    details.itemsFaktor, details.itemsStand = info.itemsFaktor, info.itemsStand
+    details.crestFaktor, details.crestStand = info.crestFaktor, info.crestStand
     details.wunschPrio = wunschPrio
     diagnoseErfassen(kandidat, daten, itemId, itemIlvl, zielDif, kontext, gewaehlt)
     return gewichtet, details
@@ -344,6 +349,15 @@ local function tooltipZeigen(frame, kandidat)
         local abzug = (1.0 - lw.movement) * 100.0
         zeile(lw.movement, "Movement: -" .. ns.ZahlEinfach(abzug) .. " %")
     end
+    if d.itemsFaktor and d.itemsFaktor ~= 1.0 then
+        local st = d.itemsStand or {}
+        zeile(d.itemsFaktor, "Items heute: " .. tostring(st.heute or "?"))
+    end
+    if d.crestFaktor and d.crestFaktor ~= 1.0 then
+        local st = d.crestStand or {}
+        local wert = (tonumber(st.hat) or 0) + (tonumber(st.frei) or 0)
+        zeile(d.crestFaktor, "Crests: " .. wert)
+    end
 
     -- 3) Unten das Ergebnis.
     GameTooltip:AddDoubleLine("Gewichtet", ns.Zahl(d.gewichtet, einheit),
@@ -404,6 +418,149 @@ local function vergleiche(self, rowa, rowb)
 end
 
 -- ---------------------------------------------------------------------------
+-- Spalten „Items" und „Crests"
+--
+-- Items:  insgesamt + heute. Nur „heute" wirkt als Faktor (siehe loot.lua).
+-- Crests: „hat + frei" der Stufe Mythic; die anderen drei Stufen stehen im Tooltip.
+-- Beide Spalten rechnen zur Not selbst nach — sie haengen nicht daran, dass die
+-- Spalte „Gewichtet" vorher gezeichnet wurde.
+-- ---------------------------------------------------------------------------
+
+ns.cacheItems, ns.cacheCrests = {}, {}
+
+local function itemsDaten(kandidat)
+    local d = ns.rohcache and ns.rohcache[kandidat]
+    if d and d.itemsStand then return d.itemsStand, d.itemsFaktor or 1.0 end
+    local stand = ns.ItemsStand and ns.ItemsStand(kandidat)
+    if not stand then return nil, 1.0 end
+    return stand, (ns.ItemsHeuteFaktor and ns.ItemsHeuteFaktor(stand.heute)) or 1.0
+end
+
+local function crestDaten(kandidat)
+    local d = ns.rohcache and ns.rohcache[kandidat]
+    if d and d.crestStand then return d.crestStand, d.crestFaktor or 1.0 end
+    local stand = ns.CrestStand and ns.CrestStand(kandidat)
+    if not stand then return nil, 1.0 end
+    local wert = (tonumber(stand.hat) or 0) + (tonumber(stand.frei) or 0)
+    return stand, (ns.CrestWertFaktor and ns.CrestWertFaktor(wert)) or 1.0
+end
+
+local function tooltipItems(frame, kandidat)
+    GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
+    local stand, faktor = itemsDaten(kandidat)
+    if not stand then
+        GameTooltip:AddLine(grau("Keine Loot-Historie fuer diesen Spieler."))
+        GameTooltip:Show()
+        return
+    end
+    GameTooltip:AddLine("Items")
+    GameTooltip:AddDoubleLine("insgesamt", tostring(stand.gesamt), 1, 1, 1, 1, 1, 1)
+    GameTooltip:AddDoubleLine("davon heute", tostring(stand.heute), 1, 1, 1, 1, 1, 1)
+    for i = 1, math.min(#(stand.heuteListe or {}), 8) do
+        GameTooltip:AddLine(stand.heuteListe[i], 0.62, 0.62, 0.62, true)
+    end
+    if faktor ~= 1.0 then
+        GameTooltip:AddDoubleLine("Faktor", ns.Faktor(faktor), 1, 1, 1, 1, 0.85, 0.2)
+    end
+    GameTooltip:Show()
+end
+
+function ns.UpdateZelleItems(rowFrame, frame, data, cols, row, realrow, column, fShow, table)
+    local kandidat = data and data[realrow] and data[realrow].name
+    if not kandidat then
+        frame.text:SetText("---")
+        return
+    end
+    local stand = itemsDaten(kandidat)
+    ns.cacheItems[kandidat] = stand and stand.heute or -math.huge
+    frame.text:SetWordWrap(false)
+    frame.text:SetNonSpaceWrap(false)
+    if not stand then
+        frame.text:SetText("---")
+        frame.text:SetTextColor(0.6, 0.6, 0.6)
+    else
+        frame.text:SetText(tostring(stand.gesamt) .. " · heute " .. tostring(stand.heute))
+        if stand.heute > 0 then
+            frame.text:SetTextColor(1.0, 0.62, 0.31)
+        else
+            frame.text:SetTextColor(0.31, 0.86, 0.39)
+        end
+    end
+    frame:SetScript("OnEnter", function(self) tooltipItems(self, kandidat) end)
+    frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
+end
+
+local function tooltipCrests(frame, kandidat)
+    GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
+    local stand, faktor = crestDaten(kandidat)
+    if not stand then
+        GameTooltip:AddLine(grau("Keine Crest-Daten — dieser Spieler laeuft WowUtils nicht."))
+        GameTooltip:Show()
+        return
+    end
+    GameTooltip:AddLine("Crests")
+    for _, s in ipairs(stand.stufen) do
+        local rechts = tostring(s.hat)
+        if s.frei then rechts = rechts .. " + " .. tostring(s.frei) .. " frei" end
+        if s.grenze then rechts = rechts .. "  / " .. tostring(s.grenze) end
+        if s.id == 3446 then
+            GameTooltip:AddDoubleLine(s.name, rechts, 0.62, 0.62, 0.62, 1, 0.85, 0.2)
+        else
+            GameTooltip:AddDoubleLine(s.name, rechts, 0.62, 0.62, 0.62, 1, 1, 1)
+        end
+    end
+    if faktor ~= 1.0 then
+        GameTooltip:AddDoubleLine("Faktor (Mythic)", ns.Faktor(faktor), 1, 1, 1, 1, 0.85, 0.2)
+    end
+    GameTooltip:Show()
+end
+
+function ns.UpdateZelleCrests(rowFrame, frame, data, cols, row, realrow, column, fShow, table)
+    local kandidat = data and data[realrow] and data[realrow].name
+    if not kandidat then
+        frame.text:SetText("---")
+        return
+    end
+    local stand, faktor = crestDaten(kandidat)
+    ns.cacheCrests[kandidat] = stand and faktor or -math.huge
+    frame.text:SetWordWrap(false)
+    frame.text:SetNonSpaceWrap(false)
+    if not stand then
+        frame.text:SetText("---")
+        frame.text:SetTextColor(0.6, 0.6, 0.6)
+    else
+        local text = tostring(stand.hat)
+        if stand.frei then text = text .. " + " .. tostring(stand.frei) end
+        frame.text:SetText(text)
+        if faktor >= 0.9995 then
+            frame.text:SetTextColor(0.31, 0.86, 0.39)
+        else
+            frame.text:SetTextColor(1.0, 0.62, 0.31)
+        end
+    end
+    frame:SetScript("OnEnter", function(self) tooltipCrests(self, kandidat) end)
+    frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
+end
+
+local function vergleicheItems(self, rowa, rowb)
+    local na = self.data and self.data[rowa] and self.data[rowa].name
+    local nb = self.data and self.data[rowb] and self.data[rowb].name
+    local a = na and ns.cacheItems[na] or -math.huge
+    local b = nb and ns.cacheItems[nb] or -math.huge
+    if a == b then return false end
+    return a < b
+end
+
+local function vergleicheCrests(self, rowa, rowb)
+    local na = self.data and self.data[rowa] and self.data[rowa].name
+    local nb = self.data and self.data[rowb] and self.data[rowb].name
+    local a = na and ns.cacheCrests[na] or -math.huge
+    local b = nb and ns.cacheCrests[nb] or -math.huge
+    if a == b then return false end
+    return a < b
+end
+
+-- ---------------------------------------------------------------------------
 -- Spalte einhaengen
 -- ---------------------------------------------------------------------------
 
@@ -424,6 +581,28 @@ function mod:SpalteEinhaengen()
             comparesort = vergleiche,
             DoCellUpdate = ns.UpdateZelle,
         }, "wowutils", "after")             -- rechts neben die WowUtils-Spalte
+
+        -- „Items": insgesamt + heute. Nur „heute" wirkt als Faktor.
+        voting:AddColumn({
+            colName = SPALTE_ITEMS,
+            name = "Items",
+            width = 96,
+            align = "CENTER",
+            sortnext = SPALTE,
+            comparesort = vergleicheItems,
+            DoCellUpdate = ns.UpdateZelleItems,
+        }, SPALTE, "after")
+
+        -- „Crests": hat + frei (Mythic). Die anderen Stufen stehen im Tooltip.
+        voting:AddColumn({
+            colName = SPALTE_CRESTS,
+            name = "Crests",
+            width = 96,
+            align = "CENTER",
+            sortnext = SPALTE_ITEMS,
+            comparesort = vergleicheCrests,
+            DoCellUpdate = ns.UpdateZelleCrests,
+        }, SPALTE_ITEMS, "after")
     end)
     if not ok then
         ns.spaltenFehler = tostring(fehler)

@@ -26,13 +26,16 @@ Original-Addon unangetastet.
 
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
+- **Zwei weitere Spalten:** **„Items"** (insgesamt · heute) und **„Crests"** (Mythic: in der
+  Tasche + frei). Der Tooltip der Items-Spalte listet die heute erhaltenen Teile, der der
+  Crest-Spalte alle vier Creststufen einzeln
 - Ohne passenden Sim-Eintrag steht `---` — es wird nie geraten
 
 ## Die Gewichtung
 
 Die Faktoren werden multipliziert:
 
-**Rolle × Prioritätsliste × Wunschliste × Average log × First kill log × Movement/Survival**
+**Rolle × Prioritätsliste × Wunschliste × Average log × First kill log × Movement/Survival × Items heute × Crests**
 
 | Faktor | Wirkung |
 |---|---|
@@ -42,6 +45,8 @@ Die Faktoren werden multipliziert:
 | **Average log** | 100er Log = kein Abzug · 0er Log = −10 %, dazwischen linear |
 | **First kill log** | Platz 1 = kein Abzug · letzter Platz = −15 %, dazwischen linear |
 | **Movement/Survival** | von Hand gepflegt, Abzug in Prozent (Vorgabe: höchstens 20 %) |
+| **Items heute** | Abzug je Item, das der Spieler **heute** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt |
+| **Crests** | Mythic-Crests, Eingang = „in der Tasche + bis zur Obergrenze frei": 0 → ×0,80, ab 80 → ×1,00, dazwischen linear (Vorgaben) |
 
 Die Leistungswerte (Average log, First kill log) kommen aus **Warcraft Logs** und werden
 je Charakter berechnet — gefiltert auf **Kills der eigenen Gilde**, **nur auf mythische

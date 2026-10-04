@@ -243,7 +243,16 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
     info.leistung = leistung
     info.leistungFaktor = (leistung.average or 1.0) * (leistung.firstkill or 1.0)
         * (leistung.movement or 1.0)
+    -- Items heute + Crests: Zahlen gibt es nur im Spiel. Fehlt die Datenquelle,
+    -- bleibt der Faktor neutral 1.00 (siehe loot.lua).
+    local itemsFaktor, itemsStand = 1.0, nil
+    local crestFaktor, crestStand = 1.0, nil
+    if ns.ItemsFaktor then itemsFaktor, itemsStand = ns.ItemsFaktor(kandidat) end
+    if ns.CrestFaktor then crestFaktor, crestStand = ns.CrestFaktor(kandidat) end
+    info.itemsFaktor, info.itemsStand = itemsFaktor or 1.0, itemsStand
+    info.crestFaktor, info.crestStand = crestFaktor or 1.0, crestStand
     info.faktor = info.roleFaktor * info.prioFaktor * info.wunschFaktor * info.leistungFaktor
+        * info.itemsFaktor * info.crestFaktor
     info.gewichtet = wert * info.faktor
     info.grund = #info.gruende > 0 and table.concat(info.gruende, " + ") or nil
     return info.gewichtet, info

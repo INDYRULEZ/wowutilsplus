@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 03.10.2026 13:51
+-- Stand: 03.10.2026 21:24
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -28,8 +28,8 @@ ns.PRIO = {
     ["garshu"] = 2,   -- Garshû
     ["gweni"] = 4,   -- Gwêni
     ["hyperhardw"] = 3,   -- Hyperhardw
-    ["indydrakes"] = 1,   -- Indydrakes
-    ["indypalas"] = 1,   -- indypalas (Nebenchar von Indydrakes)
+    ["indydrakes"] = 2,   -- Indydrakes
+    ["indypalas"] = 2,   -- indypalas (Nebenchar von Indydrakes)
     ["jekyl"] = 5,   -- Jekyl
     ["juxea"] = 3,   -- juxea (Nebenchar von Ophrys)
     ["kaliistda"] = 4,   -- kaliistda (Nebenchar von Blitzfaust)
@@ -77,4 +77,4 @@ ns.PRIO = {
 
 ns.PRIO_ANZAHL = 65
 
-ns.PRIO_STAND = "03.10.2026 13:51"
+ns.PRIO_STAND = "03.10.2026 21:24"
