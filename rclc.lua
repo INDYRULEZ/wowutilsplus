@@ -17,6 +17,7 @@ local SPALTE = "wowutilsplus"
 local SPALTENNAME = "Gewichtet"
 local SPALTE_ITEMS = "wowutilsplusitems"
 local SPALTE_CRESTS = "wowutilspluscrests"
+local SPALTE_SET = "wowutilsplusset"
 local BREITE = 90
 
 -- RCLootCouncil muss geladen sein (OptionalDeps im .toc)
@@ -565,6 +566,129 @@ local function vergleicheCrests(self, rowa, rowb)
 end
 
 -- ---------------------------------------------------------------------------
+-- Spalte „Set": H S C G L
+--
+-- Ein Buchstabe je Tier-Slot, Reihenfolge fix: Kopf, Schulter, Brust, Hände, Beine.
+--   grün   = hat das Teil (Token bekommen oder aus der Truhe geholt)
+--   gelb   = liegt in seiner Truhe und ist noch nicht abgeholt
+--   rot    = der Slot, um den es gerade geht, ist bei ihm schon belegt -> darf er nicht
+--   grau   = nichts bekannt
+-- ---------------------------------------------------------------------------
+
+ns.cacheSets = {}
+
+local SET_FARBE = {
+    hat    = "|cff50dc64",
+    offen  = "|cfff0c040",
+    nichts = "|cff6b6b6b",
+    belegt = "|cffff5a5a",
+}
+
+local ZUSTAND_TEXT = {
+    angezogen = "angezogen",
+    token = "Token bekommen",
+    vault = "aus der Truhe geholt",
+    ["vault-offen"] = "liegt noch in der Truhe",
+}
+
+--- Slot-Schluessel des Tokens, das gerade im Fenster steht (oder nil).
+local function zielSlot()
+    if not ns.TokenImFenster then return nil end
+    local slot = ns.TokenImFenster()
+    return slot
+end
+
+local function tooltipSet(frame, kandidat)
+    GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
+    local stand, anzahl = ns.SetStand(kandidat)
+    local ziel = zielSlot()
+
+    GameTooltip:AddLine("Tier-Set")
+    if ziel then
+        GameTooltip:AddLine("Ziel: " .. ns.SlotName(ziel), 1, 0.85, 0.2)
+    end
+    for _, s in ipairs(ns.SET_SLOTS) do
+        local d = stand and stand[s.key]
+        local rechts, warnung, wr, wg, wb = nil, nil, 1, 1, 1
+        if d then
+            rechts = ZUSTAND_TEXT[d.zustand] or d.zustand
+            if d.name then rechts = rechts .. " · " .. d.name end
+            if d.datum then rechts = rechts .. " · " .. d.datum end
+        else
+            rechts = "nichts bekannt"
+        end
+        if ziel == s.key and d then
+            -- 🔴 Nur wer das Teil WIRKLICH hat, ist ausgeschlossen. Ein Teil, das noch in der
+            -- Truhe liegt, ist ein Hinweis — kein Ausschluss.
+            if d.zustand == "vault-offen" then
+                warnung, wr, wg, wb = "liegt in der TRUHE", 1, 0.75, 0.2
+            else
+                warnung, wr, wg, wb = "SCHON BELEGT", 1, 0.35, 0.35
+            end
+            rechts = warnung .. " — " .. rechts
+            GameTooltip:AddDoubleLine(s.name, rechts, 1, 1, 1, wr, wg, wb)
+        else
+            GameTooltip:AddDoubleLine(s.name, rechts, 0.62, 0.62, 0.62, 1, 1, 1)
+        end
+    end
+    if (anzahl or 0) > 0 then
+        GameTooltip:AddDoubleLine("bekannt", string.format("%d von 5", anzahl), 1, 1, 1, 1, 0.85, 0.2)
+    end
+    GameTooltip:Show()
+end
+
+-- 🔴 Der letzte Parameter heißt in der RCL-API `table` und verdeckt damit Luas
+-- Tabellen-Bibliothek — `table.concat` wäre hier ein Nil-Zugriff. Deshalb `tabelle`.
+function ns.UpdateZelleSet(rowFrame, frame, data, cols, row, realrow, column, fShow, tabelle)
+    local kandidat = data and data[realrow] and data[realrow].name
+    frame.text:SetWordWrap(false)
+    frame.text:SetNonSpaceWrap(false)
+    if not kandidat then
+        frame.text:SetText("---")
+        return
+    end
+    local stand, anzahl = ns.SetStand(kandidat)
+    ns.cacheSets[kandidat] = anzahl or 0
+    if not anzahl or anzahl == 0 then
+        frame.text:SetText("---")
+        frame.text:SetTextColor(0.6, 0.6, 0.6)
+    else
+        local ziel = zielSlot()
+        local teile = {}
+        for _, s in ipairs(ns.SET_SLOTS) do
+            local d = stand and stand[s.key]
+            local farbe
+            if d and (d.zustand == "angezogen" or d.zustand == "token" or d.zustand == "vault") then
+                farbe = SET_FARBE.hat
+            elseif d then
+                farbe = SET_FARBE.offen
+            else
+                farbe = SET_FARBE.nichts
+            end
+            -- Ziel-Slot und wirklich schon vorhanden: rot, das ist die Ausschluss-Markierung.
+            -- Ein blosses Truhen-Teil bleibt gelb — es ist ein Hinweis, kein Ausschluss.
+            if ziel == s.key and d and d.zustand ~= "vault-offen" then
+                farbe = SET_FARBE.belegt
+            end
+            teile[#teile + 1] = farbe .. s.brief .. "|r"
+        end
+        frame.text:SetText(table.concat(teile, " ") .. "  " .. anzahl .. "/5")
+        frame.text:SetTextColor(1, 1, 1)
+    end
+    frame:SetScript("OnEnter", function(self) tooltipSet(self, kandidat) end)
+    frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
+end
+
+local function vergleicheSet(self, rowa, rowb)
+    local na = self.data and self.data[rowa] and self.data[rowa].name
+    local nb = self.data and self.data[rowb] and self.data[rowb].name
+    local a = na and ns.cacheSets[na] or -math.huge
+    local b = nb and ns.cacheSets[nb] or -math.huge
+    if a == b then return false end
+    return a < b
+end
+
+-- ---------------------------------------------------------------------------
 -- Spalte einhaengen
 -- ---------------------------------------------------------------------------
 
@@ -607,6 +731,17 @@ function mod:SpalteEinhaengen()
             comparesort = vergleicheCrests,
             DoCellUpdate = ns.UpdateZelleCrests,
         }, SPALTE_ITEMS, "after")
+
+        -- „Set": H S C G L — welche Tier-Teile jemand hat bzw. sicher bekommt.
+        voting:AddColumn({
+            colName = SPALTE_SET,
+            name = "Set",
+            width = 112,
+            align = "CENTER",
+            sortnext = SPALTE_CRESTS,
+            comparesort = vergleicheSet,
+            DoCellUpdate = ns.UpdateZelleSet,
+        }, SPALTE_CRESTS, "after")
     end)
     if not ok then
         ns.spaltenFehler = tostring(fehler)

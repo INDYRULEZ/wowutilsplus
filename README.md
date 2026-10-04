@@ -1,8 +1,8 @@
 # WoWUtils Plus
 
 Ein Zusatz-Addon für **World of Warcraft**, das im Abstimmungsfenster von
-**RCLootCouncil** drei eigene Spalten anzeigt: den **gewichteten** Sim-Gewinn,
-die erhaltenen **Items** und die **Crests**.
+**RCLootCouncil** vier eigene Spalten anzeigt: den **gewichteten** Sim-Gewinn,
+die erhaltenen **Items**, die **Crests** und die **Tier-Set-Teile**.
 Es setzt auf den Daten von [WowUtils](https://wowutils.com) auf und lässt das
 Original-Addon unangetastet.
 
@@ -31,9 +31,11 @@ Original-Addon unangetastet.
 
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
-- **Zwei weitere Spalten:** **„Items"** (insgesamt · seit Reset) und **„Crests"** (Mythic: in der
-  Tasche + frei). Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset erhaltenen
-  Teile, der der Crest-Spalte die Stufen **Hero und Mythic**
+- **Drei weitere Spalten:** **„Items"** (insgesamt · seit Reset), **„Crests"** (Mythic: in der
+  Tasche + frei) und **„Set"**. Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset
+  erhaltenen Teile, der der Crest-Spalte die Stufen **Hero und Mythic**
+- **Spalte „Set":** ein Buchstabe je Tier-Slot in fester Reihenfolge — **H** Kopf,
+  **S** Schulter, **C** Brust, **G** Hände, **L** Beine. Siehe unten.
 - Ohne passenden Sim-Eintrag steht `---` — es wird nie geraten
 
 ## Die Gewichtung
@@ -68,6 +70,44 @@ Kämpfe, weniger Mechaniken, andere Ausrüstung) und wären kein sauberer Maßst
 
 Die Zahlen je Charakter stehen in `gewichte.lua` und werden mit jeder Version
 mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
+
+## Die Set-Spalte
+
+Sie beantwortet eine Frage: **wer hat welches Tier-Set-Teil schon?** Damit lässt sich ein
+gedroppter Token fair verteilen, statt ihn jemandem zu geben, der das Teil längst trägt.
+
+```
+H S C G L  4/5
+```
+
+Feste Reihenfolge: **H** Kopf · **S** Schulter · **C** Brust · **G** Hände · **L** Beine.
+Die Zahl dahinter zählt, wie viele der fünf Slots bekannt sind.
+
+| Farbe | Bedeutung |
+|---|---|
+| **grün** | hat das Teil — angezogen oder aus einem Token bzw. der Truhe |
+| **gelb** | liegt in seiner Truhe, noch nicht abgeholt |
+| **grau** | nichts bekannt |
+| **rot** | der Slot, um den es gerade geht, ist bei ihm schon belegt |
+
+Der Tooltip listet alle fünf Slots einzeln auf und nennt das Ziel — also den Slot, zu dem
+das Item im Fenster gehört. Rot erscheint nur, wenn das Teil **wirklich** sein ist: ein
+Stück, das noch ungenutzt in der Truhe liegt, ist ein Hinweis, kein Ausschluss.
+
+**Woher die Angaben kommen:**
+
+- **Angezogen** — direkt aus dem Spiel gelesen. Erkannt wird ein Tier-Teil an seinen
+  **Set-Boni**: hat ein Teil Set-Boni, aber nicht für alle Klassen, ist es ein Tier-Teil.
+- **Token** — RCLootCouncil führt eine eigene Tabelle, welcher Token zu welchem Slot
+  gehört. Sie wird nur gelesen, nicht gepflegt.
+- **Truhe** — aus den Truhendaten der Gilde. WowUtils hält immer nur die laufende Woche,
+  deshalb schreibt das Addon abgeholte Teile in die eigenen Speicherdaten mit; sie
+  überleben so den Mittwochs-Reset.
+
+**Was es nicht kann:** fremde Ausrüstung liest das Spiel nur aus, wenn die Person in
+derselben Gruppe ist. Ist sie es nicht, steht dort nichts — es wird nichts geraten.
+Sichtbar ist immer nur die **eigene** Rüstungsart, denn Tier-Teile sind klassen- bzw.
+rüstungsgebunden.
 
 <!-- STAND:ANFANG -->
 

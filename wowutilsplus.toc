@@ -1,7 +1,7 @@
 ## Interface: 120100
 ## Title: WoWUtils Plus
 ## Notes: Zusatz-Auswertung fuer WowUtils — gewichtete Gewinn-Spalte im Loot-Council
-## Version: 0.6.2.50
+## Version: 0.6.2.51
 ## OptionalDeps: wowutils, wowutils_data, RCLootCouncil
 ## Category: wowutils
 ## SavedVariables: WowUtilsPlusDB
@@ -10,5 +10,6 @@ prioliste.lua
 gewichte.lua
 loot.lua
 daten.lua
+sets.lua
 core.lua
 rclc.lua
