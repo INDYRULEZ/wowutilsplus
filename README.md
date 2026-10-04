@@ -73,7 +73,7 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
 ## Aktueller Stand
 
-*Automatisch erzeugt — Stand: 04.10.2026 09:49*
+*Automatisch erzeugt — Stand: 04.10.2026 13:14*
 
 **Einstellungen:** die letzten 10 mythischen Kills · Abzug bei 0er Log 15 % · Abzug am letzten Erst-Kill-Platz 18 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
 
@@ -86,7 +86,7 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 | Balren (Paldros) | DPS | 30,0 % (10 Kills) → 0,90 | Platz 10/22 → 0,92 | −5,0 % | 0,78 → −22,0 % |
 | Bigboysushi | DPS | – | Platz 12/22 → 0,91 | – | 0,90 → −10,0 % |
 | Blitzfaust | DPS | 41,0 % (6 Kills) → 0,91 | Platz 8/22 → 0,94 | −8,0 % | 0,78 → −22,0 % |
-| Cep | DPS | 31,0 % (5 Kills) → 0,90 | Platz 6/22 → 0,96 | −2,0 % | 0,84 → −16,0 % |
+| Cep | DPS | 29,0 % (5 Kills) → 0,89 | Platz 6/22 → 0,96 | −2,0 % | 0,83 → −17,0 % |
 | Cheliia | DPS | 48,0 % (10 Kills) → 0,92 | Platz 9/22 → 0,93 | −2,0 % | 0,84 → −16,0 % |
 | dranash | Tank | – | – | −10,0 % | 0,90 → −10,0 % |
 | Enshirou | DPS | 15,0 % (8 Kills) → 0,87 | Platz 13/22 → 0,90 | −8,0 % | 0,72 → −28,0 % |
@@ -97,7 +97,7 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 | Hyperhardw (Pasipháë) | DPS | 36,5 % (10 Kills) → 0,91 | Platz 14/22 → 0,89 | −5,0 % | 0,76 → −24,0 % |
 | Indydrakes | DPS | 28,5 % (10 Kills) → 0,89 | Platz 19/22 → 0,85 | −1,0 % | 0,74 → −26,0 % |
 | Jekyl (Rone) | DPS | – | Platz 20/22 → 0,84 | −10,0 % | 0,75 → −25,0 % |
-| Merlón | DPS | 56,0 % (10 Kills) → 0,93 | Platz 5/22 → 0,97 | −7,0 % | 0,83 → −17,0 % |
+| Merlón | DPS | 58,0 % (10 Kills) → 0,94 | Platz 5/22 → 0,97 | −7,0 % | 0,84 → −16,0 % |
 | Neyzxd (Neyz) | DPS | 66,0 % (3 Kills) → 0,95 | – | −10,0 % | 0,85 → −15,0 % |
 | Notam | DPS | 6,0 % (10 Kills) → 0,86 | Platz 17/22 → 0,86 | −10,0 % | 0,66 → −34,0 % |
 | Ophrys (Juxe) | Heiler | 44,0 % (10 Kills) → 0,92 | Platz 16/22 → 0,87 | −7,0 % | 0,74 → −26,0 % |
