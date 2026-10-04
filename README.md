@@ -1,7 +1,8 @@
 # WoWUtils Plus
 
 Ein Zusatz-Addon für **World of Warcraft**, das im Abstimmungsfenster von
-**RCLootCouncil** eine eigene Spalte mit einem **gewichteten** Sim-Gewinn anzeigt.
+**RCLootCouncil** drei eigene Spalten anzeigt: den **gewichteten** Sim-Gewinn,
+die erhaltenen **Items** und die **Crests**.
 Es setzt auf den Daten von [WowUtils](https://wowutils.com) auf und lässt das
 Original-Addon unangetastet.
 
@@ -11,18 +12,22 @@ Original-Addon unangetastet.
 - Angezeigt wird der Sim-Gewinn des Kandidaten für **genau das Item, über das gerade
   abgestimmt wird** — mit derselben Auswahl wie das Original: Schwierigkeit des
   gedroppten Items, bevorzugt der 1-Ziel-Patchwerk-Sim
-- **Tooltip an der Zelle** zeigt, wie die Zahl zustande kommt — als kleine Tabelle,
-  links der Wert, rechts der Faktor:
+- **Tooltip an der Zelle** zeigt, wie die Zahl zustande kommt — Grundwert oben, darunter
+  Schritt für Schritt links der Faktor und rechts der Betrag, der in diesem Schritt
+  weggeht, unten das Ergebnis:
 
   ```
-  Gewichtet      +1.034,50
-     Rolle          DPS             x1,00
-     Prio           3               x0,80
-     Wunschliste    Best in Slot    x1,00
-     Average log    43,00 %         x0,94
-     First kill     Platz 10/24     x0,94
-     Movement       -20,00 %        x0,80
+  Grundwert aus WowUtils             +510,00
+  x1,00  Rolle: DPS                   +0,00
+  x0,90  Prio: 2                     -51,00
+  x1,00  Wunschliste: Best in Slot    +0,00
+  x0,94  Average log: 42,50 %        -27,54
+  x0,95  First kill: Platz 8/22      -21,57
+  x0,92  Movement: -8,00 %           -32,79
+  Gewichtet                          +377,10
   ```
+
+  Die Beträge laufen mit und summieren sich genau zum Ergebnis.
 
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
@@ -64,8 +69,6 @@ Kämpfe, weniger Mechaniken, andere Ausrüstung) und wären kein sauberer Maßst
 Die Zahlen je Charakter stehen in `gewichte.lua` und werden mit jeder Version
 mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
-## Aktueller Stand
-
 <!-- STAND:ANFANG -->
 
 ## Aktueller Stand
@@ -74,35 +77,40 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
 **Einstellungen:** die letzten 10 mythischen Kills · Abzug bei 0er Log 15 % · Abzug am letzten Erst-Kill-Platz 18 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
 
+**Items & Crests:** Items seit dem Wochen-Reset — 15 % Abzug je Teil, Untergrenze ×0,70 · Crests ×0,80 bei 0, ×1,00 ab 80 (als Faktor zählt nur Mythic).
+
 **Quelle:** mythischen Kills der eigenen Gilde aus Warcraft Logs (Average log: alle Kills im Zeitfenster, First kill log: die Erst-Kills je Boss).
 
 | Spieler | Rolle | Average log | First kill | Movement | Skill-Abzug |
 |---|---|---|---|---|---|
-| Balren (Paldros) | DPS | 30,0 % (10 Kills) → 0,90 | Platz 10/22 → 0,92 | – | 0,82 → −18,0 % |
+| Balren (Paldros) | DPS | 30,0 % (10 Kills) → 0,90 | Platz 10/22 → 0,92 | −5,0 % | 0,78 → −22,0 % |
 | Bigboysushi | DPS | – | Platz 12/22 → 0,91 | – | 0,90 → −10,0 % |
-| Blitzfaust | DPS | 41,0 % (6 Kills) → 0,91 | Platz 8/22 → 0,94 | – | 0,85 → −15,0 % |
-| Cep | DPS | 31,0 % (5 Kills) → 0,90 | Platz 6/22 → 0,96 | – | 0,85 → −15,0 % |
-| Cheliia | DPS | 48,0 % (10 Kills) → 0,92 | Platz 9/22 → 0,93 | – | 0,85 → −15,0 % |
-| Enshirou | DPS | 15,0 % (8 Kills) → 0,87 | Platz 13/22 → 0,90 | – | 0,78 → −22,0 % |
-| Exorzist (cheetah) | Heiler | 27,0 % (10 Kills) → 0,89 | Platz 15/22 → 0,88 | – | 0,78 → −22,0 % |
-| Exudes | DPS | – | Platz 2/22 → 0,99 | – | 0,99 → −1,0 % |
-| Garshû | DPS | 22,0 % (10 Kills) → 0,88 | Platz 16/22 → 0,87 | – | 0,76 → −24,0 % |
-| Gwêni (Snowi) | DPS | 9,0 % (7 Kills) → 0,86 | Platz 7/22 → 0,95 | – | 0,81 → −19,0 % |
-| Hyperhardw (Pasipháë) | DPS | 36,5 % (10 Kills) → 0,91 | Platz 14/22 → 0,89 | – | 0,80 → −20,0 % |
-| Indydrakes | DPS | 28,5 % (10 Kills) → 0,89 | Platz 19/22 → 0,85 | – | 0,75 → −25,0 % |
-| Jekyl (Rone) | DPS | – | Platz 20/22 → 0,84 | – | 0,83 → −17,0 % |
-| Merlón | DPS | 56,0 % (10 Kills) → 0,93 | Platz 5/22 → 0,97 | – | 0,90 → −10,0 % |
-| Neyzxd (Neyz) | DPS | 66,0 % (3 Kills) → 0,95 | – | – | 0,94 → −6,0 % |
-| Notam | DPS | 6,0 % (10 Kills) → 0,86 | Platz 17/22 → 0,86 | – | 0,74 → −26,0 % |
-| Ophrys (Juxe) | Heiler | 44,0 % (10 Kills) → 0,92 | Platz 21/22 → 0,83 | – | 0,75 → −25,0 % |
-| Palacetamol | Heiler | 81,0 % (5 Kills) → 0,97 | – | – | 0,97 → −3,0 % |
-| Schmeckies | DPS | 40,0 % (5 Kills) → 0,91 | – | – | 0,91 → −9,0 % |
-| Sikkz | DPS | 60,0 % (10 Kills) → 0,94 | Platz 4/22 → 0,97 | – | 0,91 → −9,0 % |
-| Silanhunt (Silan) | DPS | 6,0 % (9 Kills) → 0,86 | Platz 11/22 → 0,91 | – | 0,78 → −22,0 % |
-| Thunderdebbo | Heiler | 6,0 % (5 Kills) → 0,86 | Platz 22/22 → 0,82 | – | 0,70 → −30,0 % |
-| Tobii (Luc) | Heiler | 99,0 % (10 Kills) → 1,00 | Platz 1/22 → 1,00 | – | 0,99 → −1,0 % |
-| Twosocks (Sushi) | DPS | 38,0 % (7 Kills) → 0,91 | Platz 3/22 → 0,98 | – | 0,89 → −11,0 % |
-| Vilarie | DPS | 63,0 % (5 Kills) → 0,94 | Platz 18/22 → 0,85 | – | 0,80 → −20,0 % |
+| Blitzfaust | DPS | 41,0 % (6 Kills) → 0,91 | Platz 8/22 → 0,94 | −8,0 % | 0,78 → −22,0 % |
+| Cep | DPS | 31,0 % (5 Kills) → 0,90 | Platz 6/22 → 0,96 | −2,0 % | 0,84 → −16,0 % |
+| Cheliia | DPS | 48,0 % (10 Kills) → 0,92 | Platz 9/22 → 0,93 | −2,0 % | 0,84 → −16,0 % |
+| dranash | Tank | – | – | −10,0 % | 0,90 → −10,0 % |
+| Enshirou | DPS | 15,0 % (8 Kills) → 0,87 | Platz 13/22 → 0,90 | −8,0 % | 0,72 → −28,0 % |
+| Exorzist (cheetah) | Heiler | 27,0 % (10 Kills) → 0,89 | Platz 9/22 → 0,93 | −5,0 % | 0,78 → −22,0 % |
+| Exudes | DPS | – | Platz 2/22 → 0,99 | −4,0 % | 0,95 → −5,0 % |
+| Garshû | DPS | 22,0 % (10 Kills) → 0,88 | Platz 16/22 → 0,87 | −3,0 % | 0,74 → −26,0 % |
+| Gwêni (Snowi) | DPS | 9,0 % (7 Kills) → 0,86 | Platz 7/22 → 0,95 | −10,0 % | 0,73 → −27,0 % |
+| Hyperhardw (Pasipháë) | DPS | 36,5 % (10 Kills) → 0,91 | Platz 14/22 → 0,89 | −5,0 % | 0,76 → −24,0 % |
+| Indydrakes | DPS | 28,5 % (10 Kills) → 0,89 | Platz 19/22 → 0,85 | −1,0 % | 0,74 → −26,0 % |
+| Jekyl (Rone) | DPS | – | Platz 20/22 → 0,84 | −10,0 % | 0,75 → −25,0 % |
+| Merlón | DPS | 56,0 % (10 Kills) → 0,93 | Platz 5/22 → 0,97 | −7,0 % | 0,83 → −17,0 % |
+| Neyzxd (Neyz) | DPS | 66,0 % (3 Kills) → 0,95 | – | −10,0 % | 0,85 → −15,0 % |
+| Notam | DPS | 6,0 % (10 Kills) → 0,86 | Platz 17/22 → 0,86 | −10,0 % | 0,66 → −34,0 % |
+| Ophrys (Juxe) | Heiler | 44,0 % (10 Kills) → 0,92 | Platz 16/22 → 0,87 | −7,0 % | 0,74 → −26,0 % |
+| palaball | Heiler | – | Platz 18/22 → 0,85 | −3,0 % | 0,82 → −18,0 % |
+| Palacetamol | Heiler | 81,0 % (5 Kills) → 0,97 | Platz 14/22 → 0,89 | – | 0,86 → −14,0 % |
+| Schmeckies | DPS | 40,0 % (5 Kills) → 0,91 | – | −10,0 % | 0,81 → −19,0 % |
+| setupx | Tank | – | – | −10,0 % | 0,90 → −10,0 % |
+| Sikkz | DPS | 60,0 % (10 Kills) → 0,94 | Platz 4/22 → 0,97 | −0,0 % | 0,91 → −9,0 % |
+| Silanhunt (Silan) | DPS | 6,0 % (9 Kills) → 0,86 | Platz 11/22 → 0,91 | −1,0 % | 0,77 → −23,0 % |
+| Thunderdebbo | Heiler | 6,0 % (5 Kills) → 0,86 | Platz 14/22 → 0,89 | −8,0 % | 0,70 → −30,0 % |
+| Tobii (Luc) | Heiler | 99,0 % (10 Kills) → 1,00 | Platz 1/22 → 1,00 | −0,0 % | 0,99 → −1,0 % |
+| Twosocks (Sushi) | DPS | 38,0 % (7 Kills) → 0,91 | Platz 3/22 → 0,98 | −2,0 % | 0,87 → −13,0 % |
+| Vilarie | DPS | 63,0 % (5 Kills) → 0,94 | Platz 18/22 → 0,85 | −2,0 % | 0,79 → −21,0 % |
 
 <!-- STAND:ENDE -->
 
@@ -138,9 +146,11 @@ bekommt Updates automatisch.
 | Datei | Inhalt |
 |---|---|
 | `core.lua` | Gewichtungen, Rollen-Erkennung, Befehle |
-| `rclc.lua` | Spalte im RCLootCouncil-Fenster (offizielle Spalten-API) |
+| `rclc.lua` | die drei Spalten im RCLootCouncil-Fenster (offizielle Spalten-API) |
 | `prioliste.lua` | Prioritätsliste je Charakter (1–5) |
 | `gewichte.lua` | Rollen-, Wunschlisten- und Leistungsfaktoren |
+| `loot.lua` | Rechenkurven für „Items seit Reset" und „Crests" |
+| `daten.lua` | Datenquellen: RCLootCouncil-Loot-Historie und WowUtils-Währungen |
 | `wowutilsplus.toc` | Addon-Manifest |
 
 Die Prioritätsliste ordnet jedem Charakter eine Zahl von 1 bis 5 zu. Die Zuordnung ist
