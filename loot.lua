@@ -20,11 +20,11 @@ ns.ITEMS_UNTEN       = ns.ITEMS_UNTEN or 0.70
 ns.CREST_MIN         = ns.CREST_MIN or 0.80
 ns.CREST_SCHWELLE    = ns.CREST_SCHWELLE or 80
 
---- Reine Kurve: Abzug je Item, das der Spieler HEUTE erhalten hat.
---- Der Faktor faellt nie unter ITEMS_UNTEN. Ohne (oder mit 0) Items neutral.
---- @param anzahl number? Anzahl heute erhaltener Items
+--- Reine Kurve: Abzug je Item, das der Spieler **seit dem letzten Weekly-Reset**
+--- erhalten hat. Der Faktor faellt nie unter ITEMS_UNTEN. Ohne (oder mit 0) Items neutral.
+--- @param anzahl number? Anzahl Items seit dem Reset
 --- @return number
-function ns.ItemsHeuteFaktor(anzahl)
+function ns.ItemsFaktorKurve(anzahl)
     anzahl = tonumber(anzahl)
     if not anzahl or anzahl <= 0 then return 1.0 end
     local unter = tonumber(ns.ITEMS_UNTEN) or 0.70
@@ -49,11 +49,11 @@ end
 
 --- Faktor + Zahlen fuer die Spalte „Items".
 --- @param kandidat string?
---- @return number faktor, table? stand { gesamt = n, heute = n }
+--- @return number faktor, table? stand { gesamt = n, seitReset = n, seitResetListe = { … } }
 function ns.ItemsFaktor(kandidat)
     local stand = ns.ItemsStand and ns.ItemsStand(kandidat)
     if type(stand) ~= "table" then return 1.0, nil end
-    return ns.ItemsHeuteFaktor(stand.heute), stand
+    return ns.ItemsFaktorKurve(stand.seitReset), stand
 end
 
 --- Faktor + Zahlen fuer die Spalte „Crests". Eingang = hat + frei.

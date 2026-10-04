@@ -26,16 +26,16 @@ Original-Addon unangetastet.
 
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
-- **Zwei weitere Spalten:** **„Items"** (insgesamt · heute) und **„Crests"** (Mythic: in der
-  Tasche + frei). Der Tooltip der Items-Spalte listet die heute erhaltenen Teile, der der
-  Crest-Spalte die Stufen **Hero und Mythic**
+- **Zwei weitere Spalten:** **„Items"** (insgesamt · seit Reset) und **„Crests"** (Mythic: in der
+  Tasche + frei). Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset erhaltenen
+  Teile, der der Crest-Spalte die Stufen **Hero und Mythic**
 - Ohne passenden Sim-Eintrag steht `---` — es wird nie geraten
 
 ## Die Gewichtung
 
 Die Faktoren werden multipliziert:
 
-**Rolle × Prioritätsliste × Wunschliste × Average log × First kill log × Movement/Survival × Items heute × Crests**
+**Rolle × Prioritätsliste × Wunschliste × Average log × First kill log × Movement/Survival × Items seit Reset × Crests**
 
 | Faktor | Wirkung |
 |---|---|
@@ -45,7 +45,7 @@ Die Faktoren werden multipliziert:
 | **Average log** | 100er Log = kein Abzug · 0er Log = −10 %, dazwischen linear |
 | **First kill log** | Platz 1 = kein Abzug · letzter Platz = −15 %, dazwischen linear |
 | **Movement/Survival** | von Hand gepflegt, Abzug in Prozent (Vorgabe: höchstens 20 %) |
-| **Items heute** | Abzug je Item, das der Spieler **heute** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt |
+| **Items seit Reset** | Abzug je Item, das der Spieler **seit dem letzten Wochen-Reset** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt |
 | **Crests** | Mythic-Crests, Eingang = „in der Tasche + bis zur Obergrenze frei": 0 → ×0,80, ab 80 → ×1,00, dazwischen linear (Vorgaben) |
 
 Die Leistungswerte (Average log, First kill log) kommen aus **Warcraft Logs** und werden

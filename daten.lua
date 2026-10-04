@@ -61,24 +61,41 @@ local function historie(kandidat)
     return liste
 end
 
+--- Ab wann zaehlen die Items: seit dem letzten Weekly-Reset (Mittwoch).
+--- 🔴 Verglichen wird als **Text** ("YYYY/MM/DD HH:MM:SS"): RCL legt Datum und Uhrzeit genau
+--- in dieser Form ab, beide aus derselben Uhr — also ohne Zeitzonen-Rechnerei.
+--- Das Format ist fest breit und nullgefuellt, deshalb sortiert der Text wie die Zeit.
+local function seitReset()
+    local bisReset
+    if C_DateAndTime and C_DateAndTime.GetSecondsUntilWeeklyReset then
+        local ok, s = pcall(C_DateAndTime.GetSecondsUntilWeeklyReset)
+        if ok then bisReset = tonumber(s) end
+    end
+    if not bisReset then
+        return date("%Y/%m/%d 00:00:00")     -- Notnagel, falls die Spiel-API fehlt
+    end
+    return date("%Y/%m/%d %H:%M:%S", time() - (604800 - bisReset))
+end
+
 local function itemsStandRoh(kandidat)
     local liste = historie(kandidat)
     if not liste then return nil end
-    local heute = date("%Y/%m/%d")
+    local grenze = seitReset()
     local gesamt, anzahl, links = 0, 0, {}
     for _, e in ipairs(liste) do
         gesamt = gesamt + 1
-        if tostring(e.date) == heute then
+        local wann = tostring(e.date or "") .. " " .. tostring(e.time or "")
+        if wann >= grenze then
             anzahl = anzahl + 1
             if e.lootWon then links[#links + 1] = e.lootWon end
         end
     end
-    return { gesamt = gesamt, heute = anzahl, heuteListe = links }
+    return { gesamt = gesamt, seitReset = anzahl, seitResetListe = links, grenze = grenze }
 end
 
---- Items insgesamt und heute (Kalendertag) fuer einen Kandidaten.
+--- Items insgesamt und seit dem letzten Weekly-Reset fuer einen Kandidaten.
 --- @param kandidat string "Name-Realm"
---- @return table? { gesamt = n, heute = n, heuteListe = { links } }
+--- @return table? { gesamt = n, seitReset = n, seitResetListe = { links }, grenze = "…" }
 function ns.ItemsStand(kandidat)
     return kurzMerken("items", itemsStandRoh, kandidat)
 end

@@ -1,5 +1,5 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 04.10.2026 07:03
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 04.10.2026 08:41
 
 local _, ns = ...
 
@@ -16,10 +16,10 @@ ns.WUNSCH = {
     [2] = 0.60,   -- Upgrade
 }
 
--- Items heute / Crests — Stellschrauben der Weboberflaeche.
--- Items heute: Abzug je Item, das der Spieler HEUTE erhalten hat; der Faktor
---              faellt nicht unter ITEMS_UNTEN. Nur der heutige Tag wirkt,
---              die Gesamtzahl der Items wird nur angezeigt.
+-- Items seit Reset / Crests — Stellschrauben der Weboberflaeche.
+-- Items:      Abzug je Item, das der Spieler SEIT DEM LETZTEN WEEKLY-RESET
+--             erhalten hat; der Faktor faellt nicht unter ITEMS_UNTEN.
+--             Die Gesamtzahl der Items wird nur angezeigt.
 -- Crests:      Faktor linear von CREST_MIN (0 Crests) bis 1.00 ab CREST_SCHWELLE.
 --              Eingang ist 'hat + diese Woche noch frei' (nur Stufe Mythic).
 ns.ITEMS_HEUTE_ABZUG = 0.150

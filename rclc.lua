@@ -433,7 +433,7 @@ local function itemsDaten(kandidat)
     if d and d.itemsStand then return d.itemsStand, d.itemsFaktor or 1.0 end
     local stand = ns.ItemsStand and ns.ItemsStand(kandidat)
     if not stand then return nil, 1.0 end
-    return stand, (ns.ItemsHeuteFaktor and ns.ItemsHeuteFaktor(stand.heute)) or 1.0
+    return stand, (ns.ItemsFaktorKurve and ns.ItemsFaktorKurve(stand.seitReset)) or 1.0
 end
 
 local function crestDaten(kandidat)
@@ -455,9 +455,9 @@ local function tooltipItems(frame, kandidat)
     end
     GameTooltip:AddLine("Items")
     GameTooltip:AddDoubleLine("insgesamt", tostring(stand.gesamt), 1, 1, 1, 1, 1, 1)
-    GameTooltip:AddDoubleLine("davon heute", tostring(stand.heute), 1, 1, 1, 1, 1, 1)
-    for i = 1, math.min(#(stand.heuteListe or {}), 8) do
-        GameTooltip:AddLine(stand.heuteListe[i], 0.62, 0.62, 0.62, true)
+    GameTooltip:AddDoubleLine("seit Reset", tostring(stand.seitReset), 1, 1, 1, 1, 1, 1)
+    for i = 1, math.min(#(stand.seitResetListe or {}), 8) do
+        GameTooltip:AddLine(stand.seitResetListe[i], 0.62, 0.62, 0.62, true)
     end
     if faktor ~= 1.0 then
         GameTooltip:AddDoubleLine("Faktor", ns.Faktor(faktor), 1, 1, 1, 1, 0.85, 0.2)
@@ -472,15 +472,15 @@ function ns.UpdateZelleItems(rowFrame, frame, data, cols, row, realrow, column, 
         return
     end
     local stand = itemsDaten(kandidat)
-    ns.cacheItems[kandidat] = stand and stand.heute or -math.huge
+    ns.cacheItems[kandidat] = stand and stand.seitReset or -math.huge
     frame.text:SetWordWrap(false)
     frame.text:SetNonSpaceWrap(false)
     if not stand then
         frame.text:SetText("---")
         frame.text:SetTextColor(0.6, 0.6, 0.6)
     else
-        frame.text:SetText(tostring(stand.gesamt) .. " · heute " .. tostring(stand.heute))
-        if stand.heute > 0 then
+        frame.text:SetText(tostring(stand.gesamt) .. " · seit Reset " .. tostring(stand.seitReset))
+        if stand.seitReset > 0 then
             frame.text:SetTextColor(1.0, 0.62, 0.31)
         else
             frame.text:SetTextColor(0.31, 0.86, 0.39)
@@ -590,7 +590,7 @@ function mod:SpalteEinhaengen()
         voting:AddColumn({
             colName = SPALTE_ITEMS,
             name = "Items",
-            width = 96,
+            width = 118,
             align = "CENTER",
             sortnext = SPALTE,
             comparesort = vergleicheItems,
