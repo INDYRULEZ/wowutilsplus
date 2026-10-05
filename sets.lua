@@ -278,6 +278,10 @@ function ns.Angezogen(kandidat)
             end
         end
     end
+    -- 🔴 Ohne aktives Untersuchen liefert das Spiel für Mitspieler GAR NICHTS (gemessen 05.10.2026:
+    -- 0 von 19 Slots). Fehlt hier alles, die Person zur Untersuchung anmelden — die Antwort kommt
+    -- 1–2 s später und lässt die Zelle neu zeichnen.
+    if not gefunden and ns.InspectAnfordern then ns.InspectAnfordern(unit) end
     return gefunden and stand or nil
 end
 
@@ -324,3 +328,115 @@ function ns.SetStand(kandidat)
     for _ in pairs(stand) do anzahl = anzahl + 1 end
     return stand, anzahl
 end
+
+-- ---------------------------------------------------------------------------
+-- Fremde Ausrüstung: das Spiel rückt sie nur nach aktivem Untersuchen heraus.
+--
+-- 🔴 Gemessen (05.10.2026): ohne Untersuchen liefert `GetInventoryItemLink` für einen Mitspieler
+--    **0 von 19** Slots; mit Untersuchen alle **5 von 5** Tier-Slots.
+-- 🔴 **`NotifyInspect` will eine EINHEIT** (`"raid5"`, `"target"`) — **keine GUID**. Mit einer GUID
+--    passiert still gar nichts: kein Fehler, kein Ereignis. Genau daran sind zwei Messläufe
+--    gescheitert.
+-- 🔴 Der Server **drosselt**; bei Drosselung kommt **kein** `INSPECT_READY`. Deshalb ein Ziel nach
+--    dem anderen, mit Zeitschranke und wenigen Wiederholungen — und niemals in einer Schleife.
+-- 🔴 `INSPECT_READY` **vor** dem Aufruf registrieren, sonst ist die Antwort vorbei.
+-- ---------------------------------------------------------------------------
+
+local INSPECT_MAX   = 3      -- Versuche je Person
+local INSPECT_LIMIT = 2.5    -- Sekunden auf die Antwort warten
+local INSPECT_RUHE  = 900    -- Sekunden, bis dieselbe Person erneut untersucht wird
+local INSPECT_PAUSE = 60     -- Pause nach endgueltigem Fehlschlag
+
+ns.Inspect = {
+    liste  = {},   -- wartende Einheiten, in der Reihenfolge des Auftretens
+    drin   = {},   -- Einheit steht schon in der Liste
+    laeuft = nil,  -- { unit, guid, seit, versuche }
+    fertig = {},   -- guid -> Zeitpunkt der letzten Untersuchung
+    pause  = {},   -- guid -> ab wann es wieder erlaubt ist
+}
+
+--- Fenster neu zeichnen lassen, damit die Zelle das eben Gelernte zeigt.
+local function fensterNeuZeichnen()
+    local rcl = _G.RCL
+    if not (rcl and rcl.GetActiveModule) then return end
+    local ok, v = pcall(rcl.GetActiveModule, rcl, "votingframe")
+    if not ok or not v then
+        ok, v = pcall(function() return rcl:GetModule("RCVotingFrame", true) end)
+    end
+    if ok and v and v.Update then pcall(function() v:Update() end) end
+end
+
+--- Eine Person zur Untersuchung anmelden. Tut nichts, wenn sie nicht in der Gruppe ist.
+function ns.InspectAnfordern(unit)
+    if not unit or unit == "player" then return end
+    if type(NotifyInspect) ~= "function" or type(UnitGUID) ~= "function" then return end
+    if ns.Inspect.drin[unit] then return end
+    if ns.Inspect.laeuft and ns.Inspect.laeuft.unit == unit then return end
+    if UnitExists and not UnitExists(unit) then return end
+    local guid = UnitGUID(unit)
+    if not guid then return end
+    local jetzt = GetTime()
+    if ns.Inspect.fertig[guid] and (jetzt - ns.Inspect.fertig[guid]) < INSPECT_RUHE then return end
+    if ns.Inspect.pause[guid] and jetzt < ns.Inspect.pause[guid] then return end
+    ns.Inspect.drin[unit] = true
+    ns.Inspect.liste[#ns.Inspect.liste + 1] = unit
+end
+
+local function naechsteStarten()
+    local unit = table.remove(ns.Inspect.liste, 1)
+    while unit and UnitExists and not UnitExists(unit) do
+        ns.Inspect.drin[unit] = nil
+        unit = table.remove(ns.Inspect.liste, 1)
+    end
+    if not unit then return end
+    local guid = UnitGUID(unit)
+    if not guid then
+        ns.Inspect.drin[unit] = nil
+        return
+    end
+    ns.Inspect.laeuft = { unit = unit, guid = guid, seit = GetTime(), versuche = 1 }
+    pcall(NotifyInspect, unit)
+end
+
+--- Ein Takt je Sekunde: naechstes Ziel starten bzw. auf Antwort warten und nachfassen.
+function ns.InspectTakt()
+    local l = ns.Inspect.laeuft
+    if l and (GetTime() - l.seit) > INSPECT_LIMIT then
+        if l.versuche < INSPECT_MAX then
+            l.versuche = l.versuche + 1
+            l.seit = GetTime()
+            pcall(NotifyInspect, l.unit)
+        else
+            ns.Inspect.pause[l.guid] = GetTime() + INSPECT_PAUSE
+            ns.Inspect.drin[l.unit] = nil
+            ns.Inspect.laeuft = nil
+        end
+    end
+    if not ns.Inspect.laeuft and #ns.Inspect.liste > 0 then
+        naechsteStarten()
+    end
+end
+
+local inspectRahmen = CreateFrame("Frame")
+inspectRahmen:RegisterEvent("INSPECT_READY")
+inspectRahmen:SetScript("OnEvent", function(_, _, guid)
+    local l = ns.Inspect.laeuft
+    if not l then return end
+    if guid and tostring(guid) ~= l.guid then return end
+    ns.Inspect.fertig[l.guid] = GetTime()
+    ns.Inspect.drin[l.unit] = nil
+    ns.Inspect.laeuft = nil
+    fensterNeuZeichnen()
+end)
+
+local inspectTakt
+inspectTakt = C_Timer.NewTicker(1, function()
+    local ok, err = pcall(ns.InspectTakt)
+    if not ok then ns.inspectFehler = tostring(err) end
+end)
+
+-- Fassungs-Merker: beweist nach dem /reload, dass diese Fassung wirklich geladen wurde.
+C_Timer.After(3, function()
+    WowUtilsPlusDB = WowUtilsPlusDB or {}
+    WowUtilsPlusDB.inspectFassung = "inspektion-1"
+end)

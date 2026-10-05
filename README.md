@@ -108,16 +108,20 @@ Stück, das noch ungenutzt in der Truhe liegt, ist ein Hinweis, kein Ausschluss.
 
 - **Angezogen** — direkt aus dem Spiel gelesen. Erkannt wird ein Tier-Teil an seinen
   **Set-Boni**: hat ein Teil Set-Boni, aber nicht für alle Klassen, ist es ein Tier-Teil.
+  Das Spiel rückt fremde Ausrüstung nur heraus, wenn man die Person **untersucht** — das
+  erledigt das Addon im Hintergrund selbst, eine Person nach der anderen. Bei anderen
+  füllt sich die Spalte deshalb mit ein bis zwei Sekunden Verzögerung.
 - **Token** — RCLootCouncil führt eine eigene Tabelle, welcher Token zu welchem Slot
   gehört. Sie wird nur gelesen, nicht gepflegt.
 - **Truhe** — aus den Truhendaten der Gilde. WowUtils hält immer nur die laufende Woche,
   deshalb schreibt das Addon abgeholte Teile in die eigenen Speicherdaten mit; sie
   überleben so den Mittwochs-Reset.
 
-**Was es nicht kann:** fremde Ausrüstung liest das Spiel nur aus, wenn die Person in
-derselben Gruppe ist. Ist sie es nicht, steht dort nichts — es wird nichts geraten.
-Sichtbar ist immer nur die **eigene** Rüstungsart, denn Tier-Teile sind klassen- bzw.
-rüstungsgebunden.
+**Was es nicht kann:** fremde Ausrüstung gibt das Spiel nur heraus, wenn die Person in
+derselben Gruppe **und in Reichweite** ist (rund 28 Meter) und das Untersuchen gelingt.
+Wer zu weit weg steht oder wenn der Server die Anfrage drosselt, bleibt dort leer — es
+wird nichts geraten. Sichtbar ist immer nur die **eigene** Rüstungsart, denn Tier-Teile
+sind klassen- bzw. rüstungsgebunden.
 
 <!-- STAND:ANFANG -->
 
