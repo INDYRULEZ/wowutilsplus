@@ -694,6 +694,46 @@ end
 
 local eingehaengt = false
 
+--- Die Set-Spalte einhaengen. Wird beim Start UND beim Einschalten benutzt, damit es
+--- nur eine Stelle gibt, die sie definiert.
+local function setSpalteEinhaengen(voting)
+    local schonDa = false
+    pcall(function() schonDa = voting.GetColumn and voting:GetColumn(SPALTE_SET) ~= nil end)
+    if schonDa then return true end
+    voting:AddColumn({
+        colName = SPALTE_SET,
+        name = "Set",
+        width = 112,
+        align = "CENTER",
+        sortnext = SPALTE_CRESTS,
+        comparesort = vergleicheSet,
+        DoCellUpdate = ns.UpdateZelleSet,
+    }, SPALTE_CRESTS, "after")
+    return true
+end
+
+--- Set-Spalte im offenen Fenster an- oder ausschalten (ohne /reload).
+--- @return boolean ob es sofort erledigt werden konnte
+function ns.SetSpalteLiveUmschalten(an)
+    local voting = RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
+    if not (voting and voting.AddColumn and voting.RemoveColumn) then return false end
+    local ok = pcall(function()
+        if an then
+            setSpalteEinhaengen(voting)
+        else
+            voting:RemoveColumn(SPALTE_SET)
+        end
+    end)
+    -- Neuzeichnen getrennt absichern: schlaegt es fehl, ist die Spalte trotzdem umgestellt.
+    if ok then
+        pcall(function()
+            local rahmen = voting.frame
+            if rahmen and rahmen.Update then rahmen:Update() end
+        end)
+    end
+    return ok
+end
+
 function mod:SpalteEinhaengen()
     if eingehaengt then return true end
     local voting = RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
@@ -733,15 +773,11 @@ function mod:SpalteEinhaengen()
         }, SPALTE_ITEMS, "after")
 
         -- „Set": H S C G L — welche Tier-Teile jemand hat bzw. sicher bekommt.
-        voting:AddColumn({
-            colName = SPALTE_SET,
-            name = "Set",
-            width = 112,
-            align = "CENTER",
-            sortnext = SPALTE_CRESTS,
-            comparesort = vergleicheSet,
-            DoCellUpdate = ns.UpdateZelleSet,
-        }, SPALTE_CRESTS, "after")
+        -- Laesst sich einschalten (Kaestchen in den RCL-Einstellungen oder /wup set).
+        -- 🔴 Vorgabe ist AUS: wer sie will, schaltet sie ein.
+        if ns.Einstellung("setSpalte", false) then
+            setSpalteEinhaengen(voting)
+        end
     end)
     if not ok then
         ns.spaltenFehler = tostring(fehler)
@@ -751,7 +787,127 @@ function mod:SpalteEinhaengen()
     return true
 end
 
+-- ---------------------------------------------------------------------------
+-- Klick-Option in den RCL-Einstellungen
+--
+-- RCL meldet seine Seite selbst an:
+--   RegisterOptionsTable("RCLootCouncil", …) + AddToBlizOptions("RCLootCouncil", "RCLootCouncil", nil, "settings")
+-- Wir melden eine eigene Tabelle an und haengen sie als Unterseite unter „RCLootCouncil" —
+-- zu finden unter: Interface > AddOns > RCLootCouncil > WoWUtils Plus
+-- ---------------------------------------------------------------------------
+
+local OPTION_TABELLE = {
+    type = "group",
+    name = "WoWUtils Plus",
+    args = {
+        hinweis = {
+            type = "description",
+            name = "Eigene Spalten fuer das Abstimmungsfenster.",
+            order = 1,
+        },
+        setSpalte = {
+            type = "toggle",
+            name = "Set-Spalte anzeigen",
+            desc = "Zeigt eine Spalte mit den Tier-Set-Teilen der Kandidaten "
+                   .. "(H = Kopf, S = Schulter, C = Brust, G = Hände, L = Beine). "
+                   .. "Die Änderung wirkt sofort.",
+            width = "full",
+            order = 2,
+            get = function() return ns.Einstellung("setSpalte", false) and true or false end,
+            set = function(_, wert)
+                ns.EinstellungSetzen("setSpalte", wert and true or false)
+                if ns.SetSpalteLiveUmschalten and not ns.SetSpalteLiveUmschalten(wert and true or false) then
+                    print("|cffffd700WoWUtils Plus:|r Fenster gerade nicht offen — "
+                          .. "die Set-Spalte gilt beim nächsten Öffnen.")
+                end
+            end,
+        },
+    },
+}
+
+--- Ist RCLs eigene Kategorie im Einstellungsfenster schon angemeldet?
+--- 🔴 Nur dann kann unser Aufruf mit Elternnamen ueberhaupt klappen.
+local function elternKategorieDa(dialog)
+    local karte = dialog and dialog.BlizOptionsIDMap
+    return (type(karte) == "table" and karte["RCLootCouncil"] ~= nil) or false
+end
+
+local function optionAnmelden(letzterVersuch)
+    if ns._optionAngemeldet then return true end
+
+    local okD, dialog = pcall(function() return LibStub("AceConfigDialog-3.0", true) end)
+    if not okD or not dialog or not dialog.AddToBlizOptions then
+        ns.optionFehler = "AceConfigDialog-3.0 fehlt"
+        return false
+    end
+
+    -- Die eigene Tabelle einmalig anmelden (zweimal wuerde einen Fehler geben).
+    -- 🔴 UNTER BEIDEN NAMEN: die Unterseite laeuft unter "WowUtilsPlusRCL", die eigene Seite
+    -- unter "WowUtilsPlus". Der Eintrag holt seine Einstellungen ueber genau diesen Namen —
+    -- fehlt er, erscheint die Seite, bleibt aber LEER. Genau das war der Fehler.
+    if not ns._optionRegistriert then
+        local okR, fehlerR = pcall(function()
+            LibStub("AceConfig-3.0"):RegisterOptionsTable("WowUtilsPlusRCL", OPTION_TABELLE)
+            LibStub("AceConfig-3.0"):RegisterOptionsTable("WowUtilsPlus", OPTION_TABELLE)
+        end)
+        if not okR then
+            ns.optionFehler = "Anmelden der Tabelle: " .. tostring(fehlerR)
+            return false
+        end
+        ns._optionRegistriert = true
+    end
+
+    -- 1) Als Unterseite unter RCLootCouncil — mit EIGENEM App-Namen.
+    --    🔴 Nicht denselben App-Namen wie unten nehmen: ein fehlgeschlagener Aufruf legt den
+    --    Eintrag trotzdem an und blockt den Namen fuer den Rest der Sitzung. Genau daran ist
+    --    der Ausweich auf die eigene Seite vorher gescheitert.
+    if elternKategorieDa(dialog) and not ns._rclVersucht then
+        ns._rclVersucht = true
+        local ok, fehler = pcall(dialog.AddToBlizOptions, dialog,
+                                 "WowUtilsPlusRCL", "WoWUtils Plus", "RCLootCouncil")
+        if ok then
+            ns._optionAngemeldet, ns.optionWeg = true, "unter RCLootCouncil"
+            return true
+        end
+        ns.optionFehlerRCL = tostring(fehler)
+    end
+
+    -- 2) Eigene Seite — wenn unter RCL nicht ging, oder wenn RCL sich gar nicht meldet
+    --    (dann erst beim letzten Versuch, damit es nicht vorher schon doppelt landet).
+    local unterRCLGescheitert = (ns._rclVersucht and ns.optionFehlerRCL ~= nil)
+    if not ns._eigenVersucht and (unterRCLGescheitert or letzterVersuch) then
+        ns._eigenVersucht = true
+        local ok, fehler = pcall(dialog.AddToBlizOptions, dialog, "WowUtilsPlus", "WoWUtils Plus")
+        if ok then
+            ns._optionAngemeldet, ns.optionWeg = true, "eigene Seite"
+            return true
+        end
+        ns.optionFehlerEigen = tostring(fehler)
+    end
+
+    if letzterVersuch then
+        ns.optionFehler = ("unter RCL: %s | eigene Seite: %s")
+                            :format(tostring(ns.optionFehlerRCL), tostring(ns.optionFehlerEigen))
+    end
+    return false
+end
+
+--- Spaeter nochmal versuchen — RCL meldet seine eigene Seite evtl. erst kurz nach uns an.
+--- Beim letzten Versuch wird auf die eigene Seite ausgewichen.
+local optionVersuche = 0
+local function optionNachfassen()
+    optionVersuche = optionVersuche + 1
+    local letzter = optionVersuche >= 10
+    if optionAnmelden(letzter) then return end
+    if not letzter and C_Timer and C_Timer.After then
+        C_Timer.After(3, optionNachfassen)
+    end
+end
+
 function mod:OnInitialize()
+    -- Klick-Option in den RCL-Einstellungen anmelden (und bei Bedarf nachfassen)
+    optionNachfassen()
+
     -- RCL braucht einen Moment, bis das Abstimmungsfenster-Modul steht
     local versuche = 0
     -- 🔴 `local t` MUSS vor dem Ticker stehen. In `local t = C_Timer.NewTicker(1, function()

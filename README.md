@@ -35,7 +35,8 @@ Original-Addon unangetastet.
   Tasche + frei) und **„Set"**. Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset
   erhaltenen Teile, der der Crest-Spalte die Stufen **Hero und Mythic**
 - **Spalte „Set":** ein Buchstabe je Tier-Slot in fester Reihenfolge — **H** Kopf,
-  **S** Schulter, **C** Brust, **G** Hände, **L** Beine. Siehe unten.
+  **S** Schulter, **C** Brust, **G** Hände, **L** Beine. **Standardmäßig ausgeblendet**,
+  einschaltbar über die Addon-Einstellungen. Siehe unten.
 - Ohne passenden Sim-Eintrag steht `---` — es wird nie geraten
 
 ## Die Gewichtung
@@ -75,6 +76,15 @@ mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
 Sie beantwortet eine Frage: **wer hat welches Tier-Set-Teil schon?** Damit lässt sich ein
 gedroppter Token fair verteilen, statt ihn jemandem zu geben, der das Teil längst trägt.
+
+**Sie ist standardmäßig ausgeblendet.** Einschalten geht auf zwei Wegen:
+
+- **Im Spiel:** Optionen → Addons → RCLootCouncil → **WoWUtils Plus** → Kästchen
+  **„Set-Spalte anzeigen"**
+- **Per Befehl:** `/wup set`
+
+Die Änderung wirkt sofort, ohne Neuladen. Sie wird gespeichert und gilt auch nach dem
+nächsten Login.
 
 ```
 H S C G L  4/5

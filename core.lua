@@ -289,6 +289,25 @@ function ns.CharaktereSammeln()
 end
 
 -- ---------------------------------------------------------------------------
+-- Einstellungen (liegen in WowUtilsPlusDB.einstellungen)
+-- ---------------------------------------------------------------------------
+
+--- Einstellung lesen. Fehlt sie, gilt die Vorgabe.
+function ns.Einstellung(name, vorgabe)
+    local db = _G.WowUtilsPlusDB
+    local wert = db and db.einstellungen and db.einstellungen[name]
+    if wert == nil then return vorgabe end
+    return wert
+end
+
+--- Einstellung setzen (schreibt in die eigenen SavedVariables).
+function ns.EinstellungSetzen(name, wert)
+    _G.WowUtilsPlusDB = _G.WowUtilsPlusDB or {}
+    WowUtilsPlusDB.einstellungen = WowUtilsPlusDB.einstellungen or {}
+    WowUtilsPlusDB.einstellungen[name] = wert
+end
+
+-- ---------------------------------------------------------------------------
 -- Slash-Befehle
 -- ---------------------------------------------------------------------------
 
@@ -298,6 +317,7 @@ local function hilfe()
     print("  " .. blau("/wup gewichte") .. "    aktive Gewichtungen anzeigen")
     print("  " .. blau("/wup test") .. "        eigene Wunschliste mit gewichteten Gewinnen zeigen")
     print("  " .. blau("/wup rcl") .. "         Diagnose: was das Addon zum aktuellen Item sieht")
+    print("  " .. blau("/wup set") .. "         Set-Spalte ein-/ausblenden")
 end
 
 local function datenlage()
@@ -409,14 +429,33 @@ local function test()
     print("  " .. grau("(max. 12 Eintraege, sortiert nach rohem Gewinn)"))
 end
 
+--- Set-Spalte ein- oder ausschalten: Einstellung merken und sofort umsetzen, wenn moeglich.
+--- 🔴 Vorgabe ist AUS — der Befehl schaltet sie also beim ersten Mal EIN.
+local function setSpalteUmschalten()
+    local an = not ns.Einstellung("setSpalte", false)
+    ns.EinstellungSetzen("setSpalte", an)
+
+    local zusatz = ""
+    if ns.SetSpalteLiveUmschalten then
+        if not ns.SetSpalteLiveUmschalten(an) then
+            zusatz = grau("  — Fenster noch nicht offen, gilt beim naechsten Oeffnen")
+        end
+    else
+        zusatz = grau("  — RCLootCouncil ist nicht geladen, gilt beim naechsten Login")
+    end
+    print(gelb("WoWUtils Plus") .. "  Set-Spalte: " .. (an and gruen("an") or rot("aus")) .. zusatz)
+end
+
 SLASH_WOWUTILSPLUS1 = "/wup"
 SlashCmdList["WOWUTILSPLUS"] = function(eingabe)
     local befehl = (eingabe or ""):lower():match("^%s*(%S*)")
     if befehl == "" or befehl == "help" then hilfe()
     elseif befehl == "test" then test()
     elseif befehl == "gewichte" then gewichte()
+    elseif befehl == "set" then setSpalteUmschalten()
     elseif befehl == "rcl" and ns.DebugRCL then ns.DebugRCL()
-    else datenlage() end
+    else datenlage()
+    end
 end
 
 -- Beim Login einmal kurz melden, damit man sieht dass es geladen ist
