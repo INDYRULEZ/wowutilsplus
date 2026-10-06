@@ -1,8 +1,12 @@
 --[[ WoWUtils Plus — woher die Zahlen fuer die Spalten „Items" und „Crests" kommen.
 
 Items:  RCLootCouncil fuehrt die Loot-Historie selbst (`RCL:GetHistoryDB()`), je Spieler
-        eine Liste mit `date` (YYYY/MM/DD), `time` und `lootWon`. Es zaehlt nur der
-        **Kalendertag** (Serverzeit) — nicht „seit dem Reset" und nicht „seit Raidbeginn".
+        eine Liste mit `date` (YYYY/MM/DD), `time` und `lootWon`. Gezaehlt wird **seit dem
+        letzten Weekly-Reset** (Notnagel Kalendertag, wenn die Spiel-API fehlt).
+        🔴 Dieselbe Vergabe steht im Verlauf gelegentlich ZWEIMAL (RCL protokolliert sie
+        doppelt: gleicher Itemlink, gleicher Tag, aber andere `id`, anderer Boss, anderes
+        Instanzfenster — real gesehen 01.10.2026 bei drei Spielern). Gezaehlt wird deshalb
+        je Itemlink und Tag nur einmal, sonst zieht der Faktor doppelt ab.
 Crests: WowUtils teilt die Waehrungen der Gilde (`WowUtilsAPI.GetCurrency`). Die
         **Obergrenze** steht nur im eigenen Spiel (`C_CurrencyInfo`) und gilt fuer alle gleich.
 
@@ -82,10 +86,22 @@ local function itemsStandRoh(kandidat)
     if not liste then return nil end
     local grenze = seitReset()
     local gesamt, anzahl, links = 0, 0, {}
+    local gesehen, gesehenReset = {}, {}
     for _, e in ipairs(liste) do
-        gesamt = gesamt + 1
-        local wann = tostring(e.date or "") .. " " .. tostring(e.time or "")
-        if wann >= grenze then
+        local tag = tostring(e.date or "")
+        local link = tostring(e.lootWon or "")
+        -- Schluessel je Itemlink und Tag: ein leerer Link/Datum zaehlt normal (nichts wird
+        -- zusammengefasst, was nicht sicher dieselbe Vergabe ist).
+        local schluessel = (tag ~= "" and link ~= "") and (tag .. "|" .. link) or nil
+        if not schluessel then
+            gesamt = gesamt + 1
+        elseif not gesehen[schluessel] then
+            gesehen[schluessel] = true
+            gesamt = gesamt + 1
+        end
+        local wann = tag .. " " .. tostring(e.time or "")
+        if wann >= grenze and (not schluessel or not gesehenReset[schluessel]) then
+            if schluessel then gesehenReset[schluessel] = true end
             anzahl = anzahl + 1
             if e.lootWon then links[#links + 1] = e.lootWon end
         end

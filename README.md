@@ -36,7 +36,9 @@ Original-Addon unangetastet.
   gewichteten Wert (nicht nach dem angezeigten Text)
 - **Drei weitere Spalten:** **„Items"** (insgesamt · seit Reset), **„Crests"** (Mythic: in der
   Tasche + frei) und **„Set"**. Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset
-  erhaltenen Teile, der der Crest-Spalte die Stufen **Hero und Mythic**
+  erhaltenen Teile, der der Crest-Spalte die Stufen **Hero und Mythic**. RCL protokolliert eine
+  Vergabe gelegentlich **doppelt** (gleicher Itemlink, gleicher Tag, andere Eintrags-ID) — ein
+  Itemlink pro Tag zählt deshalb nur **einmal**
 - **Crests- und Set-Spalte** sind standardmäßig ausgeblendet und lassen sich einschalten
   (Kästchen in den Addon-Einstellungen oder `/wup crests` bzw. `/wup set`). Siehe unten.
 - **Spalte „Set":** ein Buchstabe je Tier-Slot in fester Reihenfolge — **H** Kopf,
@@ -67,7 +69,7 @@ Rolle, Prioritätsliste und Wunschliste bleiben multiplikativ.
 | **Average log** | 100er Log = kein Abzug · 0er Log = −10 %, dazwischen linear |
 | **First kill log** | Platz 1 = kein Abzug · letzter Platz = −15 %, dazwischen linear |
 | **Movement/Survival** | von Hand gepflegt, Abzug in Prozent (Vorgabe: höchstens 20 %) |
-| **Items seit Reset** | Abzug je Item, das der Spieler **seit dem letzten Wochen-Reset** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt. Bildet mit den Crests **einen** Faktor, die Abzüge addieren sich |
+| **Items seit Reset** | Abzug je Item, das der Spieler **seit dem letzten Wochen-Reset** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt. Bildet mit den Crests **einen** Faktor, die Abzüge addieren sich. 🔴 Ein Itemlink pro Tag zählt **einmal** — RCL protokolliert dieselbe Vergabe manchmal doppelt |
 | **Crests** | Mythic-Crests, Eingang = „in der Tasche + bis zur Obergrenze frei": 0 → ×0,80, ab 80 → ×1,00, dazwischen linear (Vorgaben). Bildet mit den Items **einen** Faktor |
 
 Die Leistungswerte (Average log, First kill log) kommen aus **Warcraft Logs** und werden
