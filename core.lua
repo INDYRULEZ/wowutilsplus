@@ -106,12 +106,18 @@ function ns.LeistungsWerte(kandidat)
     return werte
 end
 
---- Gesamtfaktor aus den Leistungswerten (1.0 = ohne Wirkung).
+--- Gesamtfaktor aus den Leistungswerten.
+--- 🔴 Additiv seit 06.10.2026 (Jonas): die drei Abzuege werden ADDIERT, nicht multipliziert.
+--- 1 - ((1-average) + (1-firstkill) + (1-movement)). Rolle, Prio, Wunschliste, Items und
+--- Crests bleiben multiplikativ — dieser Block ist genau EIN Faktor in der Kette.
 --- @param kandidat string? Charaktername
 --- @return number
 function ns.LeistungFaktor(kandidat)
     local w = ns.LeistungsWerte(kandidat)
-    return (w.average or 1.0) * (w.firstkill or 1.0) * (w.movement or 1.0)
+    local function f(v) if type(v) == "number" then return v end return 1.0 end
+    local avg, fk, mo = f(w.average), f(w.firstkill), f(w.movement)
+    if avg == 1.0 and fk == 1.0 and mo == 1.0 then return 1.0 end
+    return 1.0 - ((1.0 - avg) + (1.0 - fk) + (1.0 - mo))
 end
 
 --- Faktor aus der Wunschlisten-Priorität (1 = Best in Slot, 2 = Upgrade).
@@ -241,8 +247,7 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
     end
     local leistung = ns.LeistungsWerte(kandidat)
     info.leistung = leistung
-    info.leistungFaktor = (leistung.average or 1.0) * (leistung.firstkill or 1.0)
-        * (leistung.movement or 1.0)
+    info.leistungFaktor = ns.LeistungFaktor(kandidat)
     -- Items seit Reset + Crests: Zahlen gibt es nur im Spiel. Fehlt die Datenquelle,
     -- bleibt der Faktor neutral 1.00 (siehe loot.lua).
     local itemsFaktor, itemsStand = 1.0, nil
@@ -251,8 +256,12 @@ function ns.Gewichten(wert, role, kandidat, wunschPrio)
     if ns.CrestFaktor then crestFaktor, crestStand = ns.CrestFaktor(kandidat) end
     info.itemsFaktor, info.itemsStand = itemsFaktor or 1.0, itemsStand
     info.crestFaktor, info.crestStand = crestFaktor or 1.0, crestStand
+    -- 🔴 Items und Crests bilden EINEN Faktor und werden ADDIERT (Jonas, 06.10.2026):
+    -- 1 - ((1-Items) + (1-Crests)). Beide Stellschrauben der Seite bleiben erhalten, im Tooltip
+    -- steht dafür nur eine Zeile.
+    info.itemsCrestFaktor = 1.0 - ((1.0 - info.itemsFaktor) + (1.0 - info.crestFaktor))
     info.faktor = info.roleFaktor * info.prioFaktor * info.wunschFaktor * info.leistungFaktor
-        * info.itemsFaktor * info.crestFaktor
+        * info.itemsCrestFaktor
     info.gewichtet = wert * info.faktor
     info.grund = #info.gruende > 0 and table.concat(info.gruende, " + ") or nil
     return info.gewichtet, info
@@ -318,6 +327,7 @@ local function hilfe()
     print("  " .. blau("/wup test") .. "        eigene Wunschliste mit gewichteten Gewinnen zeigen")
     print("  " .. blau("/wup rcl") .. "         Diagnose: was das Addon zum aktuellen Item sieht")
     print("  " .. blau("/wup set") .. "         Set-Spalte ein-/ausblenden")
+    print("  " .. blau("/wup crests") .. "     Crests-Spalte ein-/ausblenden")
 end
 
 local function datenlage()
@@ -446,6 +456,23 @@ local function setSpalteUmschalten()
     print(gelb("WoWUtils Plus") .. "  Set-Spalte: " .. (an and gruen("an") or rot("aus")) .. zusatz)
 end
 
+--- Crests-Spalte ein- oder ausschalten: Einstellung merken und sofort umsetzen, wenn moeglich.
+--- 🔴 Vorgabe ist AUS — der Befehl schaltet sie also beim ersten Mal EIN.
+local function crestSpalteUmschalten()
+    local an = not ns.Einstellung("crestSpalte", false)
+    ns.EinstellungSetzen("crestSpalte", an)
+
+    local zusatz = ""
+    if ns.CrestSpalteLiveUmschalten then
+        if not ns.CrestSpalteLiveUmschalten(an) then
+            zusatz = grau("  — Fenster noch nicht offen, gilt beim naechsten Oeffnen")
+        end
+    else
+        zusatz = grau("  — RCLootCouncil ist nicht geladen, gilt beim naechsten Login")
+    end
+    print(gelb("WoWUtils Plus") .. "  Crests-Spalte: " .. (an and gruen("an") or rot("aus")) .. zusatz)
+end
+
 SLASH_WOWUTILSPLUS1 = "/wup"
 SlashCmdList["WOWUTILSPLUS"] = function(eingabe)
     local befehl = (eingabe or ""):lower():match("^%s*(%S*)")
@@ -453,6 +480,7 @@ SlashCmdList["WOWUTILSPLUS"] = function(eingabe)
     elseif befehl == "test" then test()
     elseif befehl == "gewichte" then gewichte()
     elseif befehl == "set" then setSpalteUmschalten()
+    elseif befehl == "crests" then crestSpalteUmschalten()
     elseif befehl == "rcl" and ns.DebugRCL then ns.DebugRCL()
     else datenlage()
     end

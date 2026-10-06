@@ -325,6 +325,28 @@ local function tooltipZeigen(frame, kandidat)
             0.62, 0.62, 0.62, 1, 1, 1)
     end
 
+    -- 🔴 Der Leistungsblock (Average, First kill, Movement) wird ADDIERT, nicht multipliziert
+    -- (Jonas, 06.10.2026). Alle drei Abzuege rechnen deshalb auf denselben Stand — den Wert
+    -- nach Rolle/Prio/Wunschliste. Nur so summieren sich die Betraege genau zum Ergebnis;
+    -- multiplikativ wuerde jeder Abzug auf dem schon verkleinerten Wert rechnen.
+    local blockBasis, blockSumme = nil, 0.0
+    local function zeileAdditiv(faktor, text)
+        faktor = tonumber(faktor) or 1.0
+        if not blockBasis then blockBasis, blockSumme = lauf, 0.0 end
+        local betrag = -blockBasis * (1.0 - faktor)
+        blockSumme = blockSumme + (1.0 - faktor)
+        GameTooltip:AddDoubleLine(
+            ("%s  %s"):format(ns.Faktor(faktor), text),
+            ns.Zahl(betrag, einheit),
+            0.62, 0.62, 0.62, 1, 1, 1)
+    end
+    local function blockSchliessen()
+        if blockBasis then
+            lauf = blockBasis * (1.0 - blockSumme)
+            blockBasis = nil
+        end
+    end
+
     zeile(d.roleFaktor, "Rolle: " .. ns.RollenName(d.role))
     if d.prio then
         zeile(d.prioFaktor, "Prio: " .. tostring(d.prio))
@@ -338,26 +360,35 @@ local function tooltipZeigen(frame, kandidat)
     local det = lw and lw.details or nil
     if lw and lw.average and lw.average ~= 1.0 then
         local wert = (det and det.avgMedian) and ns.ZahlEinfach(det.avgMedian, " %") or ""
-        zeile(lw.average, "Average log: " .. wert)
+        zeileAdditiv(lw.average, "Average log: " .. wert)
     end
     if lw and lw.firstkill and lw.firstkill ~= 1.0 then
         local wert = (det and det.fkPlatz) and ("Platz %s/%s"):format(
             tostring(det.fkPlatz), tostring(det.fkVon)) or ""
-        zeile(lw.firstkill, "First kill: " .. wert)
+        zeileAdditiv(lw.firstkill, "First kill: " .. wert)
     end
     if lw and lw.movement and lw.movement ~= 1.0 then
         -- Movement wird auf der Seite als Abzug in Prozent gepflegt.
         local abzug = (1.0 - lw.movement) * 100.0
-        zeile(lw.movement, "Movement: -" .. ns.ZahlEinfach(abzug) .. " %")
+        zeileAdditiv(lw.movement, "Movement: -" .. ns.ZahlEinfach(abzug) .. " %")
     end
-    if d.itemsFaktor and d.itemsFaktor ~= 1.0 then
-        local st = d.itemsStand or {}
-        zeile(d.itemsFaktor, "Items seit Reset: " .. tostring(st.seitReset or "?"))
-    end
-    if d.crestFaktor and d.crestFaktor ~= 1.0 then
-        local st = d.crestStand or {}
-        local wert = (tonumber(st.hat) or 0) + (tonumber(st.frei) or 0)
-        zeile(d.crestFaktor, "Crests: " .. wert)
+    blockSchliessen()
+    -- Items + Crests: EIN Faktor, addiert (Jonas, 06.10.2026). Schreibweise der Zahlen wie in
+    -- den beiden Spalten: Items "gesamt · seit Reset n", Crests "hat + frei".
+    if d.itemsFaktor and d.crestFaktor
+            and (d.itemsFaktor ~= 1.0 or d.crestFaktor ~= 1.0) then
+        local zusammen = 1.0 - ((1.0 - d.itemsFaktor) + (1.0 - d.crestFaktor))
+        local teile = {}
+        if d.itemsStand and d.itemsFaktor ~= 1.0 then
+            teile[#teile + 1] = "Items " .. tostring(d.itemsStand.gesamt or "?")
+                .. " · seit Reset " .. tostring(d.itemsStand.seitReset or "?")
+        end
+        if d.crestStand and d.crestFaktor ~= 1.0 then
+            local text = tostring(d.crestStand.hat or "?")
+            if d.crestStand.frei then text = text .. " + " .. tostring(d.crestStand.frei) end
+            teile[#teile + 1] = "Crests " .. text
+        end
+        zeile(zusammen, table.concat(teile, " · "))
     end
 
     -- 3) Unten das Ergebnis.
@@ -694,44 +725,93 @@ end
 
 local eingehaengt = false
 
+--- Das Abstimmungsfenster (fuer die Live-Umschaltung).
+local function votingFenster()
+    return RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
+end
+
+--- Ist eine Spalte gerade im Fenster?
+local function spalteDa(voting, colName)
+    local da = false
+    pcall(function() da = voting.GetColumn and voting:GetColumn(colName) ~= nil end)
+    return da and true or false
+end
+
 --- Die Set-Spalte einhaengen. Wird beim Start UND beim Einschalten benutzt, damit es
 --- nur eine Stelle gibt, die sie definiert.
-local function setSpalteEinhaengen(voting)
-    local schonDa = false
-    pcall(function() schonDa = voting.GetColumn and voting:GetColumn(SPALTE_SET) ~= nil end)
-    if schonDa then return true end
+--- 🔴 `sortnext` muss auf eine Spalte zeigen, die es WIRKLICH gibt: ist die Crests-Spalte
+--- ausgeblendet, laeuft die Sortierkette sonst ins Leere. Der Nachbar ist deshalb nicht
+--- fest verdrahtet, sondern wird beim Einhaengen bestimmt.
+local function setSpalteEinhaengen(voting, crestsDa)
+    if spalteDa(voting, SPALTE_SET) then return true end
+    if crestsDa == nil then crestsDa = spalteDa(voting, SPALTE_CRESTS) end
+    local ziel = crestsDa and SPALTE_CRESTS or SPALTE_ITEMS
     voting:AddColumn({
         colName = SPALTE_SET,
         name = "Set",
         width = 112,
         align = "CENTER",
-        sortnext = SPALTE_CRESTS,
+        sortnext = ziel,
         comparesort = vergleicheSet,
         DoCellUpdate = ns.UpdateZelleSet,
-    }, SPALTE_CRESTS, "after")
+    }, ziel, "after")
     return true
 end
 
---- Set-Spalte im offenen Fenster an- oder ausschalten (ohne /reload).
+--- Die Crests-Spalte einhaengen (Start UND Einschalten).
+local function crestSpalteEinhaengen(voting)
+    if spalteDa(voting, SPALTE_CRESTS) then return true end
+    voting:AddColumn({
+        colName = SPALTE_CRESTS,
+        name = "Crests",
+        width = 96,
+        align = "CENTER",
+        sortnext = SPALTE_ITEMS,
+        comparesort = vergleicheCrests,
+        DoCellUpdate = ns.UpdateZelleCrests,
+    }, SPALTE_ITEMS, "after")
+    return true
+end
+
+--- Die Set-Spalte neu einhaengen, damit ihr `sortnext`-Index neu berechnet wird.
+--- Nur, wenn sie gerade im Fenster steht. Wird gebraucht, wenn sich ihr linker Nachbar
+--- aendert (Crests-Spalte an/aus) — die API rechnet die Namen nur beim Einhaengen um.
+local function setSpalteNachziehen(voting)
+    if not spalteDa(voting, SPALTE_SET) then return end
+    voting:RemoveColumn(SPALTE_SET)
+    setSpalteEinhaengen(voting)
+end
+
+--- Eine eigene Spalte im offenen Fenster an- oder ausschalten (ohne /reload).
+--- @param an boolean
+--- @param einhaengen function(voting) die Spalte einhaengen
+--- @param colName string die entfernte Spalte
 --- @return boolean ob es sofort erledigt werden konnte
-function ns.SetSpalteLiveUmschalten(an)
-    local voting = RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
+local function spalteLiveUmschalten(an, einhaengen, colName)
+    local voting = votingFenster()
     if not (voting and voting.AddColumn and voting.RemoveColumn) then return false end
     local ok = pcall(function()
-        if an then
-            setSpalteEinhaengen(voting)
-        else
-            voting:RemoveColumn(SPALTE_SET)
-        end
+        if an then einhaengen(voting) else voting:RemoveColumn(colName) end
     end)
-    -- Neuzeichnen getrennt absichern: schlaegt es fehl, ist die Spalte trotzdem umgestellt.
     if ok then
+        if colName == SPALTE_CRESTS then pcall(setSpalteNachziehen, voting) end
+        -- Neuzeichnen getrennt absichern: schlaegt es fehl, ist die Spalte trotzdem umgestellt.
         pcall(function()
             local rahmen = voting.frame
             if rahmen and rahmen.Update then rahmen:Update() end
         end)
     end
     return ok
+end
+
+--- Set-Spalte im offenen Fenster an- oder ausschalten.
+function ns.SetSpalteLiveUmschalten(an)
+    return spalteLiveUmschalten(an, setSpalteEinhaengen, SPALTE_SET)
+end
+
+--- Crests-Spalte im offenen Fenster an- oder ausschalten.
+function ns.CrestSpalteLiveUmschalten(an)
+    return spalteLiveUmschalten(an, crestSpalteEinhaengen, SPALTE_CRESTS)
 end
 
 function mod:SpalteEinhaengen()
@@ -762,21 +842,19 @@ function mod:SpalteEinhaengen()
         }, SPALTE, "after")
 
         -- „Crests": hat + frei (Mythic). Die anderen Stufen stehen im Tooltip.
-        voting:AddColumn({
-            colName = SPALTE_CRESTS,
-            name = "Crests",
-            width = 96,
-            align = "CENTER",
-            sortnext = SPALTE_ITEMS,
-            comparesort = vergleicheCrests,
-            DoCellUpdate = ns.UpdateZelleCrests,
-        }, SPALTE_ITEMS, "after")
+        -- Laesst sich einschalten (Kaestchen in den RCL-Einstellungen oder /wup crests).
+        -- 🔴 Vorgabe ist AUS: wer sie will, schaltet sie ein.
+        local crestsDa = false
+        if ns.Einstellung("crestSpalte", false) then
+            crestSpalteEinhaengen(voting)
+            crestsDa = true
+        end
 
         -- „Set": H S C G L — welche Tier-Teile jemand hat bzw. sicher bekommt.
         -- Laesst sich einschalten (Kaestchen in den RCL-Einstellungen oder /wup set).
         -- 🔴 Vorgabe ist AUS: wer sie will, schaltet sie ein.
         if ns.Einstellung("setSpalte", false) then
-            setSpalteEinhaengen(voting)
+            setSpalteEinhaengen(voting, crestsDa)
         end
     end)
     if not ok then
@@ -812,13 +890,30 @@ local OPTION_TABELLE = {
                    .. "(H = Kopf, S = Schulter, C = Brust, G = Hände, L = Beine). "
                    .. "Die Änderung wirkt sofort.",
             width = "full",
-            order = 2,
+            order = 3,
             get = function() return ns.Einstellung("setSpalte", false) and true or false end,
             set = function(_, wert)
                 ns.EinstellungSetzen("setSpalte", wert and true or false)
                 if ns.SetSpalteLiveUmschalten and not ns.SetSpalteLiveUmschalten(wert and true or false) then
                     print("|cffffd700WoWUtils Plus:|r Fenster gerade nicht offen — "
                           .. "die Set-Spalte gilt beim nächsten Öffnen.")
+                end
+            end,
+        },
+        crestSpalte = {
+            type = "toggle",
+            name = "Crests-Spalte anzeigen",
+            desc = "Zeigt eine Spalte mit den Mythic-Crests der Kandidaten "
+                   .. "(in der Tasche + bis zur Obergrenze frei). "
+                   .. "Die Änderung wirkt sofort.",
+            width = "full",
+            order = 2,
+            get = function() return ns.Einstellung("crestSpalte", false) and true or false end,
+            set = function(_, wert)
+                ns.EinstellungSetzen("crestSpalte", wert and true or false)
+                if ns.CrestSpalteLiveUmschalten and not ns.CrestSpalteLiveUmschalten(wert and true or false) then
+                    print("|cffffd700WoWUtils Plus:|r Fenster gerade nicht offen — "
+                          .. "die Crests-Spalte gilt beim nächsten Öffnen.")
                 end
             end,
         },

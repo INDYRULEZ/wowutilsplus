@@ -22,18 +22,23 @@ Original-Addon unangetastet.
   x0,90  Prio: 2                     -51,00
   x1,00  Wunschliste: Best in Slot    +0,00
   x0,94  Average log: 42,50 %        -27,54
-  x0,95  First kill: Platz 8/22      -21,57
-  x0,92  Movement: -8,00 %           -32,79
-  Gewichtet                          +377,10
+  x0,95  First kill: Platz 8/22      -22,95
+  x0,92  Movement: -8,00 %           -36,72
+  x0,73  Items 2 · seit Reset 2 · Crests 10 + 10   -102,24
+  Gewichtet                          +269,55
   ```
 
-  Die Beträge laufen mit und summieren sich genau zum Ergebnis.
+  Die Beträge laufen mit und summieren sich genau zum Ergebnis. Zwei Blöcke werden dabei
+  **addiert**: die drei Leistungs-Abzüge (Average log, First kill, Movement) und die beiden
+  Posten Items und Crests — beide rechnen jeweils auf demselben Stand.
 
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
 - **Drei weitere Spalten:** **„Items"** (insgesamt · seit Reset), **„Crests"** (Mythic: in der
   Tasche + frei) und **„Set"**. Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset
   erhaltenen Teile, der der Crest-Spalte die Stufen **Hero und Mythic**
+- **Crests- und Set-Spalte** sind standardmäßig ausgeblendet und lassen sich einschalten
+  (Kästchen in den Addon-Einstellungen oder `/wup crests` bzw. `/wup set`). Siehe unten.
 - **Spalte „Set":** ein Buchstabe je Tier-Slot in fester Reihenfolge — **H** Kopf,
   **S** Schulter, **C** Brust, **G** Hände, **L** Beine. **Standardmäßig ausgeblendet**,
   einschaltbar über die Addon-Einstellungen. Siehe unten.
@@ -41,20 +46,29 @@ Original-Addon unangetastet.
 
 ## Die Gewichtung
 
-Die Faktoren werden multipliziert:
+Zwei Blöcke werden **addiert**, alles andere multipliziert:
 
-**Rolle × Prioritätsliste × Wunschliste × Average log × First kill log × Movement/Survival × Items seit Reset × Crests**
+**Rolle × Prioritätsliste × Wunschliste × (1 − (Average-Abzug + First-kill-Abzug + Movement-Abzug)) × (1 − (Items-Abzug + Crests-Abzug))**
+
+- **Leistung:** Average log, First kill log und Movement rechnen alle drei auf demselben Stand —
+  dem Wert nach Rolle, Prio und Wunschliste — und werden **addiert**. Wer dort −10 % Average,
+  −15 % First kill und −8 % Movement hat, verliert also **33 %**; beim Multiplizieren wären es
+  30 % gewesen.
+- **Items und Crests** bilden zusammen **einen** Faktor: auch hier werden die beiden Abzüge
+  addiert. Beide Stellschrauben der Seite bleiben erhalten, im Tooltip steht dafür **eine** Zeile.
+
+Rolle, Prioritätsliste und Wunschliste bleiben multiplikativ.
 
 | Faktor | Wirkung |
 |---|---|
-| **Rolle** | DPS ×1,00 · Healer ×0,52 · Tank ×1,15 |
+| **Rolle** | DPS ×1,00 · Healer ×0,52 · Tank ×0,90 |
 | **Prioritätsliste** | 1 = kein Abzug · 2 = −10 % · 3 = −20 % · 4 = −30 % · 5 = −40 % |
 | **Wunschliste** | Best in Slot ×1,00 · Upgrade ×0,60 (greift nur, wenn jemand das Item als BiS bzw. Upgrade führt) |
 | **Average log** | 100er Log = kein Abzug · 0er Log = −10 %, dazwischen linear |
 | **First kill log** | Platz 1 = kein Abzug · letzter Platz = −15 %, dazwischen linear |
 | **Movement/Survival** | von Hand gepflegt, Abzug in Prozent (Vorgabe: höchstens 20 %) |
-| **Items seit Reset** | Abzug je Item, das der Spieler **seit dem letzten Wochen-Reset** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt |
-| **Crests** | Mythic-Crests, Eingang = „in der Tasche + bis zur Obergrenze frei": 0 → ×0,80, ab 80 → ×1,00, dazwischen linear (Vorgaben) |
+| **Items seit Reset** | Abzug je Item, das der Spieler **seit dem letzten Wochen-Reset** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt. Bildet mit den Crests **einen** Faktor, die Abzüge addieren sich |
+| **Crests** | Mythic-Crests, Eingang = „in der Tasche + bis zur Obergrenze frei": 0 → ×0,80, ab 80 → ×1,00, dazwischen linear (Vorgaben). Bildet mit den Items **einen** Faktor |
 
 Die Leistungswerte (Average log, First kill log) kommen aus **Warcraft Logs** und werden
 je Charakter berechnet — gefiltert auf **Kills der eigenen Gilde**, **nur auf mythische
@@ -72,19 +86,22 @@ Kämpfe, weniger Mechaniken, andere Ausrüstung) und wären kein sauberer Maßst
 Die Zahlen je Charakter stehen in `gewichte.lua` und werden mit jeder Version
 mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
 
+## Spalten ein- und ausblenden
+
+Zwei der vier eigenen Spalten sind **standardmäßig ausgeblendet** und lassen sich einschalten —
+beim Start **und** im Betrieb, ohne Neuladen. Beides wird gespeichert und gilt auch nach dem
+nächsten Login:
+
+- **Set-Spalte** — Optionen → Addons → RCLootCouncil → **WoWUtils Plus** →
+  Kästchen **„Set-Spalte anzeigen"**, oder `/wup set`
+- **Crests-Spalte** — Kästchen **„Crests-Spalte anzeigen"**, oder `/wup crests`
+
+Die Spalten „Gewichtet" und „Items" bleiben immer sichtbar.
+
 ## Die Set-Spalte
 
 Sie beantwortet eine Frage: **wer hat welches Tier-Set-Teil schon?** Damit lässt sich ein
 gedroppter Token fair verteilen, statt ihn jemandem zu geben, der das Teil längst trägt.
-
-**Sie ist standardmäßig ausgeblendet.** Einschalten geht auf zwei Wegen:
-
-- **Im Spiel:** Optionen → Addons → RCLootCouncil → **WoWUtils Plus** → Kästchen
-  **„Set-Spalte anzeigen"**
-- **Per Befehl:** `/wup set`
-
-Die Änderung wirkt sofort, ohne Neuladen. Sie wird gespeichert und gilt auch nach dem
-nächsten Login.
 
 ```
 H S C G L  4/5
@@ -131,41 +148,41 @@ sind klassen- bzw. rüstungsgebunden.
 
 **Einstellungen:** die letzten 10 mythischen Kills · Abzug bei 0er Log 15 % · Abzug am letzten Erst-Kill-Platz 20 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
 
-**Items & Crests:** Items seit dem Wochen-Reset — 10 % Abzug je Teil, Untergrenze ×0,70 · Crests ×0,90 bei 0, ×1,00 ab 80 (als Faktor zählt nur Mythic).
+**Items & Crests:** Items seit dem Wochen-Reset — 20 % Abzug je Teil, Untergrenze ×0,50 · Crests ×1,00 bei 0, ×1,00 ab 80 (als Faktor zählt nur Mythic).
 
 **Quelle:** mythischen Kills der eigenen Gilde aus Warcraft Logs (Average log: alle Kills im Zeitfenster, First kill log: die Erst-Kills je Boss).
 
 | Spieler | Rolle | Average log | First kill | Movement | Skill-Abzug |
 |---|---|---|---|---|---|
-| Balren (Paldros) | DPS | 34,5 % (10 Kills) → 0,90 | Platz 10/22 → 0,91 | −5,0 % | 0,78 → −22,0 % |
+| Balren (Paldros) | DPS | 34,5 % (10 Kills) → 0,90 | Platz 10/22 → 0,91 | −4,0 % | 0,77 → −23,0 % |
 | Bigboysushi | DPS | – | Platz 12/22 → 0,90 | – | 0,89 → −11,0 % |
-| Blitzfaust | DPS | 27,0 % (8 Kills) → 0,89 | Platz 8/22 → 0,93 | −8,0 % | 0,76 → −24,0 % |
-| Cep | DPS | 46,0 % (1 Kills) → 0,92 | Platz 6/22 → 0,95 | −2,0 % | 0,85 → −15,0 % |
-| Cheliia | DPS | 66,5 % (10 Kills) → 0,95 | Platz 9/22 → 0,92 | −2,0 % | 0,86 → −14,0 % |
-| dranash | Tank | – | – | −10,0 % | 0,90 → −10,0 % |
-| Enshirou | DPS | 4,0 % (6 Kills) → 0,86 | Platz 13/22 → 0,89 | −8,0 % | 0,69 → −31,0 % |
-| Exorzist (cheetah) | Heiler | 19,0 % (10 Kills) → 0,88 | Platz 9/22 → 0,92 | −5,0 % | 0,77 → −23,0 % |
+| Blitzfaust | DPS | 27,0 % (8 Kills) → 0,89 | Platz 8/22 → 0,93 | −6,0 % | 0,76 → −24,0 % |
+| Cep | DPS | 46,0 % (1 Kills) → 0,92 | Platz 6/22 → 0,95 | −5,0 % | 0,82 → −18,0 % |
+| Cheliia | DPS | 66,5 % (10 Kills) → 0,95 | Platz 9/22 → 0,92 | −10,0 % | 0,77 → −23,0 % |
+| dranash | Tank | – | – | −7,0 % | 0,93 → −7,0 % |
+| Enshirou | DPS | 4,0 % (6 Kills) → 0,86 | Platz 13/22 → 0,89 | −12,0 % | 0,62 → −38,0 % |
+| Exorzist (cheetah) | Heiler | 19,0 % (10 Kills) → 0,88 | Platz 9/22 → 0,92 | −5,0 % | 0,75 → −25,0 % |
 | Exudes | DPS | – | Platz 2/22 → 0,99 | −4,0 % | 0,95 → −5,0 % |
-| Garshû | DPS | 22,0 % (10 Kills) → 0,88 | Platz 16/22 → 0,86 | −3,0 % | 0,73 → −27,0 % |
-| Gwêni (Snowi) | DPS | 26,0 % (4 Kills) → 0,89 | Platz 7/22 → 0,94 | −10,0 % | 0,75 → −25,0 % |
-| Hyperhardw (Pasipháë) | DPS | 46,5 % (10 Kills) → 0,92 | Platz 14/22 → 0,88 | −5,0 % | 0,76 → −24,0 % |
-| Indydrakes | DPS | 31,5 % (10 Kills) → 0,90 | Platz 19/22 → 0,83 | −1,0 % | 0,73 → −27,0 % |
-| Jekyl (Rone) | DPS | – | Platz 20/22 → 0,82 | −10,0 % | 0,73 → −27,0 % |
-| Jirylock | DPS | 3,0 % (9 Kills) → 0,85 | – | – | 0,85 → −15,0 % |
-| Merlón | DPS | 75,5 % (10 Kills) → 0,96 | Platz 5/22 → 0,96 | −7,0 % | 0,86 → −14,0 % |
-| Neyzxd (Neyz) | DPS | 66,0 % (5 Kills) → 0,95 | – | −10,0 % | 0,85 → −15,0 % |
-| Notam | DPS | 4,0 % (10 Kills) → 0,86 | Platz 17/22 → 0,85 | −10,0 % | 0,65 → −35,0 % |
-| Ophrys (Juxe) | Heiler | 50,0 % (10 Kills) → 0,93 | Platz 16/22 → 0,86 | −7,0 % | 0,73 → −27,0 % |
-| palaball | Heiler | – | Platz 18/22 → 0,84 | −3,0 % | 0,81 → −19,0 % |
-| Palacetamol | Heiler | 81,0 % (9 Kills) → 0,97 | Platz 14/22 → 0,88 | – | 0,85 → −15,0 % |
-| Schmeckies | DPS | 39,0 % (9 Kills) → 0,91 | – | −10,0 % | 0,81 → −19,0 % |
-| setupx | Tank | – | – | −10,0 % | 0,90 → −10,0 % |
-| Sikkz | DPS | 54,0 % (10 Kills) → 0,93 | Platz 4/22 → 0,97 | −0,0 % | 0,90 → −10,0 % |
-| Silanhunt (Silan) | DPS | 20,0 % (8 Kills) → 0,88 | Platz 11/22 → 0,90 | −1,0 % | 0,78 → −22,0 % |
-| Thunderdebbo | Heiler | 1,0 % (1 Kills) → 0,85 | Platz 14/22 → 0,88 | −8,0 % | 0,68 → −32,0 % |
-| Tobii (Luc) | Heiler | 99,0 % (10 Kills) → 1,00 | Platz 1/22 → 1,00 | −0,0 % | 0,99 → −1,0 % |
-| Twosocks (Sushi) | DPS | 38,0 % (10 Kills) → 0,91 | Platz 3/22 → 0,98 | −2,0 % | 0,87 → −13,0 % |
-| Vilarie | DPS | 61,0 % (9 Kills) → 0,94 | Platz 18/22 → 0,84 | −2,0 % | 0,77 → −23,0 % |
+| Garshû | DPS | 22,0 % (10 Kills) → 0,88 | Platz 16/22 → 0,86 | −8,0 % | 0,66 → −34,0 % |
+| Gwêni (Snowi) | DPS | 26,0 % (4 Kills) → 0,89 | Platz 7/22 → 0,94 | −3,0 % | 0,80 → −20,0 % |
+| Hyperhardw (Pasipháë) | DPS | 46,5 % (10 Kills) → 0,92 | Platz 14/22 → 0,88 | −7,0 % | 0,72 → −28,0 % |
+| Indydrakes | DPS | 31,5 % (10 Kills) → 0,90 | Platz 19/22 → 0,83 | −1,0 % | 0,71 → −29,0 % |
+| Jekyl (Rone) | DPS | – | Platz 20/22 → 0,82 | −10,0 % | 0,71 → −29,0 % |
+| Jirylock | DPS | 3,0 % (9 Kills) → 0,85 | – | −5,0 % | 0,80 → −20,0 % |
+| Merlón | DPS | 75,5 % (10 Kills) → 0,96 | Platz 5/22 → 0,96 | −7,0 % | 0,85 → −15,0 % |
+| Neyzxd (Neyz) | DPS | 66,0 % (5 Kills) → 0,95 | – | −10,0 % | 0,84 → −16,0 % |
+| Notam | DPS | 4,0 % (10 Kills) → 0,86 | Platz 17/22 → 0,85 | −10,0 % | 0,60 → −40,0 % |
+| Ophrys (Juxe) | Heiler | 50,0 % (10 Kills) → 0,93 | Platz 16/22 → 0,86 | −12,0 % | 0,66 → −34,0 % |
+| palaball | Heiler | – | Platz 18/22 → 0,84 | −3,0 % | 0,80 → −20,0 % |
+| Palacetamol | Heiler | 81,0 % (9 Kills) → 0,97 | Platz 14/22 → 0,88 | −4,0 % | 0,80 → −20,0 % |
+| Schmeckies | DPS | 39,0 % (9 Kills) → 0,91 | – | −6,0 % | 0,84 → −16,0 % |
+| setupx | Tank | – | – | −5,0 % | 0,95 → −5,0 % |
+| Sikkz | DPS | 54,0 % (10 Kills) → 0,93 | Platz 4/22 → 0,97 | −7,0 % | 0,83 → −17,0 % |
+| Silanhunt (Silan) | DPS | 20,0 % (8 Kills) → 0,88 | Platz 11/22 → 0,90 | −2,0 % | 0,76 → −24,0 % |
+| Thunderdebbo | Heiler | 1,0 % (1 Kills) → 0,85 | Platz 14/22 → 0,88 | −6,0 % | 0,66 → −34,0 % |
+| Tobii (Luc) | Heiler | 99,0 % (10 Kills) → 1,00 | Platz 1/22 → 1,00 | −1,0 % | 0,98 → −2,0 % |
+| Twosocks (Sushi) | DPS | 38,0 % (10 Kills) → 0,91 | Platz 3/22 → 0,98 | −15,0 % | 0,73 → −27,0 % |
+| Vilarie | DPS | 61,0 % (9 Kills) → 0,94 | Platz 18/22 → 0,84 | −13,0 % | 0,65 → −35,0 % |
 
 <!-- STAND:ENDE -->
 
