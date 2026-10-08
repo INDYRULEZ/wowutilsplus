@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 08.10.2026 11:24
+-- Stand: 08.10.2026 18:36
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -19,6 +19,7 @@ ns.PRIO = {
     ["cheliia"] = 2,   -- Cheliia
     ["debbigosa"] = 4,   -- debbigosa (Nebenchar von Thunderdebbo)
     ["deepressed"] = 1,   -- deepressed (Nebenchar von Tobii)
+    ["depressionen"] = 5,   -- Depressionen
     ["dranash"] = 3,   -- Dránash
     ["enshirou"] = 5,   -- Enshirou
     ["exorzist"] = 2,   -- Exorzist
@@ -31,11 +32,12 @@ ns.PRIO = {
     ["indydrakes"] = 2,   -- Indydrakes
     ["indypalas"] = 2,   -- indypalas (Nebenchar von Indydrakes)
     ["iowol"] = 2,   -- iowol (Nebenchar von Twosocks)
-    ["jekyl"] = 5,   -- Jekyl
+    ["jekyl"] = 5,   -- jekyl (Nebenchar von Rone)
     ["jirylock"] = 5,   -- Jirylock
     ["kaliistda"] = 4,   -- kaliistda (Nebenchar von Blitzfaust)
     ["keitabha"] = 5,   -- keitabha (Nebenchar von Enshirou)
     ["kuhohnemilch"] = 4,   -- kuhohnemilch (Nebenchar von Blitzfaust)
+    ["lemesolohim"] = 5,   -- lemesolohim (Nebenchar von Depressionen)
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
     ["magirmx"] = 4,   -- magirmx (Nebenchar von Merlón)
     ["merlon"] = 4,   -- Merlón
@@ -47,14 +49,14 @@ ns.PRIO = {
     ["notam"] = 2,   -- Notam
     ["notamonk"] = 1,   -- notamonk (Nebenchar von Tobii)
     ["notamused"] = 2,   -- notamused (Nebenchar von Notam)
-    ["notrone"] = 5,   -- notrone (Nebenchar von Jekyl)
+    ["notrone"] = 5,   -- notrone (Nebenchar von Rone)
     ["ophrys"] = 4,   -- Ophrys
     ["palaball"] = 5,   -- Palaball
     ["palacetamol"] = 5,   -- Palacetamol
     ["paldros"] = 2,   -- paldros (Nebenchar von Balren)
     ["papertrail"] = 5,   -- papertrail (Nebenchar von Setupx)
     ["pasiphae"] = 3,   -- pasiphae (Nebenchar von Hyperhardw)
-    ["rone"] = 5,   -- rone (Nebenchar von Jekyl)
+    ["rone"] = 5,   -- Rone
     ["rugs"] = 2,   -- rugs (Nebenchar von Cep)
     ["schmeckies"] = 5,   -- Schmeckies
     ["setupdk"] = 5,   -- setupdk (Nebenchar von Setupx)
@@ -66,16 +68,16 @@ ns.PRIO = {
     ["silanhunt"] = 2,   -- Silanhunt
     ["sillan"] = 2,   -- sillan (Nebenchar von Silanhunt)
     ["sollas"] = 2,   -- sollas (Nebenchar von Garshû)
-    ["stumpstomp"] = 5,   -- stumpstomp (Nebenchar von Jekyl)
+    ["stumpstomp"] = 5,   -- stumpstomp (Nebenchar von Rone)
     ["taovitotem"] = 5,   -- taovitotem (Nebenchar von Palaball)
     ["thunderdebbo"] = 4,   -- Thunderdebbo
     ["tobii"] = 1,   -- Tobii
     ["trybuss"] = 4,   -- trybuss (Nebenchar von Blitzfaust)
     ["twosocks"] = 2,   -- Twosocks
-    ["uneducated"] = 5,   -- uneducated (Nebenchar von Jekyl)
+    ["uneducated"] = 5,   -- uneducated (Nebenchar von Rone)
     ["vilarie"] = 2,   -- Vilarie
 }
 
-ns.PRIO_ANZAHL = 66
+ns.PRIO_ANZAHL = 68
 
-ns.PRIO_STAND = "08.10.2026 11:24"
+ns.PRIO_STAND = "08.10.2026 18:36"
