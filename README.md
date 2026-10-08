@@ -61,6 +61,14 @@ Zwei Blöcke werden **addiert**, alles andere multipliziert:
 
 Rolle, Prioritätsliste und Wunschliste bleiben multiplikativ.
 
+**Bereiche abschaltbar:** Auf der Webseite lässt sich jeder der drei Bereiche **Wunschliste**,
+**Warcraft Logs** und **Items & Crests** mit einem Kästchen („Nicht mitrechnen“) ganz aus der
+Rechnung nehmen. Übertragen wird dann kein Schalter, sondern einfach der **neutrale Wert** (Faktor
+1,00): die Wunschlisten-Faktoren stehen dann auf 1,00/1,00, der Items-Abzug auf 0 und der
+Crests-Mindestfaktor auf 1,00, und für die Leistung kommen **keine Spielerwerte** an. Das Addon
+muss die Kästchen deshalb nicht kennen — es sieht nur Zahlen ohne Wirkung, und im Tooltip fehlen
+die zugehörigen Zeilen.
+
 | Faktor | Wirkung |
 |---|---|
 | **Rolle** | DPS ×1,00 · Healer ×0,52 · Tank ×0,90 |
