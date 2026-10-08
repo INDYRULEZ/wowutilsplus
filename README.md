@@ -34,11 +34,17 @@ Original-Addon unangetastet.
 
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
-- **Drei weitere Spalten:** **„Items"** (insgesamt · seit Reset), **„Crests"** (Mythic: in der
-  Tasche + frei) und **„Set"**. Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset
+- **Vier weitere Spalten:** **„Items"** (insgesamt · seit Reset), **„Crests"** (Mythic: in der
+  Tasche + frei), **„Set"** und **„Roll"**. Der Tooltip der Items-Spalte listet die seit dem Wochen-Reset
   erhaltenen Teile, der der Crest-Spalte die Stufen **Hero und Mythic**. RCL protokolliert eine
   Vergabe gelegentlich **doppelt** (gleicher Itemlink, gleicher Tag, andere Eintrags-ID) — ein
   Itemlink pro Tag zählt deshalb nur **einmal**
+- **Spalte „Roll":** zeigt, ob der Kandidat **dieses** Item in seiner WowUtils-Wunschliste mit einem
+  Roll-Hinweis markiert hat — **„Bonus-Roll"** bzw. **„Roll"**. 🔴 Die Markierung ist **Freitext**,
+  kein eigenes Feld: üblich sind Notizen wie „bonus roll" oder „roll". Gesucht wird deshalb mit
+  **Wortgrenze**, damit ein Satz wie „…bei coiled altar rollen" **nicht** fälschlich als Roll zählt.
+  Der Tooltip der Zelle zeigt die **vollständige Notiz** des Spielers (dort steht auch alles
+  andere, was er sich zum Item notiert hat). Immer sichtbar, steht ganz rechts
 - **Crests- und Set-Spalte** sind standardmäßig ausgeblendet und lassen sich einschalten
   (Kästchen in den Addon-Einstellungen oder `/wup crests` bzw. `/wup set`). Siehe unten.
 - **Spalte „Set":** ein Buchstabe je Tier-Slot in fester Reihenfolge — **H** Kopf,
@@ -161,6 +167,8 @@ sind klassen- bzw. rüstungsgebunden.
 **Einstellungen:** die letzten 12 mythischen Kills · Abzug bei 0er Log 15 % · Abzug am letzten Erst-Kill-Platz 20 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
 
 **Items & Crests:** Items seit dem Wochen-Reset — 20 % Abzug je Teil, Untergrenze ×0,50 · Crests ×1,00 bei 0, ×1,00 ab 80 (als Faktor zählt nur Mythic).
+
+**Abgeschaltet:** Items & Crests — zählt nicht mit (Faktor 1,00).
 
 **Quelle:** mythischen Kills der eigenen Gilde aus Warcraft Logs (Average log: alle Kills im Zeitfenster, First kill log: die Erst-Kills je Boss).
 

@@ -18,6 +18,7 @@ local SPALTENNAME = "Gewichtet"
 local SPALTE_ITEMS = "wowutilsplusitems"
 local SPALTE_CRESTS = "wowutilspluscrests"
 local SPALTE_SET = "wowutilsplusset"
+local SPALTE_ROLL = "wowutilsplusroll"   -- Wunschlisten-Notiz zu DIESEM Item (z. B. "bonus roll")
 local BREITE = 90
 
 -- RCLootCouncil muss geladen sein (OptionalDeps im .toc)
@@ -725,6 +726,102 @@ end
 
 local eingehaengt = false
 
+-- ---------------------------------------------------------------------------
+-- Spalte „Roll": hat der Kandidat DIESES Item in seiner WowUtils-Wunschliste mit
+-- einem Roll-Hinweis markiert?
+--
+-- 🔴 Die Markierung ist **Freitext** — kein Feld. Gemessen am 08.10.2026 stehen in den
+-- Wunschlisten der Gilde: "bonus roll" (3x), "roll" (2x) und "…bei coiled altar rollen"
+-- (1x, KEIN Roll-Hinweis, sondern „würfeln" im Satz). Deshalb wird mit **Wortgrenze**
+-- gesucht: "roll" zaehlt, "rollen" nicht.
+-- ---------------------------------------------------------------------------
+
+ns.cacheRoll = {}
+
+--- @param notiz string?
+--- @return string? "Bonus-Roll" | "Roll" | nil
+local function rollArt(notiz)
+    if type(notiz) ~= "string" or notiz == "" then return nil end
+    local t = notiz:lower()
+    local start = 1
+    while true do
+        local a, b = t:find("roll", start, true)
+        if not a then return nil end
+        local vor = a > 1 and t:sub(a - 1, a - 1) or " "
+        local nach = b < #t and t:sub(b + 1, b + 1) or " "
+        if not vor:match("%a") and not nach:match("%a") then
+            if t:sub(1, a - 1):match("bonus%s*$") then return "Bonus-Roll" end
+            return "Roll"
+        end
+        start = a + 1
+    end
+end
+
+--- Roll-Markierung und Notiz des Kandidaten fuer das GERADE abgestimmte Item.
+--- Kein Merker noetig: das ist nur ein Tabellenzugriff, keine Historien-Suche.
+--- @return string? art, string? notiz, boolean kontextBekannt
+local function rollDaten(kandidat)
+    local itemId, _, zielDif = aktuellesItem()
+    if not (itemId and zielDif) then return nil, nil, false end
+    if not (kandidat and WowUtilsAPI and WowUtilsAPI.GetWishlist) then return nil, nil, true end
+    local wunsch = WowUtilsAPI.GetWishlist(kandidat)
+    local eintrag = wunsch and wunsch[("%d-%d"):format(zielDif, itemId)]
+    local notiz = eintrag and eintrag.note
+    return rollArt(notiz), notiz, true
+end
+
+local function tooltipRoll(frame, kandidat)
+    GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
+    local art, notiz, kontext = rollDaten(kandidat)
+    if not kontext then
+        GameTooltip:AddLine(grau("Item-Info noch nicht geladen — kurz warten."))
+        GameTooltip:Show()
+        return
+    end
+    if art then
+        GameTooltip:AddDoubleLine("Markierung", art, 1, 1, 1, 1, 0.85, 0.2)
+    end
+    if type(notiz) == "string" and notiz ~= "" then
+        GameTooltip:AddLine("Notiz in der Wunschliste:", 0.62, 0.62, 0.62)
+        GameTooltip:AddLine(notiz, 1, 1, 1, true)
+    else
+        GameTooltip:AddLine(grau("Keine Notiz zu diesem Item hinterlegt."))
+    end
+    GameTooltip:Show()
+end
+
+function ns.UpdateZelleRoll(rowFrame, frame, data, cols, row, realrow, column, fshow, tabelle)
+    local kandidat = data and data[realrow] and data[realrow].name
+    frame.text:SetWordWrap(false)
+    frame.text:SetNonSpaceWrap(false)
+    if not kandidat then
+        frame.text:SetText("---")
+        return
+    end
+    local art, _, kontext = rollDaten(kandidat)
+    ns.cacheRoll[kandidat] = art == "Bonus-Roll" and 2 or (art == "Roll" and 1 or -math.huge)
+    if not kontext then
+        frame.text:SetText("---")
+        frame.text:SetTextColor(0.6, 0.6, 0.6)
+    elseif art then
+        frame.text:SetText(art)
+        frame.text:SetTextColor(1.0, 0.85, 0.2)
+    else
+        frame.text:SetText("")
+    end
+    frame:SetScript("OnEnter", function(self) tooltipRoll(self, kandidat) end)
+    frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
+end
+
+local function vergleicheRoll(self, rowa, rowb)
+    local na = self.data and self.data[rowa] and self.data[rowa].name
+    local nb = self.data and self.data[rowb] and self.data[rowb].name
+    local a = na and ns.cacheRoll[na] or -math.huge
+    local b = nb and ns.cacheRoll[nb] or -math.huge
+    if a == b then return false end
+    return a < b
+end
+
 --- Das Abstimmungsfenster (fuer die Live-Umschaltung).
 local function votingFenster()
     return RCL:GetActiveModule("votingframe") or RCL:GetModule("RCVotingFrame", true)
@@ -782,6 +879,36 @@ local function setSpalteNachziehen(voting)
     setSpalteEinhaengen(voting)
 end
 
+--- Die Roll-Spalte einhaengen (beim Start UND beim Nachziehen).
+--- 🔴 Sie ist nicht abschaltbar und steht immer ganz rechts. Ihr `sortnext` zeigt auf die
+--- LINKE Nachbarspalte, und die muss es wirklich geben: ist Set oder Crests ausgeblendet,
+--- laeuft die Sortierkette sonst ins Leere. Der Nachbar wird beim Einhaengen bestimmt.
+local function rollSpalteEinhaengen(voting, ziel)
+    if spalteDa(voting, SPALTE_ROLL) then return true end
+    if not ziel then
+        ziel = spalteDa(voting, SPALTE_SET) and SPALTE_SET
+            or (spalteDa(voting, SPALTE_CRESTS) and SPALTE_CRESTS or SPALTE_ITEMS)
+    end
+    voting:AddColumn({
+        colName = SPALTE_ROLL,
+        name = "Roll",
+        width = 74,
+        align = "CENTER",
+        sortnext = ziel,
+        comparesort = vergleicheRoll,
+        DoCellUpdate = ns.UpdateZelleRoll,
+    }, ziel, "after")
+    return true
+end
+
+--- Die Roll-Spalte neu einhaengen, wenn sich ihr linker Nachbar geaendert hat.
+--- Nur, wenn sie gerade im Fenster steht.
+local function rollSpalteNachziehen(voting)
+    if not spalteDa(voting, SPALTE_ROLL) then return end
+    voting:RemoveColumn(SPALTE_ROLL)
+    rollSpalteEinhaengen(voting)
+end
+
 --- Eine eigene Spalte im offenen Fenster an- oder ausschalten (ohne /reload).
 --- @param an boolean
 --- @param einhaengen function(voting) die Spalte einhaengen
@@ -795,6 +922,11 @@ local function spalteLiveUmschalten(an, einhaengen, colName)
     end)
     if ok then
         if colName == SPALTE_CRESTS then pcall(setSpalteNachziehen, voting) end
+        -- 🔴 Auch beim Set: die Roll-Spalte steht rechts davon und braucht ihren Nachbarn neu,
+        -- sonst zeigt ihr `sortnext` auf eine Spalte, die es nicht mehr gibt.
+        if colName == SPALTE_CRESTS or colName == SPALTE_SET then
+            pcall(rollSpalteNachziehen, voting)
+        end
         -- Neuzeichnen getrennt absichern: schlaegt es fehl, ist die Spalte trotzdem umgestellt.
         pcall(function()
             local rahmen = voting.frame
@@ -853,9 +985,16 @@ function mod:SpalteEinhaengen()
         -- „Set": H S C G L — welche Tier-Teile jemand hat bzw. sicher bekommt.
         -- Laesst sich einschalten (Kaestchen in den RCL-Einstellungen oder /wup set).
         -- 🔴 Vorgabe ist AUS: wer sie will, schaltet sie ein.
+        local setDa = false
         if ns.Einstellung("setSpalte", false) then
             setSpalteEinhaengen(voting, crestsDa)
+            setDa = true
         end
+
+        -- „Roll": der Roll-Hinweis aus der Wunschliste des Kandidaten zu DIESEM Item.
+        -- Immer sichtbar, immer ganz rechts.
+        rollSpalteEinhaengen(voting, setDa and SPALTE_SET
+            or (crestsDa and SPALTE_CRESTS or SPALTE_ITEMS))
     end)
     if not ok then
         ns.spaltenFehler = tostring(fehler)

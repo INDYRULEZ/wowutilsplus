@@ -142,15 +142,18 @@ print("1) Vorgabe: nur Gewichtet + Items — Crests und Set sind aus")
 do
     local w = welt({})
     w.modul:SpalteEinhaengen()
-    pruefe("Spalten", BASIS, namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilsplusroll", namen(w.vw))
+    pruefe("Roll zeigt auf Items", "wowutilsplusitems",
+           sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("2) Set eingeschaltet, Crests weiter aus: Set hinter Items, Kette auf Items")
 do
     local w = welt({ setSpalte = true })
     w.modul:SpalteEinhaengen()
-    pruefe("Spalten", BASIS .. ", wowutilsplusset", namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilsplusset, wowutilsplusroll", namen(w.vw))
     pruefe("Set zeigt auf Items", "wowutilsplusitems", sortnext(w.vw, "wowutilsplusset"))
+    pruefe("Roll zeigt auf Set", "wowutilsplusset", sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("3) Crests zur Laufzeit ein: Set zieht nach, Kette auf Crests")
@@ -158,14 +161,17 @@ do
     local w = welt({ setSpalte = true })
     w.modul:SpalteEinhaengen()
     pruefe("Umschalten möglich", true, w.ns.CrestSpalteLiveUmschalten(true))
-    pruefe("Spalten", BASIS .. ", wowutilspluscrests, wowutilsplusset", namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilspluscrests, wowutilsplusset, wowutilsplusroll",
+           namen(w.vw))
     pruefe("Set zeigt auf Crests", "wowutilspluscrests", sortnext(w.vw, "wowutilsplusset"))
+    pruefe("Roll zeigt auf Set", "wowutilsplusset", sortnext(w.vw, "wowutilsplusroll"))
     -- Die Live-Umschaltung aendert NUR die Spalte; die Einstellung schreibt der Befehl/das Kaestchen.
     pruefe("Einstellung unangetastet", false, w.ns.Einstellung("crestSpalte", false))
 
     pruefe("wieder aus", true, w.ns.CrestSpalteLiveUmschalten(false))
-    pruefe("Spalten", BASIS .. ", wowutilsplusset", namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilsplusset, wowutilsplusroll", namen(w.vw))
     pruefe("Set zeigt wieder auf Items", "wowutilsplusitems", sortnext(w.vw, "wowutilsplusset"))
+    pruefe("Roll zeigt wieder auf Set", "wowutilsplusset", sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("4) Crests zur Laufzeit ein, ohne Set — nichts anderes passiert")
@@ -173,31 +179,36 @@ do
     local w = welt({})
     w.modul:SpalteEinhaengen()
     w.ns.CrestSpalteLiveUmschalten(true)
-    pruefe("Spalten", BASIS .. ", wowutilspluscrests", namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilspluscrests, wowutilsplusroll", namen(w.vw))
     pruefe("Set ist nicht da", nil, sortnext(w.vw, "wowutilsplusset"))
+    pruefe("Roll zeigt auf Crests", "wowutilspluscrests", sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("5) Crests beim Start an")
 do
     local w = welt({ crestSpalte = true })
     w.modul:SpalteEinhaengen()
-    pruefe("Spalten", BASIS .. ", wowutilspluscrests", namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilspluscrests, wowutilsplusroll", namen(w.vw))
+    pruefe("Roll zeigt auf Crests", "wowutilspluscrests", sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("6) Beide beim Start an")
 do
     local w = welt({ crestSpalte = true, setSpalte = true })
     w.modul:SpalteEinhaengen()
-    pruefe("Spalten", BASIS .. ", wowutilspluscrests, wowutilsplusset", namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilspluscrests, wowutilsplusset, wowutilsplusroll",
+           namen(w.vw))
     pruefe("Set zeigt auf Crests", "wowutilspluscrests", sortnext(w.vw, "wowutilsplusset"))
+    pruefe("Roll zeigt auf Set", "wowutilsplusset", sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("7) Set an, Crests beim Start aus (Set muss auf Items zeigen)")
 do
     local w = welt({ crestSpalte = false, setSpalte = true })
     w.modul:SpalteEinhaengen()
-    pruefe("Spalten", BASIS .. ", wowutilsplusset", namen(w.vw))
+    pruefe("Spalten", BASIS .. ", wowutilsplusset, wowutilsplusroll", namen(w.vw))
     pruefe("Set zeigt auf Items", "wowutilsplusitems", sortnext(w.vw, "wowutilsplusset"))
+    pruefe("Roll zeigt auf Set", "wowutilsplusset", sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("8) Klick-Kaestchen in den RCL-Einstellungen")
@@ -218,10 +229,13 @@ do
     -- Klick auf "an" schreibt die Einstellung UND schaltet sofort um
     t.args.crestSpalte.set(nil, true)
     pruefe("Einstellung geschrieben", true, w.ns.Einstellung("crestSpalte", false))
-    pruefe("Spalte sofort da", BASIS .. ", wowutilspluscrests", namen(w.vw))
+    pruefe("Spalte sofort da", BASIS .. ", wowutilspluscrests, wowutilsplusroll", namen(w.vw))
+    pruefe("Roll zeigt auf Crests", "wowutilspluscrests", sortnext(w.vw, "wowutilsplusroll"))
     t.args.crestSpalte.set(nil, false)
     pruefe("Einstellung zurueck", false, w.ns.Einstellung("crestSpalte", false))
-    pruefe("Spalte sofort weg", BASIS, namen(w.vw))
+    pruefe("Spalte sofort weg", BASIS .. ", wowutilsplusroll", namen(w.vw))
+    pruefe("Roll zeigt wieder auf Items", "wowutilsplusitems",
+           sortnext(w.vw, "wowutilsplusroll"))
 end
 
 print("9) Ohne offenes Fenster: nur die Einstellung, keine Ausnahme")
