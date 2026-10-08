@@ -148,9 +148,9 @@ sind klassen- bzw. rüstungsgebunden.
 
 ## Aktueller Stand
 
-*Automatisch erzeugt — Stand: 07.10.2026 20:00*
+*Automatisch erzeugt — Stand: 08.10.2026 11:24*
 
-**Einstellungen:** die letzten 10 mythischen Kills · Abzug bei 0er Log 15 % · Abzug am letzten Erst-Kill-Platz 20 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
+**Einstellungen:** die letzten 12 mythischen Kills · Abzug bei 0er Log 15 % · Abzug am letzten Erst-Kill-Platz 20 % · Movement höchstens 20 % · ohne Tanks · Bosse wie Nek'zali zählen nicht mit.
 
 **Items & Crests:** Items seit dem Wochen-Reset — 20 % Abzug je Teil, Untergrenze ×0,50 · Crests ×1,00 bei 0, ×1,00 ab 80 (als Faktor zählt nur Mythic).
 
@@ -158,34 +158,34 @@ sind klassen- bzw. rüstungsgebunden.
 
 | Spieler | Rolle | Average log | First kill | Movement | Skill-Abzug |
 |---|---|---|---|---|---|
-| Balren (Paldros) | DPS | 34,0 % (10 Kills) → 0,90 | Platz 10/22 → 0,91 | −4,0 % | 0,77 → −23,0 % |
+| Balren (Paldros) | DPS | 35,0 % (12 Kills) → 0,90 | Platz 10/22 → 0,91 | −4,0 % | 0,77 → −23,0 % |
 | Bigboysushi | DPS | – | Platz 11/22 → 0,90 | – | 0,90 → −10,0 % |
-| Blitzfaust | DPS | 26,5 % (8 Kills) → 0,89 | Platz 8/22 → 0,93 | −6,0 % | 0,76 → −24,0 % |
-| Cep | DPS | 45,0 % (1 Kills) → 0,92 | Platz 6/22 → 0,95 | −5,0 % | 0,81 → −19,0 % |
-| Cheliia | DPS | 66,0 % (10 Kills) → 0,95 | Platz 9/22 → 0,92 | −10,0 % | 0,77 → −23,0 % |
+| Blitzfaust | DPS | 38,0 % (9 Kills) → 0,91 | Platz 8/22 → 0,93 | −6,0 % | 0,78 → −22,0 % |
+| Cep | DPS | 45,0 % (3 Kills) → 0,92 | Platz 6/22 → 0,95 | −5,0 % | 0,81 → −19,0 % |
+| Cheliia | DPS | 59,0 % (12 Kills) → 0,94 | Platz 9/22 → 0,92 | −10,0 % | 0,76 → −24,0 % |
 | dranash | Tank | – | – | −7,0 % | 0,93 → −7,0 % |
-| Enshirou | DPS | 4,0 % (6 Kills) → 0,86 | Platz 12/22 → 0,90 | −12,0 % | 0,63 → −37,0 % |
-| Exorzist (cheetah) | Heiler | 20,0 % (10 Kills) → 0,88 | Platz 9/22 → 0,92 | −5,0 % | 0,75 → −25,0 % |
+| Enshirou | DPS | 4,0 % (8 Kills) → 0,86 | Platz 12/22 → 0,90 | −12,0 % | 0,63 → −37,0 % |
+| Exorzist (cheetah) | Heiler | 20,0 % (12 Kills) → 0,88 | Platz 9/22 → 0,92 | −5,0 % | 0,75 → −25,0 % |
 | Exudes | DPS | – | Platz 2/22 → 0,99 | −4,0 % | 0,95 → −5,0 % |
-| Garshû | DPS | 22,0 % (10 Kills) → 0,88 | Platz 16/22 → 0,86 | −8,0 % | 0,66 → −34,0 % |
-| Gwêni (Snowi) | DPS | 26,0 % (4 Kills) → 0,89 | Platz 7/22 → 0,94 | −3,0 % | 0,80 → −20,0 % |
-| Hyperhardw (Pasipháë) | DPS | 46,5 % (10 Kills) → 0,92 | Platz 13/22 → 0,89 | −7,0 % | 0,73 → −27,0 % |
-| Indydrakes | DPS | 30,5 % (10 Kills) → 0,90 | Platz 19/22 → 0,83 | −1,0 % | 0,71 → −29,0 % |
+| Garshû | DPS | 22,0 % (12 Kills) → 0,88 | Platz 16/22 → 0,86 | −8,0 % | 0,66 → −34,0 % |
+| Gwêni (Snowi) | DPS | 16,5 % (6 Kills) → 0,88 | Platz 7/22 → 0,94 | −3,0 % | 0,78 → −22,0 % |
+| Hyperhardw (Pasipháë) | DPS | 36,5 % (12 Kills) → 0,91 | Platz 13/22 → 0,89 | −7,0 % | 0,72 → −28,0 % |
+| Indydrakes | DPS | 27,5 % (12 Kills) → 0,89 | Platz 19/22 → 0,83 | −1,0 % | 0,70 → −30,0 % |
 | Jekyl (Rone) | DPS | – | Platz 20/22 → 0,82 | −10,0 % | 0,71 → −29,0 % |
 | Jirylock | DPS | 3,0 % (9 Kills) → 0,85 | – | −5,0 % | 0,80 → −20,0 % |
-| Merlón | DPS | 74,5 % (10 Kills) → 0,96 | Platz 5/22 → 0,96 | −7,0 % | 0,85 → −15,0 % |
+| Merlón | DPS | 74,0 % (12 Kills) → 0,96 | Platz 5/22 → 0,96 | −7,0 % | 0,85 → −15,0 % |
 | Neyzxd (Neyz) | DPS | 65,0 % (5 Kills) → 0,95 | – | −10,0 % | 0,84 → −16,0 % |
-| Notam | DPS | 4,0 % (10 Kills) → 0,86 | Platz 18/22 → 0,84 | −10,0 % | 0,59 → −41,0 % |
-| Ophrys (Juxe) | Heiler | 49,5 % (10 Kills) → 0,92 | Platz 16/22 → 0,86 | −12,0 % | 0,66 → −34,0 % |
+| Notam | DPS | 4,0 % (12 Kills) → 0,86 | Platz 18/22 → 0,84 | −10,0 % | 0,59 → −41,0 % |
+| Ophrys (Juxe) | Heiler | 43,0 % (12 Kills) → 0,91 | Platz 16/22 → 0,86 | −12,0 % | 0,65 → −35,0 % |
 | palaball | Heiler | – | Platz 18/22 → 0,84 | −3,0 % | 0,80 → −20,0 % |
 | Palacetamol | Heiler | 80,0 % (9 Kills) → 0,97 | Platz 14/22 → 0,88 | −4,0 % | 0,80 → −20,0 % |
 | Schmeckies | DPS | 39,0 % (9 Kills) → 0,91 | – | −6,0 % | 0,84 → −16,0 % |
 | setupx | Tank | – | – | −5,0 % | 0,95 → −5,0 % |
-| Sikkz | DPS | 53,5 % (10 Kills) → 0,93 | Platz 4/22 → 0,97 | −7,0 % | 0,83 → −17,0 % |
-| Silanhunt (Silan) | DPS | 19,5 % (8 Kills) → 0,88 | Platz 15/22 → 0,87 | −2,0 % | 0,72 → −28,0 % |
-| Thunderdebbo | Heiler | 1,0 % (1 Kills) → 0,85 | Platz 14/22 → 0,88 | −6,0 % | 0,66 → −34,0 % |
-| Tobii (Luc) | Heiler | 99,0 % (10 Kills) → 1,00 | Platz 1/22 → 1,00 | −1,0 % | 0,98 → −2,0 % |
-| Twosocks (Sushi) | DPS | 38,0 % (10 Kills) → 0,91 | Platz 3/22 → 0,98 | −15,0 % | 0,73 → −27,0 % |
+| Sikkz | DPS | 56,0 % (12 Kills) → 0,93 | Platz 4/22 → 0,97 | −7,0 % | 0,83 → −17,0 % |
+| Silanhunt (Silan) | DPS | 19,5 % (10 Kills) → 0,88 | Platz 15/22 → 0,87 | −2,0 % | 0,72 → −28,0 % |
+| Thunderdebbo | Heiler | 1,0 % (3 Kills) → 0,85 | Platz 14/22 → 0,88 | −6,0 % | 0,66 → −34,0 % |
+| Tobii (Luc) | Heiler | 99,0 % (12 Kills) → 1,00 | Platz 1/22 → 1,00 | −1,0 % | 0,98 → −2,0 % |
+| Twosocks (Sushi) | DPS | 38,0 % (11 Kills) → 0,91 | Platz 3/22 → 0,98 | −15,0 % | 0,73 → −27,0 % |
 | Vilarie | DPS | 60,0 % (9 Kills) → 0,94 | Platz 17/22 → 0,85 | −13,0 % | 0,65 → −35,0 % |
 
 <!-- STAND:ENDE -->
