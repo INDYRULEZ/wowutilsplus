@@ -1,4 +1,17 @@
 #!/bin/bash
+# ---------------------------------------------------------------------------
+# NOTFALL-WEG — nicht der normale Weg.
+#
+# Normal laeuft die Verteilung ueber GitHub-Release + WowUp. Dieses Skript
+# kopiert die UNVEROEFFENTLICHTE Fassung direkt in den Spielordner. Nur fuer
+# Notfaelle: GitHub nicht erreichbar, oder ein Test VOR dem Release.
+#
+# 🔴 Vorher ANKUENDIGEN — Jonas sieht den Laptop nie. Drei Dinge nennen:
+#    welche Datei, welcher Ordner, und dass nichts anderes angefasst wird
+#    (keine Spiel-Einstellungen, keine anderen Addons, keine Charakterdaten).
+#    Danach sagen, dass dort jetzt die unveroeffentlichte Fassung liegt und
+#    WowUp sie beim naechsten Abgleich ueberschreibt.
+# ---------------------------------------------------------------------------
 # Kopiert unser Addon auf den Desktop-PC in den AddOns-Ordner.
 # Danach im Spiel: /reload  und dann  /wup
 #
