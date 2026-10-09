@@ -112,10 +112,10 @@ Kämpfe, weniger Mechaniken, andere Ausrüstung) und wären kein sauberer Maßst
   noch gar keine Werte hat, wird genauso gerechnet. Vorher zählte ein fehlender Wert als „kein
   Abzug", wodurch Neue über dem halben Kader standen. **Tanks sind ausgenommen** — bei ihnen
   bleibt ein fehlender Teil ohne Abzug.
-- **Von Hand nachtragen:** Fehlen die Logs (oder sind es zu wenige), lassen sich die Spalten
-  **Average log** und **First kill log** auf der Prioritäten-Seite direkt ausfüllen — Average als
-  Prozentzahl wie im Log (100 % = kein Abzug), First kill als Platz in der Rangfolge. Ein
-  eingetragener Wert **übersteuert** die Auswertung und den Kader-Median.
+- **Von Hand nachtragen:** Fehlen die Logs **komplett**, lassen sich die Spalten **Average log** und
+  **First kill log** auf der Prioritäten-Seite direkt ausfüllen — Average als Prozentzahl wie im Log
+  (100 % = kein Abzug), First kill als Platz in der Rangfolge. Ein eingetragener Wert
+  **übersteuert** die Auswertung und den Kader-Median.
 
 Die Zahlen je Charakter stehen in `gewichte.lua` und werden mit jeder Version
 mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
