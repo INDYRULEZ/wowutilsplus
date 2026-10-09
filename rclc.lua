@@ -305,7 +305,10 @@ local function tooltipZeigen(frame, kandidat)
     local einheit = d.prozent and "%" or ""
 
     -- 1) Oben der Grundwert, aus dem gerechnet wird — der kommt aus WowUtils.
-    GameTooltip:AddDoubleLine("Grundwert aus WowUtils", ns.Zahl(d.basis, einheit),
+    --    Bei DPS/Tanks steht dahinter der Gewinn in Prozent (Grundwert / Bezugswert), damit man
+    --    ihn mit dem Prozentwert der Heiler vergleichen kann (Jonas, 09.10.2026).
+    GameTooltip:AddDoubleLine("Grundwert aus WowUtils",
+        ns.Zahl(d.basis, einheit) .. ns.GewinnZusatz(d.basis, d.baseline, d.prozent),
         1, 1, 1, 1, 1, 1)
 
     -- 2) Darunter Zeile fuer Zeile, was davon abgezogen wird.
@@ -431,7 +434,11 @@ function ns.UpdateZelle(rowFrame, frame, data, cols, row, realrow, column, fShow
         frame.text:SetTextColor(0.6, 0.6, 0.6)
     else
         local einheit = details.prozent and "%" or ""
+        -- 🔴 Bei DPS/Tanks haengt hinter dem Endwert der Gewinn in Prozent (Jonas, 09.10.2026),
+        -- damit sich DPS- und Heiler-Gewinne vergleichen lassen. Bei Heilern ist der Wert
+        -- ohnehin schon ein Prozentwert — dann kommt nichts dazu (ns.GewinnZusatz).
         local text = ns.Zahl(gewichtet, einheit)
+            .. ns.GewinnZusatz(details.basis, details.baseline, details.prozent)
         frame.text:SetText(text)
         frame.text:SetTextColor(gewichtet >= 0 and 0.31 or 1.0, gewichtet >= 0 and 0.86 or 0.35, 0.39)
     end

@@ -49,6 +49,35 @@ function ns.ZahlEinfach(wert, einheit)
     return s:gsub("%.", ",") .. (einheit or "")
 end
 
+--- Der Gewinn eines Items in Prozent, so wie die Sim ihn ausgibt: Grundwert / Bezugswert * 100.
+--- Nur moeglich, wenn die Sim einen Bezugswert („baseline") mitliefert — das tun die
+--- Raidbots-Sims (DPS und Tanks). Bei QE Live (Heiler) fehlt er: dort IST der Wert schon ein
+--- Prozentwert, deshalb gibt es hier nichts umzurechnen.
+--- 🔴 Zweck (Jonas, 09.10.2026): DPS- und Heiler-Gewinne sollen vergleichbar sein — bei Heilern
+--- steht der Prozentwert in der Spalte, bei DPS wird er dahinter angehaengt.
+--- @param basis number? Grundwert (absoluter Gewinn)
+--- @param baseline number? Bezugswert der Sim
+--- @return number? Prozentwert (z. B. 1.65) oder nil, wenn nicht rechenbar
+function ns.ProzentGewinn(basis, baseline)
+    if type(basis) ~= "number" or type(baseline) ~= "number" then return nil end
+    if baseline == 0 then return nil end
+    return basis / baseline * 100.0
+end
+
+--- Der Zusatz, der hinter einem Wert steht: „ (+1,65 %)".
+--- Leer bei Heilern (dort IST der Wert schon Prozent) und wenn kein Bezugswert vorliegt.
+--- An EINER Stelle, damit Spalte und Tooltip nie auseinanderlaufen.
+--- @param basis number? Grundwert
+--- @param baseline number? Bezugswert der Sim
+--- @param istProzent boolean? true = der Wert ist schon ein Prozentwert (QE Live)
+--- @return string
+function ns.GewinnZusatz(basis, baseline, istProzent)
+    if istProzent then return "" end
+    local pct = ns.ProzentGewinn(basis, baseline)
+    if not pct then return "" end
+    return " (" .. ns.Zahl(pct, " %") .. ")"
+end
+
 --- Ganze Zahl mit Tausenderpunkt, z. B. 199.641.
 --- @param wert number
 --- @return string

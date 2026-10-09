@@ -17,7 +17,7 @@ Original-Addon unangetastet.
   weggeht, unten das Ergebnis:
 
   ```
-  Grundwert aus WowUtils             +510,00
+  Grundwert aus WowUtils             +510,00 (+0,26 %)
   x1,00  Rolle: DPS                   +0,00
   x0,90  Prio: 2                     -51,00
   x1,00  Wunschliste: Best in Slot    +0,00
@@ -32,6 +32,13 @@ Original-Addon unangetastet.
   **addiert**: die drei Leistungs-Abzüge (Average log, First kill, Movement) und die beiden
   Posten Items und Crests — beide rechnen jeweils auf demselben Stand.
 
+- **Gewinn in Prozent hinter dem Wert:** Bei **DPS und Tanks** steht hinter dem gewichteten Wert
+  der Item-Gewinn in Prozent — `+510,00 (+1,65 %)`. Grund: die Sims liefern dort einen
+  **absoluten** Gewinn und den **Bezugswert** mit, also lässt sich der Prozentwert ausrechnen
+  (Gewinn ÷ Bezugswert). Bei **Heilern** ist der Wert selbst schon ein Prozentwert — dort steht
+  nichts dahinter, sonst wäre es doppelt. So lassen sich DPS- und Heiler-Gewinne vergleichen.
+  🔴 Fehlt der Bezugswert (Sim liefert keinen), bleibt es beim reinen Wert — es wird nichts
+  geschätzt. Sortiert wird weiter nach dem **gewichteten Wert**, nicht nach dem Prozentwert
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)
 - **Vier weitere Spalten:** **„Items"** (insgesamt · seit Reset), **„Crests"** (Mythic: in der
