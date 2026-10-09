@@ -100,6 +100,11 @@ Kämpfe, weniger Mechaniken, andere Ausrüstung) und wären kein sauberer Maßst
   stirbt, würde sonst zu großzügig hochgerechnet. Verglichen wird mit dem besten Wert
   **derselben Rolle** im selben Kampf — **Heiler werden an der Heilung gemessen, nicht am
   Schaden**. Daraus ergibt sich die Rangfolge.
+- **Fehlt ein Wert** — typisch bei neuen Mitgliedern, die noch keine Logs mit der Gilde haben —
+  zählt für diesen Teil der **Kader-Median**: also „durchschnittlich", nicht „einwandfrei". Wer
+  noch gar keine Werte hat, wird genauso gerechnet. Vorher zählte ein fehlender Wert als „kein
+  Abzug", wodurch Neue über dem halben Kader standen. **Tanks sind ausgenommen** — bei ihnen
+  bleibt ein fehlender Teil ohne Abzug.
 
 Die Zahlen je Charakter stehen in `gewichte.lua` und werden mit jeder Version
 mitgeliefert. Sie werden außerhalb des Spiels gepflegt und berechnet.
