@@ -1,10 +1,10 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
--- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 08.10.2026 18:38
+-- Quelle: Weboberfläche (Loot-Council-Prioritäten), Stand: 09.10.2026 11:00
 
 local _, ns = ...
 
 ns.WEIGHTS = {
-    HEALER  = { factor = 0.56 },
+    HEALER  = { factor = 0.90 },
     TANK    = { factor = 0.90 },
     DAMAGER = { factor = 1.00 },
 }

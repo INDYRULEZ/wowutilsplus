@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 08.10.2026 18:38
+-- Stand: 09.10.2026 11:00
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -14,7 +14,7 @@ ns.PRIO = {
     ["bigboysushi"] = 2,   -- bigboysushi (Nebenchar von Twosocks)
     ["blitzfaust"] = 4,   -- Blitzfaust
     ["bloodyiron"] = 4,   -- bloodyiron (Nebenchar von Blitzfaust)
-    ["cep"] = 2,   -- Cep
+    ["cep"] = 3,   -- Cep
     ["charlemagne"] = 4,   -- charlemagne (Nebenchar von Ophrys)
     ["cheliia"] = 2,   -- Cheliia
     ["debbigosa"] = 4,   -- debbigosa (Nebenchar von Thunderdebbo)
@@ -45,7 +45,7 @@ ns.PRIO = {
     ["neyzxd"] = 5,   -- Neyzxd
     ["nitroboost"] = 5,   -- nitroboost (Nebenchar von Setupx)
     ["noimage"] = 5,   -- noimage (Nebenchar von Setupx)
-    ["nom"] = 2,   -- nom (Nebenchar von Cep)
+    ["nom"] = 3,   -- nom (Nebenchar von Cep)
     ["notam"] = 2,   -- Notam
     ["notamonk"] = 1,   -- notamonk (Nebenchar von Tobii)
     ["notamused"] = 2,   -- notamused (Nebenchar von Notam)
@@ -57,7 +57,7 @@ ns.PRIO = {
     ["papertrail"] = 5,   -- papertrail (Nebenchar von Setupx)
     ["pasiphae"] = 3,   -- pasiphae (Nebenchar von Hyperhardw)
     ["rone"] = 5,   -- Rone
-    ["rugs"] = 2,   -- rugs (Nebenchar von Cep)
+    ["rugs"] = 3,   -- rugs (Nebenchar von Cep)
     ["schmeckies"] = 5,   -- Schmeckies
     ["setupdk"] = 5,   -- setupdk (Nebenchar von Setupx)
     ["setupdruid"] = 5,   -- setupdruid (Nebenchar von Setupx)
@@ -75,9 +75,9 @@ ns.PRIO = {
     ["trybuss"] = 4,   -- trybuss (Nebenchar von Blitzfaust)
     ["twosocks"] = 2,   -- Twosocks
     ["uneducated"] = 5,   -- uneducated (Nebenchar von Rone)
-    ["vilarie"] = 2,   -- Vilarie
+    ["vilarie"] = 3,   -- Vilarie
 }
 
 ns.PRIO_ANZAHL = 68
 
-ns.PRIO_STAND = "08.10.2026 18:38"
+ns.PRIO_STAND = "09.10.2026 11:00"
