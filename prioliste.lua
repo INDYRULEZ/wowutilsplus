@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 09.10.2026 11:00
+-- Stand: 12.10.2026 17:42
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -23,7 +23,7 @@ ns.PRIO = {
     ["dranash"] = 3,   -- Dránash
     ["enshirou"] = 5,   -- Enshirou
     ["exorzist"] = 2,   -- Exorzist
-    ["exudes"] = 5,   -- Exudes
+    ["exudes"] = 4,   -- Exudes
     ["furball"] = 5,   -- furball (Nebenchar von Palaball)
     ["furdruid"] = 5,   -- furdruid (Nebenchar von Palaball)
     ["garshu"] = 2,   -- Garshû
@@ -52,13 +52,11 @@ ns.PRIO = {
     ["notrone"] = 5,   -- notrone (Nebenchar von Rone)
     ["ophrys"] = 4,   -- Ophrys
     ["palaball"] = 5,   -- Palaball
-    ["palacetamol"] = 5,   -- Palacetamol
     ["paldros"] = 2,   -- paldros (Nebenchar von Balren)
     ["papertrail"] = 5,   -- papertrail (Nebenchar von Setupx)
     ["pasiphae"] = 3,   -- pasiphae (Nebenchar von Hyperhardw)
     ["rone"] = 5,   -- Rone
     ["rugs"] = 3,   -- rugs (Nebenchar von Cep)
-    ["schmeckies"] = 5,   -- Schmeckies
     ["setupdk"] = 5,   -- setupdk (Nebenchar von Setupx)
     ["setupdruid"] = 5,   -- setupdruid (Nebenchar von Setupx)
     ["setupx"] = 5,   -- Setupx
@@ -78,6 +76,6 @@ ns.PRIO = {
     ["vilarie"] = 3,   -- Vilarie
 }
 
-ns.PRIO_ANZAHL = 68
+ns.PRIO_ANZAHL = 66
 
-ns.PRIO_STAND = "09.10.2026 11:00"
+ns.PRIO_STAND = "12.10.2026 17:42"
