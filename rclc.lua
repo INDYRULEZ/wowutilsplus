@@ -19,7 +19,10 @@ local SPALTE_ITEMS = "wowutilsplusitems"
 local SPALTE_CRESTS = "wowutilspluscrests"
 local SPALTE_SET = "wowutilsplusset"
 local SPALTE_ROLL = "wowutilsplusroll"   -- Wunschlisten-Notiz zu DIESEM Item (z. B. "bonus roll")
-local BREITE = 90
+-- Spaltenbreite. 🔴 Seit 09.10.2026 steht bei DPS/Tanks der Prozent-Gewinn dahinter
+-- („+376,38 (+1,65 %)", bis ~19 Zeichen) — mit 90 war die Spalte abgeschnitten.
+-- Zum Maßstab: die Items-Spalte zeigt „12 · seit Reset 3" (17 Zeichen) in 118 px.
+local BREITE = 150
 
 -- RCLootCouncil muss geladen sein (OptionalDeps im .toc)
 if not (C_AddOns and C_AddOns.IsAddOnLoaded and C_AddOns.IsAddOnLoaded("RCLootCouncil")) then return end
