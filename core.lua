@@ -65,15 +65,18 @@ function ns.ProzentGewinn(basis, baseline)
 end
 
 --- Der Zusatz, der hinter einem Wert steht: „ (+1,65 %)".
+--- 🔴 Aufgerufen wird er mit dem Wert, auf den sich die Prozentangabe beziehen soll:
+---   · im Tooltip bei „Grundwert aus WowUtils" mit dem ROHEN Wert (so zeigt es auch WowUtils),
+---   · in der Spalte und bei „Gewichtet" mit dem GEWICHTETEN Wert (Jonas, 12.10.2026).
 --- Leer bei Heilern (dort IST der Wert schon Prozent) und wenn kein Bezugswert vorliegt.
 --- An EINER Stelle, damit Spalte und Tooltip nie auseinanderlaufen.
---- @param basis number? Grundwert
+--- @param wert number? der Wert, der zum Prozentwert gemacht wird
 --- @param baseline number? Bezugswert der Sim
 --- @param istProzent boolean? true = der Wert ist schon ein Prozentwert (QE Live)
 --- @return string
-function ns.GewinnZusatz(basis, baseline, istProzent)
+function ns.GewinnZusatz(wert, baseline, istProzent)
     if istProzent then return "" end
-    local pct = ns.ProzentGewinn(basis, baseline)
+    local pct = ns.ProzentGewinn(wert, baseline)
     if not pct then return "" end
     return " (" .. ns.Zahl(pct, " %") .. ")"
 end

@@ -25,7 +25,7 @@ Original-Addon unangetastet.
   x0,95  First kill: Platz 8/22      -22,95
   x0,92  Movement: -8,00 %           -36,72
   x0,73  Items 2 · seit Reset 2 · Crests 10 + 10   -102,24
-  Gewichtet                          +269,55
+  Gewichtet                          +269,55 (+0,14 %)
   ```
 
   Die Beträge laufen mit und summieren sich genau zum Ergebnis. Zwei Blöcke werden dabei
@@ -33,11 +33,15 @@ Original-Addon unangetastet.
   Posten Items und Crests — beide rechnen jeweils auf demselben Stand.
 
 - **Gewinn in Prozent hinter dem Wert:** Bei **DPS und Tanks** steht hinter dem gewichteten Wert
-  der Item-Gewinn in Prozent — `+510,00 (+1,65 %)`. Grund: die Sims liefern dort einen
-  **absoluten** Gewinn und den **Bezugswert** mit, also lässt sich der Prozentwert ausrechnen
-  (Gewinn ÷ Bezugswert). Bei **Heilern** ist der Wert selbst schon ein Prozentwert — dort steht
-  nichts dahinter, sonst wäre es doppelt. So lassen sich DPS- und Heiler-Gewinne vergleichen.
-  🔴 Fehlt der Bezugswert (Sim liefert keinen), bleibt es beim reinen Wert — es wird nichts
+  **unser eigener** Prozentsatz — `+342,72 (+0,17 %)`, also der gewichtete Wert im Verhältnis zum
+  Gesamtschaden des Spielers (Bezugswert der Sim). Bei **Heilern** ist der Wert selbst schon ein
+  Prozentwert — dort steht nichts dahinter, sonst wäre es doppelt. So lassen sich DPS- und
+  Heiler-Gewinne vergleichen.
+  🔴 **Nicht verwechseln:** die erste Tooltip-Zeile („Grundwert aus WowUtils") trägt den **rohen**
+  Prozentsatz — `+510,00 (+0,26 %)`. Genau den zeigt auch WowUtils in seiner eigenen Spalte.
+  Oben der rohe Wert, unten unser gerechneter — dazwischen stehen die Faktoren, an denen der
+  Unterschied entsteht (510 → 342,72 · 0,26 % → 0,17 %).
+  Fehlt der Bezugswert (Sim liefert keinen), bleibt es beim reinen Wert — es wird nichts
   geschätzt. Sortiert wird weiter nach dem **gewichteten Wert**, nicht nach dem Prozentwert
 - **Sortierbar:** Klick auf die Spaltenüberschrift sortiert numerisch nach dem
   gewichteten Wert (nicht nach dem angezeigten Text)

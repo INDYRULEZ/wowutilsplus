@@ -308,8 +308,9 @@ local function tooltipZeigen(frame, kandidat)
     local einheit = d.prozent and "%" or ""
 
     -- 1) Oben der Grundwert, aus dem gerechnet wird — der kommt aus WowUtils.
-    --    Bei DPS/Tanks steht dahinter der Gewinn in Prozent (Grundwert / Bezugswert), damit man
-    --    ihn mit dem Prozentwert der Heiler vergleichen kann (Jonas, 09.10.2026).
+    --    🔴 Hier steht der ROHE Prozentsatz (Grundwert / Bezugswert) — genau so zeigt ihn auch
+    --    WowUtils in seiner eigenen Spalte (`sformat("%s (%.2f%%)", entry.gain, dif)`).
+    --    Der gewichtete Prozentsatz steht erst unten an der Zeile „Gewichtet".
     GameTooltip:AddDoubleLine("Grundwert aus WowUtils",
         ns.Zahl(d.basis, einheit) .. ns.GewinnZusatz(d.basis, d.baseline, d.prozent),
         1, 1, 1, 1, 1, 1)
@@ -398,8 +399,11 @@ local function tooltipZeigen(frame, kandidat)
         zeile(zusammen, table.concat(teile, " · "))
     end
 
-    -- 3) Unten das Ergebnis.
-    GameTooltip:AddDoubleLine("Gewichtet", ns.Zahl(d.gewichtet, einheit),
+    -- 3) Unten das Ergebnis — mit UNSEREM Prozentsatz (gewichteter Wert / Bezugswert), damit er
+    --    zu dem passt, was in der Spalte steht und zu dem, was bei Heilern angezeigt wird.
+    GameTooltip:AddDoubleLine("Gewichtet",
+        ns.Zahl(d.gewichtet, einheit)
+            .. ns.GewinnZusatz(d.gewichtet, d.baseline, d.prozent),
         1, 1, 1, 1, 0.85, 0.2)
 
     if d.grund then
@@ -437,11 +441,13 @@ function ns.UpdateZelle(rowFrame, frame, data, cols, row, realrow, column, fShow
         frame.text:SetTextColor(0.6, 0.6, 0.6)
     else
         local einheit = details.prozent and "%" or ""
-        -- 🔴 Bei DPS/Tanks haengt hinter dem Endwert der Gewinn in Prozent (Jonas, 09.10.2026),
-        -- damit sich DPS- und Heiler-Gewinne vergleichen lassen. Bei Heilern ist der Wert
-        -- ohnehin schon ein Prozentwert — dann kommt nichts dazu (ns.GewinnZusatz).
+        -- 🔴 Bei DPS/Tanks haengt hinter dem Endwert der Gewinn in Prozent, damit sich DPS- und
+        -- Heiler-Gewinne vergleichen lassen. 🔴 Der Prozentsatz rechnet auf dem GEWICHTETEN Wert
+        -- (Jonas, 12.10.2026): „unser Wert / Bezugswert". Vorher stand dort der rohe Sim-Wert —
+        -- dann war die Zahl identisch mit der WowUtils-Spalte und sah wie ein Widerspruch aus.
+        -- Bei Heilern ist der Wert ohnehin schon ein Prozentwert — dann kommt nichts dazu.
         local text = ns.Zahl(gewichtet, einheit)
-            .. ns.GewinnZusatz(details.basis, details.baseline, details.prozent)
+            .. ns.GewinnZusatz(gewichtet, details.baseline, details.prozent)
         frame.text:SetText(text)
         frame.text:SetTextColor(gewichtet >= 0 and 0.31 or 1.0, gewichtet >= 0 and 0.86 or 0.35, 0.39)
     end

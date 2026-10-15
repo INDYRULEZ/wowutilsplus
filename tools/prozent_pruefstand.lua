@@ -47,15 +47,20 @@ pruefe("Bezugswert 0 -> nichts             ", "", ns.GewinnZusatz(510, 0, false)
 pruefe("Grundwert fehlt -> nichts          ", "", ns.GewinnZusatz(nil, 196201, false))
 
 -- ---- So sieht die Zelle aus (Spalte „Gewichtet") ----------------------------------
+-- 🔴 Der Prozentsatz in der Zelle rechnet auf dem GEWICHTETEN Wert (Jonas, 12.10.2026):
+-- roher Gewinn 510 -> 0,26 % (so zeigt es WowUtils) · gewichtet 376,38 -> 0,19 % (unser Wert).
 pruefe("DPS-Zelle     ",
-       "+376,38 (+0,26 %)",
-       ns.Zahl(376.38, "") .. ns.GewinnZusatz(510, 196201, false))
+       "+376,38 (+0,19 %)",
+       ns.Zahl(376.38, "") .. ns.GewinnZusatz(376.38, 196201, false))
+pruefe("roher Wert (Tooltip-Zeile „Grundwert aus WowUtils“) ",
+       "+510,00 (+0,26 %)",
+       ns.Zahl(510, "") .. ns.GewinnZusatz(510, 196201, false))
 pruefe("Heiler-Zelle  ",
        "+0,66%",
        ns.Zahl(0.66, "%") .. ns.GewinnZusatz(0.66, nil, true))
 pruefe("DPS ohne Sim-Bezugswert ",
        "+376,38",
-       ns.Zahl(376.38, "") .. ns.GewinnZusatz(510, nil, false))
+       ns.Zahl(376.38, "") .. ns.GewinnZusatz(376.38, nil, false))
 
 print()
 if fehler == 0 then
