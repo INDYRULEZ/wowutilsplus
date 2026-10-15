@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 12.10.2026 18:03
+-- Stand: 14.10.2026 20:00
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -11,13 +11,13 @@ ns.PRIO = {
     ["ashylie"] = 4,   -- ashylie (Nebenchar von Blitzfaust)
     ["balren"] = 2,   -- Balren
     ["beaybewhy"] = 5,   -- Beaybewhy
-    ["bigboysushi"] = 2,   -- bigboysushi (Nebenchar von Twosocks)
+    ["bigboysushi"] = 3,   -- bigboysushi (Nebenchar von Twosocks)
     ["blitzfaust"] = 4,   -- Blitzfaust
     ["bloodyiron"] = 4,   -- bloodyiron (Nebenchar von Blitzfaust)
     ["cep"] = 3,   -- Cep
     ["charlemagne"] = 4,   -- charlemagne (Nebenchar von Ophrys)
     ["cheliia"] = 2,   -- Cheliia
-    ["debbigosa"] = 4,   -- debbigosa (Nebenchar von Thunderdebbo)
+    ["debbigosa"] = 3,   -- debbigosa (Nebenchar von Thunderdebbo)
     ["deepressed"] = 1,   -- deepressed (Nebenchar von Tobii)
     ["depressionen"] = 5,   -- Depressionen
     ["dranash"] = 3,   -- Dránash
@@ -31,7 +31,7 @@ ns.PRIO = {
     ["hyperhardw"] = 3,   -- Hyperhardw
     ["indydrakes"] = 2,   -- Indydrakes
     ["indypalas"] = 2,   -- indypalas (Nebenchar von Indydrakes)
-    ["iowol"] = 2,   -- iowol (Nebenchar von Twosocks)
+    ["iowol"] = 3,   -- iowol (Nebenchar von Twosocks)
     ["jekyl"] = 5,   -- jekyl (Nebenchar von Rone)
     ["jirylock"] = 5,   -- Jirylock
     ["kaliistda"] = 4,   -- kaliistda (Nebenchar von Blitzfaust)
@@ -41,8 +41,8 @@ ns.PRIO = {
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
     ["magirmx"] = 4,   -- magirmx (Nebenchar von Merlón)
     ["merlon"] = 4,   -- Merlón
-    ["neyzdk"] = 5,   -- neyzdk (Nebenchar von Neyzxd)
-    ["neyzxd"] = 5,   -- Neyzxd
+    ["neyzdk"] = 4,   -- neyzdk (Nebenchar von Neyzxd)
+    ["neyzxd"] = 4,   -- Neyzxd
     ["nitroboost"] = 5,   -- nitroboost (Nebenchar von Setupx)
     ["noimage"] = 5,   -- noimage (Nebenchar von Setupx)
     ["nom"] = 3,   -- nom (Nebenchar von Cep)
@@ -68,14 +68,14 @@ ns.PRIO = {
     ["sollas"] = 2,   -- sollas (Nebenchar von Garshû)
     ["stumpstomp"] = 5,   -- stumpstomp (Nebenchar von Rone)
     ["taovitotem"] = 5,   -- taovitotem (Nebenchar von Palaball)
-    ["thunderdebbo"] = 4,   -- Thunderdebbo
+    ["thunderdebbo"] = 3,   -- Thunderdebbo
     ["tobii"] = 1,   -- Tobii
     ["trybuss"] = 4,   -- trybuss (Nebenchar von Blitzfaust)
-    ["twosocks"] = 2,   -- Twosocks
+    ["twosocks"] = 3,   -- Twosocks
     ["uneducated"] = 5,   -- uneducated (Nebenchar von Rone)
     ["vilarie"] = 3,   -- Vilarie
 }
 
 ns.PRIO_ANZAHL = 66
 
-ns.PRIO_STAND = "12.10.2026 18:03"
+ns.PRIO_STAND = "14.10.2026 20:00"
