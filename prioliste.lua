@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 14.10.2026 20:00
+-- Stand: 16.10.2026 11:19
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -14,9 +14,9 @@ ns.PRIO = {
     ["bigboysushi"] = 3,   -- bigboysushi (Nebenchar von Twosocks)
     ["blitzfaust"] = 4,   -- Blitzfaust
     ["bloodyiron"] = 4,   -- bloodyiron (Nebenchar von Blitzfaust)
-    ["cep"] = 3,   -- Cep
+    ["cep"] = 5,   -- Cep
     ["charlemagne"] = 4,   -- charlemagne (Nebenchar von Ophrys)
-    ["cheliia"] = 2,   -- Cheliia
+    ["cheliia"] = 3,   -- Cheliia
     ["debbigosa"] = 3,   -- debbigosa (Nebenchar von Thunderdebbo)
     ["deepressed"] = 1,   -- deepressed (Nebenchar von Tobii)
     ["depressionen"] = 5,   -- Depressionen
@@ -39,13 +39,13 @@ ns.PRIO = {
     ["kuhohnemilch"] = 4,   -- kuhohnemilch (Nebenchar von Blitzfaust)
     ["lemesolohim"] = 5,   -- lemesolohim (Nebenchar von Depressionen)
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
-    ["magirmx"] = 4,   -- magirmx (Nebenchar von Merlón)
-    ["merlon"] = 4,   -- Merlón
-    ["neyzdk"] = 4,   -- neyzdk (Nebenchar von Neyzxd)
-    ["neyzxd"] = 4,   -- Neyzxd
+    ["magirmx"] = 5,   -- magirmx (Nebenchar von Merlón)
+    ["merlon"] = 5,   -- Merlón
+    ["neyzdk"] = 3,   -- neyzdk (Nebenchar von Neyzxd)
+    ["neyzxd"] = 3,   -- Neyzxd
     ["nitroboost"] = 5,   -- nitroboost (Nebenchar von Setupx)
     ["noimage"] = 5,   -- noimage (Nebenchar von Setupx)
-    ["nom"] = 3,   -- nom (Nebenchar von Cep)
+    ["nom"] = 5,   -- nom (Nebenchar von Cep)
     ["notam"] = 2,   -- Notam
     ["notamonk"] = 1,   -- notamonk (Nebenchar von Tobii)
     ["notamused"] = 2,   -- notamused (Nebenchar von Notam)
@@ -56,7 +56,7 @@ ns.PRIO = {
     ["papertrail"] = 5,   -- papertrail (Nebenchar von Setupx)
     ["pasiphae"] = 3,   -- pasiphae (Nebenchar von Hyperhardw)
     ["rone"] = 5,   -- Rone
-    ["rugs"] = 3,   -- rugs (Nebenchar von Cep)
+    ["rugs"] = 5,   -- rugs (Nebenchar von Cep)
     ["setupdk"] = 5,   -- setupdk (Nebenchar von Setupx)
     ["setupdruid"] = 5,   -- setupdruid (Nebenchar von Setupx)
     ["setupx"] = 5,   -- Setupx
@@ -78,4 +78,4 @@ ns.PRIO = {
 
 ns.PRIO_ANZAHL = 66
 
-ns.PRIO_STAND = "14.10.2026 20:00"
+ns.PRIO_STAND = "16.10.2026 11:19"
