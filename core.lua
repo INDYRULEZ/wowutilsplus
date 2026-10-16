@@ -215,6 +215,11 @@ ns.UMLAUT = {
 --- @return number
 function ns.PrioFaktor(prio)
     if not prio then return 1.0 end
+    -- 🔴 Platz 10 = voller Abzug (-100 %, Faktor 0.00) — Jonas, 15.10.2026. Die Plaetze 1..9
+    -- bleiben in 10-%-Schritten wie bisher (1 = kein Abzug, 9 = -80 %), damit sich an den
+    -- bestehenden Werten nichts aendert. Alles ueber 10 zaehlt wie 10.
+    if prio >= 10 then return 0.0 end
+    if prio < 1 then return 1.0 end        -- 0 oder Unsinn: wie „keine Prioritaet"
     return 1.0 - (prio - 1) * 0.1
 end
 

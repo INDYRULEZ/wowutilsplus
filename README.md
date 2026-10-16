@@ -89,7 +89,7 @@ die zugehörigen Zeilen.
 | Faktor | Wirkung |
 |---|---|
 | **Rolle** | DPS ×1,00 · Healer ×0,52 · Tank ×0,90 |
-| **Prioritätsliste** | 1 = kein Abzug · 2 = −10 % · 3 = −20 % · 4 = −30 % · 5 = −40 % |
+| **Prioritätsliste** | 1 = kein Abzug · 2 = −10 % · 3 = −20 % · 4 = −30 % · 5 = −40 % · 6 = −50 % · 7 = −60 % · 8 = −70 % · 9 = −80 % · **10 = −100 %** |
 | **Wunschliste** | Best in Slot ×1,00 · Upgrade ×0,60 (greift nur, wenn jemand das Item als BiS bzw. Upgrade führt) |
 | **Average log** | 100er Log = kein Abzug · 0er Log = −10 %, dazwischen linear |
 | **First kill log** | Platz 1 = kein Abzug · letzter Platz = −15 %, dazwischen linear |
