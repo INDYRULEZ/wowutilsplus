@@ -70,9 +70,10 @@ Zwei Blöcke werden **addiert**, alles andere multipliziert:
 **Rolle × Prioritätsliste × Wunschliste × (1 − (Average-Abzug + First-kill-Abzug + Movement-Abzug)) × (1 − (Items-Abzug + Crests-Abzug))**
 
 - **Leistung:** Average log, First kill log und Movement rechnen alle drei auf demselben Stand —
-  dem Wert nach Rolle, Prio und Wunschliste — und werden **addiert**. Wer dort −10 % Average,
-  −15 % First kill und −8 % Movement hat, verliert also **33 %**; beim Multiplizieren wären es
-  30 % gewesen.
+  dem Wert nach Rolle, Prio und Wunschliste — und werden **addiert**.
+  *Beispiel:* −10 % Average, −15 % First kill und −8 % Movement ergeben zusammen **33 %**; beim
+  Multiplizieren wären es 30 % gewesen. (Das Beispiel dient nur dem Vergleich der beiden
+  Rechenarten — welche Abzüge gelten, steht auf der Seite.)
 - **Items und Crests** bilden zusammen **einen** Faktor: auch hier werden die beiden Abzüge
   addiert. Beide Stellschrauben der Seite bleiben erhalten, im Tooltip steht dafür **eine** Zeile.
 
@@ -86,16 +87,21 @@ Crests-Mindestfaktor auf 1,00, und für die Leistung kommen **keine Spielerwerte
 muss die Kästchen deshalb nicht kennen — es sieht nur Zahlen ohne Wirkung, und im Tooltip fehlen
 die zugehörigen Zeilen.
 
+🔴 **Hier stehen absichtlich keine Zahlen für die Abzüge.** Wie hoch ein Abzug ist, wird auf der
+Prioritäten-Seite eingestellt und dort jederzeit geändert — die README würde sonst veralten
+(genau das war bei den früher hier genannten Werten der Fall). Die Tabelle beschreibt deshalb nur,
+**wie** gerechnet wird.
+
 | Faktor | Wirkung |
 |---|---|
-| **Rolle** | DPS ×1,00 · Healer ×0,52 · Tank ×0,90 |
-| **Prioritätsliste** | 1 = kein Abzug · 2 = −10 % · 3 = −20 % · 4 = −30 % · 5 = −40 % · 6 = −50 % · 7 = −60 % · 8 = −70 % · 9 = −80 % · **10 = −100 %** |
-| **Wunschliste** | Best in Slot ×1,00 · Upgrade ×0,60 (greift nur, wenn jemand das Item als BiS bzw. Upgrade führt) |
-| **Average log** | 100er Log = kein Abzug · 0er Log = −10 %, dazwischen linear |
-| **First kill log** | Platz 1 = kein Abzug · letzter Platz = −15 %, dazwischen linear |
-| **Movement/Survival** | von Hand gepflegt, Abzug in Prozent (Vorgabe: höchstens 20 %) |
-| **Items seit Reset** | Abzug je Item, das der Spieler **seit dem letzten Wochen-Reset** erhalten hat (Vorgabe 15 %), Untergrenze ×0,70. Die Gesamtzahl wird nur angezeigt. Bildet mit den Crests **einen** Faktor, die Abzüge addieren sich. 🔴 Ein Itemlink pro Tag zählt **einmal** — RCL protokolliert dieselbe Vergabe manchmal doppelt |
-| **Crests** | Mythic-Crests, Eingang = „in der Tasche + bis zur Obergrenze frei": 0 → ×0,80, ab 80 → ×1,00, dazwischen linear (Vorgaben). Bildet mit den Items **einen** Faktor |
+| **Rolle** | je Rolle ein eigener Faktor (DPS, Healer, Tank) |
+| **Prioritätsliste** | 1 = kein Abzug, dann je Stufe 10 % mehr — **Platz 10 = voller Abzug (−100 %)**. Fest im Addon, nicht einstellbar |
+| **Wunschliste** | Best in Slot und „Upgrade" werden unterschiedlich gewichtet; greift nur, wenn jemand das Item als BiS bzw. Upgrade führt |
+| **Average log** | 100er Log = kein Abzug, 0er Log = der eingestellte Höchstbetrag, dazwischen linear |
+| **First kill log** | Platz 1 = kein Abzug, letzter Platz = der eingestellte Höchstbetrag, dazwischen linear |
+| **Movement/Survival** | von Hand gepflegte Prozentangabe, wird in einen Faktor umgerechnet (mit Obergrenze) |
+| **Items seit Reset** | Abzug je Item, das der Spieler **seit dem letzten Wochen-Reset** erhalten hat, mit Untergrenze. Die Gesamtzahl wird nur angezeigt. Bildet mit den Crests **einen** Faktor, die Abzüge addieren sich. 🔴 Ein Itemlink pro Tag zählt **einmal** — RCL protokolliert dieselbe Vergabe manchmal doppelt |
+| **Crests** | Mythic-Crests, Eingang = „in der Tasche + bis zur Obergrenze frei": je mehr noch offen ist, desto weniger Abzug — ab einer Schwelle gar keiner. Bildet mit den Items **einen** Faktor |
 
 Die Leistungswerte (Average log, First kill log) kommen aus **Warcraft Logs** und werden
 je Charakter berechnet — gefiltert auf **Kills der eigenen Gilde**, **nur auf mythische
