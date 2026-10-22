@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 19.10.2026 20:18
+-- Stand: 22.10.2026 23:59
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -9,8 +9,8 @@ local _, ns = ...
 
 ns.PRIO = {
     ["ashylie"] = 4,   -- ashylie (Nebenchar von Blitzfaust)
+    ["auriga"] = 10,   -- Auriga
     ["balren"] = 2,   -- Balren
-    ["beaybewhy"] = 10,   -- Beaybewhy
     ["bigboysushi"] = 3,   -- bigboysushi (Nebenchar von Twosocks)
     ["blitzfaust"] = 4,   -- Blitzfaust
     ["bloodyiron"] = 4,   -- bloodyiron (Nebenchar von Blitzfaust)
@@ -19,26 +19,26 @@ ns.PRIO = {
     ["cheliia"] = 3,   -- Cheliia
     ["debbigosa"] = 3,   -- debbigosa (Nebenchar von Thunderdebbo)
     ["deepressed"] = 1,   -- deepressed (Nebenchar von Tobii)
-    ["depressionen"] = 5,   -- Depressionen
     ["dranash"] = 3,   -- Dránash
     ["enshirou"] = 6,   -- Enshirou
     ["exorzist"] = 2,   -- Exorzist
     ["exudes"] = 4,   -- Exudes
-    ["furball"] = 10,   -- furball (Nebenchar von Palaball)
-    ["furdruid"] = 10,   -- furdruid (Nebenchar von Palaball)
+    ["frenschi"] = 10,   -- frenschi (Nebenchar von Jonkos)
     ["garshu"] = 2,   -- Garshû
     ["gweni"] = 4,   -- Gwêni
+    ["hackschelle"] = 10,   -- hackschelle (Nebenchar von Auriga)
     ["hyperhardw"] = 3,   -- Hyperhardw
     ["indydrakes"] = 2,   -- Indydrakes
     ["indypalas"] = 2,   -- indypalas (Nebenchar von Indydrakes)
     ["iowol"] = 3,   -- iowol (Nebenchar von Twosocks)
     ["jekyl"] = 10,   -- jekyl (Nebenchar von Rone)
     ["jirylock"] = 6,   -- Jirylock
+    ["jonkos"] = 10,   -- Jonkos
     ["kaliistda"] = 4,   -- kaliistda (Nebenchar von Blitzfaust)
     ["keitabha"] = 6,   -- keitabha (Nebenchar von Enshirou)
     ["kuhohnemilch"] = 4,   -- kuhohnemilch (Nebenchar von Blitzfaust)
-    ["lemesolohim"] = 5,   -- lemesolohim (Nebenchar von Depressionen)
     ["lisdexamfeta"] = 1,   -- lisdexamfeta (Nebenchar von Tobii)
+    ["narande"] = 10,   -- Narande
     ["neyzdk"] = 3,   -- neyzdk (Nebenchar von Neyzxd)
     ["neyzxd"] = 3,   -- Neyzxd
     ["nom"] = 5,   -- nom (Nebenchar von Cep)
@@ -47,7 +47,6 @@ ns.PRIO = {
     ["notamused"] = 2,   -- notamused (Nebenchar von Notam)
     ["notrone"] = 10,   -- notrone (Nebenchar von Rone)
     ["ophrys"] = 4,   -- Ophrys
-    ["palaball"] = 10,   -- Palaball
     ["paldros"] = 2,   -- paldros (Nebenchar von Balren)
     ["pasiphae"] = 3,   -- pasiphae (Nebenchar von Hyperhardw)
     ["rone"] = 10,   -- Rone
@@ -58,9 +57,12 @@ ns.PRIO = {
     ["silan"] = 2,   -- silan (Nebenchar von Silanhunt)
     ["silanhunt"] = 2,   -- Silanhunt
     ["sillan"] = 2,   -- sillan (Nebenchar von Silanhunt)
+    ["snoow"] = 10,   -- Snoow
+    ["snoowdk"] = 10,   -- snoowdk (Nebenchar von Snoow)
+    ["snoowibundus"] = 10,   -- snoowibundus (Nebenchar von Snoow)
+    ["snoowtouch"] = 10,   -- snoowtouch (Nebenchar von Snoow)
     ["sollas"] = 2,   -- sollas (Nebenchar von Garshû)
     ["stumpstomp"] = 10,   -- stumpstomp (Nebenchar von Rone)
-    ["taovitotem"] = 10,   -- taovitotem (Nebenchar von Palaball)
     ["thunderdebbo"] = 3,   -- Thunderdebbo
     ["tobii"] = 1,   -- Tobii
     ["trybuss"] = 4,   -- trybuss (Nebenchar von Blitzfaust)
@@ -69,6 +71,6 @@ ns.PRIO = {
     ["vilarie"] = 3,   -- Vilarie
 }
 
-ns.PRIO_ANZAHL = 59
+ns.PRIO_ANZAHL = 61
 
-ns.PRIO_STAND = "19.10.2026 20:18"
+ns.PRIO_STAND = "22.10.2026 23:59"
