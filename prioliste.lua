@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 02.11.2026 18:30
+-- Stand: 05.11.2026 18:30
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -18,9 +18,11 @@ ns.PRIO = {
     ["exorzist"] = 2,   -- Exorzist
     ["garshu"] = 2,   -- Garshû
     ["gweni"] = 6,   -- Gwêni
-    ["hyperhardw"] = 3,   -- Hyperhardw
+    ["hayzm"] = 4,   -- Hayzm
+    ["hyperhardw"] = 4,   -- Hyperhardw
     ["indydrakes"] = 2,   -- Indydrakes
-    ["iowol"] = 10,   -- Iòwól
+    ["iowol"] = 4,   -- Iòwól
+    ["itchytoes"] = 3,   -- Itchytoes
     ["jirylock"] = 6,   -- Jirylock
     ["neyzdk"] = 4,   -- Neyzdk
     ["notam"] = 2,   -- Notam
@@ -34,10 +36,10 @@ ns.PRIO = {
     ["snoowtouch"] = 5,   -- snoowtouch (Nebenchar von Snoow)
     ["thunderdebbo"] = 3,   -- Thunderdebbo
     ["tobii"] = 1,   -- Tobii
-    ["twosocks"] = 10,   -- twosocks (Nebenchar von Iòwól)
+    ["twosocks"] = 4,   -- twosocks (Nebenchar von Iòwól)
     ["vilarie"] = 3,   -- Vilarie
 }
 
-ns.PRIO_ANZAHL = 28
+ns.PRIO_ANZAHL = 30
 
-ns.PRIO_STAND = "02.11.2026 18:30"
+ns.PRIO_STAND = "05.11.2026 18:30"
