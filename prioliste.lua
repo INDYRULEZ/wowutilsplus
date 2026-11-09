@@ -1,6 +1,6 @@
 -- Automatisch erzeugt — NICHT von Hand editieren.
 -- Quelle: Weboberfläche (Loot-Council-Prioritäten)
--- Stand: 05.11.2026 18:30
+-- Stand: 09.11.2026 18:31
 --
 -- Schluessel = normalisierter Name (Kleinschreibung, ohne Akzente), damit
 -- 'Dranash' aus der Liste auch den Char 'dránash' trifft.
@@ -18,7 +18,6 @@ ns.PRIO = {
     ["exorzist"] = 2,   -- Exorzist
     ["garshu"] = 2,   -- Garshû
     ["gweni"] = 6,   -- Gwêni
-    ["hayzm"] = 4,   -- Hayzm
     ["hyperhardw"] = 4,   -- Hyperhardw
     ["indydrakes"] = 2,   -- Indydrakes
     ["iowol"] = 4,   -- Iòwól
@@ -40,6 +39,6 @@ ns.PRIO = {
     ["vilarie"] = 3,   -- Vilarie
 }
 
-ns.PRIO_ANZAHL = 30
+ns.PRIO_ANZAHL = 29
 
-ns.PRIO_STAND = "05.11.2026 18:30"
+ns.PRIO_STAND = "09.11.2026 18:31"
